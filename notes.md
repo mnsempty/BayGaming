@@ -9,6 +9,7 @@ After cloning reppository:
 - npm install
 
 And after:
-- npm npm i bootstrap --save-dev
-- npm npm install sass --save-dev
+- npm i bootstrap --save-dev
+- npm install sass --save-dev
 - npm addd -D sass
+- npm i bootstrap-icons
