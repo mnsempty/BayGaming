@@ -12,6 +12,7 @@ And after:
 - npm npm i bootstrap --save-dev
 - npm npm install sass --save-dev
 - npm addd -D sass
+- npm i bootstrap-icons
 
 
 mailtrap para el vendor
