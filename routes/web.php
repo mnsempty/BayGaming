@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductsController;//delete
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +26,11 @@ Route::get('/home', function () {
     return view('auth.dashboard');
 })->middleware(['auth', 'verified']);
 
-// Route::get('/test-relations',[ ProductsController::class, 'testRelations' ]);
+Route::get('/check-relationship', function () {
+    $product = Product::find(1); // Obtiene el primer producto
+    $categories = $product->categories; // Obtiene las categorías del producto
+    echo $categories;
+    foreach ($categories as $category) {
+        echo $category->name . "<br>";
+    }
+});

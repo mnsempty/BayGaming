@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-        // terminar enlace products (laravel002)
-        public function Product(){
-            // id otra tabla, id propia, id intermedia
-            return $this->belongsToMany(Product::class,'product_id','category_id');
-        }
+    // terminar enlace products (laravel002)
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'category_has_product', 'category_id', 'product_id')
+            ->withTimestamps();
+    }
+
 }
