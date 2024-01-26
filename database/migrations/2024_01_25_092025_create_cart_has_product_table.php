@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('cart_has_product', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cart_id'); // Cambiado de integer a unsignedBigInteger
+            $table->unsignedBigInteger('product_id'); // Cambiado de integer a unsignedBigInteger
+            $table->unsignedBigInteger('discount_id')->nullable(); // Asegúrate de que 'discounts.id' también es unsignedBigInteger
             $table->timestamps();
+
+            $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('set null');
         });
     }
 
