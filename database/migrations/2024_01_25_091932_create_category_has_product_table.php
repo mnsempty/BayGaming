@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('category_has_product', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->references("categories")->on("id");
+            $table->foreignId('product_id')->references("products")->on("id");
             $table->timestamps();
         });
     }
