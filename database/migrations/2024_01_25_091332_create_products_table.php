@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('name');// string limite laravel 250
+            $table->text('description');// se supone que sin limite
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
     }
