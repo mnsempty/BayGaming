@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
+            $table->foreignId('address_id')->constrained();//;clave forania tabla address
+            $table->foreignId('wishlist_id')->constrained();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
+    function users() {
+    return $this->hasMany(User::class,'address_id');
+    }
 }
