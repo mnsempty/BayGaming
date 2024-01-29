@@ -36,7 +36,7 @@ Route::get('/check-relationship', function () {
     $categories = $product->categories; // Obtiene las categorías del producto
     echo "</br>";
     echo $categories;
-
+    echo "</br>";
     foreach ($categories as $category) {
         echo $category->name;
     }
