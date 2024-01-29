@@ -13,8 +13,8 @@ class Wishlist extends Model
     function users() {
         return $this->belongsTo(User::class,"wishlist_id");
     }
-    //product relation
-    function product() {
+    //product relation m-n
+    function products() {
         return $this->belongsTo(product::class);
     }
 }
