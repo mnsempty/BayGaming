@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Product;
+use App\Models\Category;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +26,18 @@ Route::get('/home', function () {
 Route::get('/home', function () {
     return view('auth.dashboard');
 })->middleware(['auth', 'verified']);
+
+Route::get('/check-relationship', function () {
+    $product = Product::find(1); // Obtiene el primer producto
+    // $product->categories()->attach(1);
+    // $product->categories()->detach(1);
+    $product->Carts()->sync(2);
+    echo $product;
+    $Carts = $product->Carts; // Obtiene las categorías del producto
+    echo "</br>";
+    echo $Carts;
+    echo "</br>";
+    foreach ($Carts as $cart) {
+        echo $cart->name;
+    }
+});

@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Cart::factory()->create([
         ]);
+        
+        $this->call(UsersTableSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 
