@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
-    // relacion products 1-M
-    function products() {
-        return $this->belongsTo(Product::class);
+    // relacion products N-M
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'products_has_images', 'images_id', 'products_id')
+            ->withTimestamps();
     }
     
 }

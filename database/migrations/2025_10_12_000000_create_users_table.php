@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->foreignId('addresses_id')->constrained()->references("id")->on("addresses")->onDelete('cascade');//;clave forania tabla address
-            $table->foreignId('wishlists_id')->constrained()->references("id")->on("wishlists")->onDelete('cascade');// añadir on reference...?
+            $table->foreignId('wishlists_id')->constrained()->references("id")->on("wishlists")->onDelete('cascade');
+            $table->foreignId('reviews_id')->constrained()->references("id")->on("reviews")->onDelete('cascade');
+            $table->foreignId('orders_id')->constrained()->references("id")->on("orders")->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

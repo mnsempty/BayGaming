@@ -44,19 +44,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
     //address relation 1-M
-    function address() {
-        return $this->belongsTo(Address::class);
+    public function addresses() {
+        return $this->hasMany(User::class,'addresses_id');
     }
     // orders relation 1-M
-    function order() {
-        return $this->belongsTo(Order::class);
+    public function orders() {
+        return $this->hasMany(User::class,'orders_id');
     }
-    // reviews relation 1-M
-    function review() {
-        return $this->belongsTo(review::class);
+    // reviews relation 1-M fixed
+    public function reviews() {
+        return $this->hasMany(Review::class,'reviews_id');
     }
     // Wishlist relation 1-1
-    function wishlist() {
+    public function wishlist() {
         return $this->hasOne(Wishlist::class);
     }
     

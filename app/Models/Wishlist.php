@@ -10,11 +10,11 @@ class Wishlist extends Model
     use HasFactory;
 
     // users relation 1-1
-    function users() {
-        return $this->belongsTo(User::class,"wishlist_id");
+    public function user() {
+        return $this->belongsTo(User::class,"wishlists_id");
     }
-    //product relation m-n
-    function products() {
+    //product relation 1-m
+    public function product() {
         return $this->belongsTo(product::class);
     }
 }

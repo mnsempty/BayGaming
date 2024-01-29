@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
+            $table->foreignId('invoices_id')->references("id")->on("invoices")->onDelete('cascade');
             $table->timestamps();
         });
     }
