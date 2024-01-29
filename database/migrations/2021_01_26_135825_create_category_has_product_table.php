@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('category_has_product', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->references("id")->on("categories");
-            $table->foreignId('product_id')->references("id")->on("products");
+            $table->foreignId('categories_id')->references("id")->on("categories")->onDelete('cascade');
+            $table->foreignId('products_id')->references("id")->on("products")->onDelete('cascade');
             $table->timestamps();
-            $table->index(['category_id', 'product_id']);
+            $table->index(['categories_id', 'products_id']);
         });
     }
 
