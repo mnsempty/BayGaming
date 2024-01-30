@@ -14,11 +14,11 @@ class CategoriesTableSeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'name' => 'test 1',
+            'name' => 'category 1',
         ]);
     
         Category::create([
-            'name' => 'test 2',
+            'name' => 'category 2',
         ]);
     }
 }

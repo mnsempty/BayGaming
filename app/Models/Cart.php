@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     use HasFactory;
-    public function Products(){
+    public function products(){
         // id otra tabla, id propia, id intermedia
-        return $this->belongsToMany(Product::class, 'cart_has_product', 'cart_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'carts_has_products', 'carts_id', 'products_id')->withTimestamps();
     }
 }

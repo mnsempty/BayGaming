@@ -10,9 +10,9 @@ class Product extends Model
 {
     use HasFactory;
     //relation carts M-M
-    public function Carts(){
+    public function carts(){
         // id otra tabla, id propia, id intermedia
-        return $this->belongsToMany(Cart::class, 'cart_has_product', 'product_id', 'cart_id');
+        return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id');
     }
         //relation categories M-M
     public function categories()
