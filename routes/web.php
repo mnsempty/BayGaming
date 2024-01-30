@@ -34,11 +34,12 @@ Route::get('/home', function () {
 
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('templates.template');
-});
+});*/
 
-Route::get('/', HomeCotroller::class);
+Route::get('/', [HomeCotroller::class, '__invoke']);
+
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
 /*
