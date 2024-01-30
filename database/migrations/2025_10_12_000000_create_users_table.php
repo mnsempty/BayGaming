@@ -18,10 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
-            $table->foreignId('addresses_id')->constrained()->references("id")->on("addresses")->onDelete('cascade');//;clave forania tabla address
-            $table->foreignId('wishlists_id')->constrained()->references("id")->on("wishlists")->onDelete('cascade');
-            $table->foreignId('reviews_id')->constrained()->references("id")->on("reviews")->onDelete('cascade');
-            $table->foreignId('orders_id')->constrained()->references("id")->on("orders")->onDelete('cascade');
+            $table->foreignId('addresses_id')->constrained()->nullable()->references("id")->on("addresses");
+            $table->foreignId('wishlists_id')->constrained()->nullable()->references("id")->on("wishlists");
+            $table->foreignId('reviews_id')->constrained()->nullable()->references("id")->on("reviews");
+            $table->foreignId('orders_id')->constrained()->nullable()->references("id")->on("orders");
             $table->rememberToken();
             $table->timestamps();
         });
