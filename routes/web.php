@@ -40,11 +40,13 @@ Route::get('/check-relationship', function () {
     // $product->categories()->attach(1);
     // $product->categories()->detach(1);
     $product->categories()->sync(2);
+    echo "products"."</br>";
     echo $product;
     $categories = $product->categories; // Obtiene las categorías del producto
-    echo "</br>";
+    echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
     echo $categories;
     echo "</br>";
+    echo "nombres de las categorias asociadas a ese producto"."</br>";
     foreach ($categories as $category) {
         echo $category->name;
     }
@@ -62,17 +64,20 @@ Route::get('/forbidden', function () {
 
 });
 
-Route::get('/check-relationship', function () {
+Route::get('/check-relationship2', function () {
     $product = Product::find(1); // Obtiene el primer producto
     // $product->categories()->attach(1);
     // $product->categories()->detach(1);
-    $product->Carts()->sync(2);
+    $product->carts()->sync(1);
+    echo "productos"."</br>";
     echo $product;
-    $Carts = $product->Carts; // Obtiene las categorías del producto
+    $carts = $product->carts; // Obtiene las categorías del producto
     echo "</br>";
-    echo $Carts;
+    echo "cart del usuario"."</br>";
+    echo $carts;
     echo "</br>";
-    foreach ($Carts as $cart) {
+    echo "cart nombre¿?¿?¿?"."</br>";
+    foreach ($carts as $cart) {
         echo $cart->name;
     }
 });
