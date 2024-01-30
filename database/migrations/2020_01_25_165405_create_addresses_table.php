@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->id()->unique();
+            $table->string('address');
+            $table->string('tax_code');
+            $table->string('country');
+            $table->string('telephone_number');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('addresses');
     }
 };

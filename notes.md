@@ -27,3 +27,7 @@ MAIL_PASSWORD=87a27fa835994d
 MAIL_ENCRYPTION=null
 MAIL_FROM_ADDRESS="BayGaming@no-reply.com"
 MAIL_FROM_NAME="${APP_NAME}"
+
+# relations
+```return $this->belongsTo(review::class);```
+en caso de no especificar if forania coge por defecto [Nombre de la Tabla]+_id

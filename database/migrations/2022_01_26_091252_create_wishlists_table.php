@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('wishlists', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-
+            $table->foreignId('products_id')->references("id")->on("products")->onDelete('cascade');// añadir on reference...?
             $table->timestamps();
+            //$table->index('products_id');
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('wishlists');
     }
 };
