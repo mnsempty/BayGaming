@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('wishlists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('products_id')->references("id")->on("products")->onDelete('cascade');// añadir on reference...?
+            $table->foreignId('products_id')->references("id")->on("products");// añadir on reference...?
             $table->timestamps();
             //$table->index('products_id');
         });

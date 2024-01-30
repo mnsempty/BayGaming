@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('products_has_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('images_id')->references("id")->on("images")->onDelete('cascade');
-            $table->foreignId('products_id')->references("id")->on("products")->onDelete('cascade');
+            $table->foreignId('images_id')->references("id")->on("images")->unique();
+            $table->foreignId('products_id')->references("id")->on("products")->unique();
             $table->timestamps();
-            $table->index(['images_id', 'products_id']);
+            $table->index(['images_id', 'products_id'])->unique();
         });
     }
 

@@ -31,3 +31,6 @@ MAIL_FROM_NAME="${APP_NAME}"
 # relations
 ```return $this->belongsTo(review::class);```
 en caso de no especificar if forania coge por defecto [Nombre de la Tabla]+_id
+
+# middleware
+Un middleware es un puente que existe entre la petición que un usuario hace a una ruta y el controlador.

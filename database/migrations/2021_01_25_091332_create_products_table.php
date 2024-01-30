@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');// string limite laravel 250
             $table->text('description');// se supone que sin limite
             $table->decimal('price', 10, 2);
-            $table->foreignId('reviews_id')->references("id")->on("reviews")->onDelete('cascade');
+            //stock
+            $table->foreignId('reviews_id')->references("id")->on("reviews");
+            //->onDelete(DB::raw('NO ACTION')) RARETE
             $table->timestamps();
         });
     }
