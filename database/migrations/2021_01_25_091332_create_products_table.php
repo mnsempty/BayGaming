@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name');// string limite laravel 250
             $table->text('description');// se supone que sin limite
             $table->decimal('price', 10, 2);
-            //stock
+            $table->integer('stock');
+            $table->string('developer');
+            $table->string('publisher');
+            $table->string('platform');
             $table->foreignId('reviews_id')->nullable()->references("id")->on("reviews");
             //->onDelete(DB::raw('NO ACTION')) RARETE
             $table->timestamps();
