@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');// se supone que sin limite
             $table->decimal('price', 10, 2);
             //stock
-            $table->foreignId('reviews_id')->references("id")->on("reviews");
+            $table->foreignId('reviews_id')->nullable()->references("id")->on("reviews");
             //->onDelete(DB::raw('NO ACTION')) RARETE
             $table->timestamps();
         });

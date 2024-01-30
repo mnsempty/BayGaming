@@ -26,6 +26,8 @@ Route::get('/home', function () {
     return view('auth.dashboard');
 })->middleware(['auth', 'verified']);
 
+//Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
+
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
 Route::get('/check-relationship', function () {
     $product = Product::find(1); // Obtiene el primer producto
@@ -40,4 +42,12 @@ Route::get('/check-relationship', function () {
     foreach ($categories as $category) {
         echo $category->name;
     }
+});
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('/admin_test', function () {
+    echo 'hola admin';
+    });
+    Route::get('/admin_test2', function () {
+        echo 'hola admin 2';
+    });
 });

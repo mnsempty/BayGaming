@@ -34,3 +34,11 @@ en caso de no especificar if forania coge por defecto [Nombre de la Tabla]+_id
 
 # middleware
 Un middleware es un puente que existe entre la petición que un usuario hace a una ruta y el controlador.
+ `` php artisan make:middleware AdminMiddleware``
+https://programacionymas.com/blog/restringir-acceso-solo-administradores-laravel-usando-middlewares
+
+# routes group
+https://codersfree.com/courses-status/aprende-laravel-avanzado/grupo-de-rutas
+
+# foreign id nullable quitar
+``'reviews_id' => null,``
