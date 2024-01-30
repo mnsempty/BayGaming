@@ -25,7 +25,7 @@ class ProductsController extends Controller
                 'publisher' => $request->publisher,
                 'platform' => $request->platform,
                 'launcher' => $request->launcher,
-                'reviews_id' => $request->reviews_id,
+                //'reviews_id' => $request->reviews_id,
             ]);
     
             // probablemente por nombre de las cat ask team
@@ -47,6 +47,17 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error al crear un producto']);
+        }
+    }
+    //Route::delete('/products/{id}', 'ProductController@deleteProduct');
+    public function readProducts($id){
+        try {
+            DB::beginTransaction();
+            Product::where('id', $id)->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al eliminar un producto']);
         }
     }
 }
