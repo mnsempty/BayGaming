@@ -14,8 +14,11 @@ And after:
 - npm addd -D sass
 - npm i bootstrap-icons
 
+## .Env
+DB_DATABASE=baygaming
 
 mailtrap para el vendor
+
 MAIL_MAILER=smtp
 MAIL_HOST=sandbox.smtp.mailtrap.io
 MAIL_PORT=2525
