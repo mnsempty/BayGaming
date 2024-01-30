@@ -62,6 +62,9 @@
             @yield('content')
         </main>
     </div>
+    <footer>
+        HOLA
+    </footer>
 
 
 </body>
