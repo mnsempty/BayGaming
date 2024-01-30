@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('cart_has_product', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('cart_id')->references("id")->on("cart");
+            $table->foreignId('product_id')->references("id")->on("product");
+            $table->index(['cart_id', 'product_id']); //->unique(); yes or no??
+
             $table->timestamps();
         });
     }

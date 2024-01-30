@@ -31,4 +31,11 @@ class Product extends Model
     public function reviews() {
         return $this->hasMany(Review::class,'reviews_id');
     }
+
+    // relation cart_has_product N-M
+    public function cart()
+    {
+        return $this->belongsToMany(Category::class, 'cart_has_product', 'cart_id', 'product_id')
+            ->withTimestamps();
+    }
 }
