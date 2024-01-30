@@ -62,6 +62,8 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Prueba footer SASS WORKING -->
     <footer>
         HOLA
     </footer>
