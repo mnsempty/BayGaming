@@ -14,6 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        // rol admin sin verificación
         User::create([
             'name' => 'Admin',
             'email' => 'nonameb41@gmail.com',
@@ -25,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'reviews_id' => null,
             'orders_id' => null,
         ]);
-
+        // rol admin con verificación
         User::create([
             'name' => 'Admin2',
             'email' => 'example2a@gmail.com',
@@ -36,7 +37,7 @@ class UsersTableSeeder extends Seeder
             'reviews_id' => null,
             'orders_id' => null,
         ]);
-
+        // rol user sin verificación
         User::create([
             'name' => 'testUser',
             'email' => 'mnsemptymail@gmail.com',
@@ -48,6 +49,7 @@ class UsersTableSeeder extends Seeder
             'reviews_id' => null,
             'orders_id' => null,
         ]);
+        // rol user con verificación
         User::create([
             'name' => 'testUser2',
             'email' => 'exampleawe@gmail.com',

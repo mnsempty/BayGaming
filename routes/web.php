@@ -51,3 +51,7 @@ Route::group(['middleware' => 'admin'], function () {
         echo 'hola admin 2';
     });
 });
+Route::get('/forbidden', function () {
+    abort(403, 'Acceso no autorizado.');
+
+});

@@ -42,3 +42,12 @@ https://codersfree.com/courses-status/aprende-laravel-avanzado/grupo-de-rutas
 
 # foreign id nullable quitar
 ``'reviews_id' => null,``
+
+    public function __construct()
+    {
+        if (Auth::check() && Auth::user()->role != 'admin') {
+            abort(403, 'Acceso no autorizado.');
+        }
+    }
+# ver vista de errores
+```PS C:\xampp\htdocs\BayGaming> php artisan vendor:publish --tag=laravel-errors```
