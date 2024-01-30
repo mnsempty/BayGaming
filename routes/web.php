@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\HomeCotroller;
 use App\Http\Controllers\ProductsController;//delete
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+
+/* Uso del controlador para asignarle rutas **/
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +38,10 @@ Route::get('/', function () {
     return view('templates.template');
 });
 
+Route::get('/', HomeCotroller::class);
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
+/*
 Route::get('/check-relationship', function () {
     $product = Product::find(1); // Obtiene el primer producto
     // $product->categories()->attach(1);
@@ -51,3 +56,4 @@ Route::get('/check-relationship', function () {
         echo $category->name;
     }
 });
+*/
