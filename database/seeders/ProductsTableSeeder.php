@@ -20,7 +20,8 @@ class ProductsTableSeeder extends Seeder
             'stock' => 10,
             'developer' => 'Developer Name',
             'publisher' => 'Publisher Name',
-            'platform' => 'Platform Name',
+            'platform' => 'PC',
+            'launcher' => 'Steam',
             'reviews_id' => null,
         ]);
 
@@ -31,16 +32,10 @@ class ProductsTableSeeder extends Seeder
             'stock' => 12,
             'developer' => 'Developer Name',
             'publisher' => 'Publisher Name',
-            'platform' => 'Platform Name',
+            'platform' => 'Xbox',
+            'launcher' => null,
             'reviews_id' => null,
         ]);
-        /*
-                    $table->id();
-            $table->string('name');// string limite laravel 250
-            $table->text('description');// se supone que sin limite
-            $table->decimal('price', 10, 2);
-            //stock
-            $table->foreignId('reviews_id')->references("id")->on("reviews");
-        */
+
     }
 }

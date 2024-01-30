@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('developer');
             $table->string('publisher');
-            $table->string('platform');
+            $table->enum('platform', ['PC', 'Ps5','Xbox','Nintendo Switch'])->default('PC');
+            $table->enum('launcher',['Steam','Ubisoft Connect','EA App','Battle.net','Rockstar','GOG.com','Epic'])->nullable();
             $table->foreignId('reviews_id')->nullable()->references("id")->on("reviews");
             //->onDelete(DB::raw('NO ACTION')) RARETE
             $table->timestamps();
