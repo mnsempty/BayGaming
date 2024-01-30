@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    //relation categories M-M
+    //relation carts M-M
+    public function Carts(){
+        // id otra tabla, id propia, id intermedia
+        return $this->belongsToMany(Cart::class, 'cart_has_product', 'product_id', 'cart_id');
+    }
+        //relation categories M-M
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'categories_has_products', 'products_id', 'categories_id')

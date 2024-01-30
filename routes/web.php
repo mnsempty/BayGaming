@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProductsController;//delete
 use App\Models\Product;
+use App\Models\Category;
+
+use App\Http\Controllers\ProductsController;//delete
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,4 +56,19 @@ Route::group(['middleware' => 'admin'], function () {
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
 
+});
+
+Route::get('/check-relationship', function () {
+    $product = Product::find(1); // Obtiene el primer producto
+    // $product->categories()->attach(1);
+    // $product->categories()->detach(1);
+    $product->Carts()->sync(2);
+    echo $product;
+    $Carts = $product->Carts; // Obtiene las categorías del producto
+    echo "</br>";
+    echo $Carts;
+    echo "</br>";
+    foreach ($Carts as $cart) {
+        echo $cart->name;
+    }
 });
