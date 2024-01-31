@@ -22,7 +22,9 @@ class ProductsTableSeeder extends Seeder
             'publisher' => 'Publisher Name',
             'platform' => 'PC',
             'launcher' => 'Steam',
-            'reviews_id' => null,
+            'users_id' => '1',
+
+            // 'reviews_id' => 1,
         ]);
 
         Product::create([
@@ -34,7 +36,9 @@ class ProductsTableSeeder extends Seeder
             'publisher' => 'Publisher Name',
             'platform' => 'Xbox',
             'launcher' => null,
-            'reviews_id' => null,
+            'users_id' => '2',
+
+            // 'reviews_id' => null,
         ]);
 
     }

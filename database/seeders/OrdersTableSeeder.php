@@ -2,24 +2,28 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CartsTableSeeder extends Seeder
+class OrdersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Cart::create([
-            'quantity' => 1,
+        Order::create([
+            'state' => 'pending',
+            'total' => 100.00,
             'users_id' => 1,
         ]);
-        Cart::create([
-            'quantity' => 5,
+
+        Order::create([
+            'state' => 'completed',
+            'total' => 200.00,
             'users_id' => 2,
         ]);
+
     }
 }

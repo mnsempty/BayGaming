@@ -2,24 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cart;
+use App\Models\Discount;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CartsTableSeeder extends Seeder
+class DiscountsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Cart::create([
-            'quantity' => 1,
-            'users_id' => 1,
+        Discount::create([
+            'percent' => 10,
+            'products_id' => 1,
         ]);
-        Cart::create([
-            'quantity' => 5,
-            'users_id' => 2,
-        ]);
+
     }
 }

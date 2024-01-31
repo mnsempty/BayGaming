@@ -48,15 +48,9 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'products_has_images', 'products_id', 'images_id')
             ->withTimestamps();
     }
+    
     // review relation 1-M
-    // public function reviews() {
-    //     return $this->hasMany(Review::class,'reviews_id');
-    // }
-
-    // // relation cart_has_product N-M
-    // public function cart()
-    // {
-    //     return $this->belongsToMany(Category::class, 'cart_has_product', 'cart_id', 'product_id')
-    //         ->withTimestamps();
-    // }
+    //  public function reviews() {
+    //      return $this->hasMany(Review::class,'reviews_id');
+    //  }
 }
