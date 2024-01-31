@@ -27,7 +27,20 @@ class ProductsController extends Controller
                 'launcher' => $request->launcher,
                 //'reviews_id' => $request->reviews_id,
             ]);
-    
+            $request->validate(['name' => 'required','description' => 'required',    'price' => 'required',
+            'stock' => 'required',
+            'developer' => 'required',
+            'publisher' => 'required',
+            'platform' => 'required',]);
+
+            $product = new Product;
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->stock = $request->stock;
+            $product->developer = $request->developer;
+            $product->publisher = $request->publisher;
+            $product->platform = $request->platform;
+            $product->save();
             // probablemente por nombre de las cat ask team
             // if ($request->has('category_ids')) {
             //     foreach ($request->category_ids as $category_id) {
@@ -41,13 +54,15 @@ class ProductsController extends Controller
             
     
             DB::commit();
-    
-            return response()->json(['message' => 'Producto creado exitosamente', 'product' => $product]);
-    
+            return back()->with('mensaje', 'Producto creado exitosamente')->with('product', $product);
+            //{{ session('message') }} {{ session('product') }}   
+   
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Error al crear un producto']);
         }
+
+    
     }
     //Route::delete('/products/{id}', 'ProductController@deleteProduct');
     public function readProducts($id){

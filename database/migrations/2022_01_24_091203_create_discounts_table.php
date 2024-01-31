@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->integer('percent');
-            $table->foreignId('orders_id')->references("id")->on("orders");
+            $table->foreignId('products_id')->references("id")->on("products");
             $table->timestamps();
         });
     }
