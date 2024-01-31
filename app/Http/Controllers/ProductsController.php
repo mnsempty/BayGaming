@@ -164,7 +164,7 @@ class ProductsController extends Controller
     public function show($id)
     {
         $product = Product::finOrfail($id);
-        return view('auth.dashboard', @compact('products'));
+        return view('product.product', @compact('products'));
     }
 
     // Método para editar dettalles de productos
