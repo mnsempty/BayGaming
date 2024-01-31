@@ -21,15 +21,14 @@
             </div>
         </div>
     </div>
-    <table class="table table-bordered">
+    <table class="container table table-bordered">
         <tr>
             <th>Name</th>
             <th>Precio</th>
             <th>Developer</th>
         </tr>
-        @if(isset($products))
-            
-       
+        @if(@isset($products))
+
         @foreach ($products as $product)
             <tr>
                 <td>{{ $product->name }}</td>
@@ -37,7 +36,7 @@
                 <td>{{ $product->developer }}</td>
                 <td>{{ $product->platform }}</td>
                 <td>
-
+                    
                 </td>
             </tr>
         @endforeach

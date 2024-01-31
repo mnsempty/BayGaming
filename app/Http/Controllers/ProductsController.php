@@ -79,7 +79,6 @@ class ProductsController extends Controller
     public function listAll()
     {
         $products = Product::all();
-        
         return view('auth.dashboard', @compact('products')) ;
     }
 }

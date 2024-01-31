@@ -24,7 +24,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
+// Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
+
+// Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
+
+
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
@@ -45,14 +49,12 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 //         echo $category->name;
 //     }
 // });
-// Route::group(['middleware' => 'admin'], function () {
-//     Route::get('/admin_test', function () {
-//         echo 'hola admin';
-//     });
-//     Route::get('/admin_test2', function () {
-//         echo 'hola admin 2';
-//     });
-// });
+
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('home', [ProductsController::class, 'listAll']);
+    Route::get('products.destroy', [ProductsController::class, 'delete']);
+});
+
 // Route::get('/forbidden', function () {
 //     abort(403, 'Acceso no autorizado.');
 // });
@@ -74,3 +76,4 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 //         echo $cart->id;
 //     }
 // });
+
