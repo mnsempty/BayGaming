@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
-/*Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
+//Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
 
 
 
@@ -50,14 +50,14 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 //     }
 // });
 
-// Route::group(['middleware' => 'admin'], function () {
-//     Route::get('home', [ProductsController::class, 'listAll']);
-//     Route::delete('home/{id}', [ProductsController::class, 'delete']);
-// });
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('home', [ProductsController::class, 'listAll']);
+    Route::delete('home/{id}', [ProductsController::class, 'delete']);
+});
 
-// Route::get('/forbidden', function () {
-//     abort(403, 'Acceso no autorizado.');
-// });
+Route::get('/forbidden', function () {
+    abort(403, 'Acceso no autorizado.');
+});
 
 // Route::get('check-relationship2', function () {
 //     $product = Product::find(1); // Obtiene el primer producto
