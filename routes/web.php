@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
-Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
+/*Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
 
 
 
