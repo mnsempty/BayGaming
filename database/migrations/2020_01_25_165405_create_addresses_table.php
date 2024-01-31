@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id()->nullable();
             $table->string('address');
-            $table->string('tax_code');
-            $table->string('country');
-            $table->string('telephone_number');
+            $table->string('tax_code')->nullable();
+            $table->string('country')->nullable();
+            $table->string('telephone_number')->nullable();
+            $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
             $table->timestamps();
         });
     }

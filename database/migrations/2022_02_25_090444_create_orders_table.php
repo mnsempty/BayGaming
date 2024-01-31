@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
-            $table->foreignId('invoices_id')->references("id")->on("invoices");
+            $table->decimal('total',10,2);
+            $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
+            // $table->foreignId('invoices_id')->references("id")->on("invoices");
             $table->timestamps();
         });
     }
