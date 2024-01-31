@@ -52,7 +52,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('home', [ProductsController::class, 'listAll']);
-    Route::get('products.destroy', [ProductsController::class, 'delete']);
+    Route::get('home', [ProductsController::class, 'delete']);
 });
 
 // Route::get('/forbidden', function () {

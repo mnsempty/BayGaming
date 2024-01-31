@@ -81,5 +81,10 @@ class ProductsController extends Controller
         $products = Product::all();
         return view('auth.dashboard', @compact('products')) ;
     }
+
+    public function delete()
+    {
+        return view('auth.dashboard', @compact('products')) ;
+    }
 }
  
