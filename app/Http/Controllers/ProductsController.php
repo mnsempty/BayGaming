@@ -115,34 +115,8 @@ class ProductsController extends Controller
         try {
             DB::beginTransaction();
             $productDelete = Product::findOrFail($id);
-
-            // Delete associations with pivot
-            DB::table('products_has_images')->where('products_id', $id)->delete();
-
-            // Delete associated ids with images
-            //pluck selecciona solo la columna image_id
-            $productImages = DB::table('products_has_images')->where('products_id', $id)->pluck('images_id');
-            foreach ($productImages as $imageId) {
-                Image::findOrFail($imageId)->delete(); //eliminamos las imagenes de la tabla imagenes
-            }
-
-
-            //delete associated discounts
-            $productDelete->discounts()->delete();
-
-            //delete associated products in wishlists
-            $productDelete->wishlists()->detach();
-
-            //!delete associated products in categories
-            $productDelete->categories()->detach();
-
-            //!delete associated products in orders
-            $productDelete->orders()->detach();
-
-            //delete associated products in carts
-            $productDelete->carts()->detach();
-
-            $productDelete->delete();
+            $productDelete->mostrar = false;
+            $productDelete->save();
 
             DB::commit();
             return back()->with('mensaje', 'Producto eliminado');
@@ -156,7 +130,7 @@ class ProductsController extends Controller
     // Falta trabajar mas la paginacion en la vista
     public function listAll()
     {
-        $products = Product::paginate(5);
+        $products = Product::where('mostrar', true)->paginate(5);
         return view('auth.dashboard', @compact('products'));
     }
 
