@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,27 +12,18 @@ class ProductsController extends Controller
     // Create Read Update Delete
     // crear producto mediante una transacción
     // 
-    public function createProduct(Request $request)
+    public function create(Request $request)
     {
         try {
             DB::beginTransaction();
-    
-            $product = Product::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
-                'stock' => $request->stock,
-                'developer' => $request->developer,
-                'publisher' => $request->publisher,
-                'platform' => $request->platform,
-                'launcher' => $request->launcher,
-                //'reviews_id' => $request->reviews_id,
+            $request->validate([
+                'name' => 'required', 'description' => 'required',    'price' => 'required',
+                'stock' => 'required',
+                'developer' => 'required',
+                'publisher' => 'required',
+                'platform' => 'required',
+                'launcher' => 'nullable'
             ]);
-            $request->validate(['name' => 'required','description' => 'required',    'price' => 'required',
-            'stock' => 'required',
-            'developer' => 'required',
-            'publisher' => 'required',
-            'platform' => 'required',]);
 
             $product = new Product;
             $product->name = $request->name;
@@ -40,7 +32,9 @@ class ProductsController extends Controller
             $product->developer = $request->developer;
             $product->publisher = $request->publisher;
             $product->platform = $request->platform;
+            $product->launcher = $request->launcher;
             $product->save();
+
             // probablemente por nombre de las cat ask team
             // if ($request->has('category_ids')) {
             //     foreach ($request->category_ids as $category_id) {
@@ -51,29 +45,47 @@ class ProductsController extends Controller
             //             'updated_at' => now(),
             //         ]);
             //     }
-            
-    
+
+
             DB::commit();
             return back()->with('mensaje', 'Producto creado exitosamente')->with('product', $product);
-            //{{ session('message') }} {{ session('product') }}   
-   
+            //! para recogerlo en view {{ session('message') }} {{ session('product') }}   
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Error al crear un producto']);
+            return back()->with('mensaje', 'Error al crear el producto');
         }
-
-    
     }
 
     // Método para borrar productos
-    public function readProducts($id){
+    public function delete($id)
+    {
         try {
             DB::beginTransaction();
-            Product::where('id', $id)->delete();
+            $productDelete = Product::findOrFail($id);
+
+            // Delete associated ids with images
+            //pluck selecciona solo la columna image_id
+            $productImages = DB::table('products_has_images')->where('product_id', $id)->pluck('image_id');
+            foreach ($productImages as $imageId) {
+                Image::findOrFail($imageId)->delete(); //eliminamos las imagenes de la tabla imagenes
+            }
+
+            // Delete associations with pivot
+            DB::table('products_has_images')->where('product_id', $id)->delete();
+            
+            //delete associated discounts
+            $productDelete->discounts()->delete();
+            //delete associated wishlish 
+            $productDelete->wishlists()->detach();
+
+            $productDelete->delete();
+
             DB::commit();
+            return back()->with('mensaje', 'Producto eliminado');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Producto borrado');
+            return back()->with('mensaje', 'Error al eliminar el producto');
         }
     }
 
@@ -82,21 +94,19 @@ class ProductsController extends Controller
     public function listAll()
     {
         $products = Product::paginate(5);
-        return view('auth.dashboard', @compact('products')) ;
+        return view('auth.dashboard', @compact('products'));
     }
 
     // Método para mostrat dettalles de productos
     public function show($id)
     {
         $product = Product::finOrfail($id);
-        return view('auth.dashboard', @compact('products')) ;
+        return view('auth.dashboard', @compact('products'));
     }
 
     // Método para editar dettalles de productos
     public function edit()
     {
-        return view('auth.dashboard', @compact('products')) ;
+        return view('auth.dashboard', @compact('products'));
     }
-
 }
- 
