@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     use HasFactory;
-    //? done
-    public function products()
-    {
+    
+    public function products(){
+        // id otra tabla, id propia, id intermedia
         return $this->belongsToMany(Product::class, 'carts_has_products', 'carts_id', 'products_id')->withTimestamps();
     }
     //? done
@@ -18,4 +18,5 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
 }

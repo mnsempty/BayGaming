@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    //? relation carts M-M
-    public function carts()
-    {
+
+   
+    //relation carts M-M
+    public function carts(){
+        // id otra tabla, id propia, id intermedia
         return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id');
     }
     //? relation categories M-M
