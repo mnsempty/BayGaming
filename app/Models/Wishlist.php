@@ -9,12 +9,16 @@ class Wishlist extends Model
 {
     use HasFactory;
 
-    // users relation 1-1
-    public function user() {
-        return $this->belongsTo(User::class,"wishlists_id");
+    //? users relation 1-1
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
-    //product relation 1-m
-    public function product() {
-        return $this->belongsTo(product::class);
+
+    //?relation categories M-M
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'wishlists_has_products', 'wishlists_id', 'products_id')
+            ->withTimestamps();
     }
 }

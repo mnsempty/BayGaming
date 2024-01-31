@@ -13,4 +13,9 @@ class Cart extends Model
         // id otra tabla, id propia, id intermedia
         return $this->belongsToMany(Product::class, 'carts_has_products', 'carts_id', 'products_id')->withTimestamps();
     }
+    //? done
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

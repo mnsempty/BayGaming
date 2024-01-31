@@ -8,16 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    public function invoice() {
-        return $this->hasOne(Invoice::class);
-    }
-
-    public function user() {
+    // not now
+    // public function invoice() {
+    //     return $this->hasOne(Invoice::class);
+    // }
+    //? done
+    public function user()
+    {
         return $this->belongsTo(User::class);
-        }
-    
-    public function discount() {
-        return $this->belongsTo(Discount::class);
-        }
-
+    }
+    //? done
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'orders_has_products', 'orders_id', 'products_id')
+            ->withTimestamps();
+    }
 }
