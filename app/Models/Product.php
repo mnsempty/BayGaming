@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+   
     //relation carts M-M
     public function carts(){
         // id otra tabla, id propia, id intermedia

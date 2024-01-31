@@ -60,5 +60,12 @@ class ProductsController extends Controller
             return response()->json(['message' => 'Error al eliminar un producto']);
         }
     }
+
+    public function listAll()
+    {
+        $products = Product::all();
+        
+        return view('auth.dashboard', @compact('products')) ;
+    }
 }
  
