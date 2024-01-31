@@ -17,6 +17,10 @@ class DiscountsTableSeeder extends Seeder
             'percent' => 10,
             'products_id' => 1,
         ]);
+        Discount::create([
+            'percent' => 20,
+            'products_id' => 2,
+        ]);
 
     }
 }

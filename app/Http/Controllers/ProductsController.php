@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Discount;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -56,7 +57,58 @@ class ProductsController extends Controller
             return back()->with('mensaje', 'Error al crear el producto');
         }
     }
+    //todo test
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
 
+            $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                'price' => 'required',
+                'stock' => 'required',
+                'developer' => 'required',
+                'publisher' => 'required',
+                'platform' => 'required',
+                'launcher' => 'nullable',
+                'images.*' => 'required',
+                'discounts.*' => 'required',
+            ]);
+
+            $product = Product::findOrFail($id);
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->stock = $request->stock;
+            $product->developer = $request->developer;
+            $product->publisher = $request->publisher;
+            $product->platform = $request->platform;
+            $product->launcher = $request->launcher;
+            $product->save();
+
+            // Update associated images
+            foreach ($request->images as $imageData) {
+                $image = Image::findOrFail($imageData['id']);
+                $image->url = $imageData['url'];
+                $image->save();
+            }
+
+            // Update associated discounts
+            foreach ($request->discounts as $discountData) {
+                $discount = Discount::findOrFail($discountData['id']);
+                $discount->percent = $discountData['percent'];
+                $discount->save();
+            }
+
+            DB::commit();
+            return back()->with('mensaje', 'Producto actualizado exitosamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('mensaje', 'Error al actualizar el producto');
+        }
+    }
+    //todo test
     // Método para borrar productos
     public function delete($id)
     {
@@ -64,20 +116,31 @@ class ProductsController extends Controller
             DB::beginTransaction();
             $productDelete = Product::findOrFail($id);
 
+            // Delete associations with pivot
+            DB::table('products_has_images')->where('products_id', $id)->delete();
+
             // Delete associated ids with images
             //pluck selecciona solo la columna image_id
-            $productImages = DB::table('products_has_images')->where('product_id', $id)->pluck('image_id');
+            $productImages = DB::table('products_has_images')->where('products_id', $id)->pluck('images_id');
             foreach ($productImages as $imageId) {
                 Image::findOrFail($imageId)->delete(); //eliminamos las imagenes de la tabla imagenes
             }
 
-            // Delete associations with pivot
-            DB::table('products_has_images')->where('product_id', $id)->delete();
-            
+
             //delete associated discounts
             $productDelete->discounts()->delete();
-            //delete associated wishlish 
+
+            //delete associated products in wishlists
             $productDelete->wishlists()->detach();
+
+            //!delete associated products in categories
+            $productDelete->categories()->detach();
+
+            //!delete associated products in orders
+            $productDelete->orders()->detach();
+
+            //delete associated products in carts
+            $productDelete->carts()->detach();
 
             $productDelete->delete();
 
@@ -85,7 +148,7 @@ class ProductsController extends Controller
             return back()->with('mensaje', 'Producto eliminado');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Error al eliminar el producto');
+            return back()->with('mensaje', 'Error al eliminar el producto: ' . $e->getMessage());
         }
     }
 
