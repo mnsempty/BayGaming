@@ -27,7 +27,7 @@ Route::get('/', function () {
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
 // Route::get('product.delete', [ProductsController::class, 'readProducts'])->middleware(['auth', 'verified']);
-// Route::get('show', [ProductsController::class, 'show'])->name('show');
+Route::get('show', [ProductsController::class, 'listFew'])->name('show');
 
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
