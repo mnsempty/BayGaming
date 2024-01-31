@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ProductsController extends Controller
 {
@@ -16,24 +17,17 @@ class ProductsController extends Controller
     {
         try {
             DB::beginTransaction();
-            $request->validate([
-                'name' => 'required', 'description' => 'required',    'price' => 'required',
-                'stock' => 'required',
-                'developer' => 'required',
-                'publisher' => 'required',
-                'platform' => 'required',
-                'launcher' => 'nullable'
-            ]);
-
-            $product = new Product;
-            $product->name = $request->name;
-            $product->description = $request->description;
-            $product->stock = $request->stock;
-            $product->developer = $request->developer;
-            $product->publisher = $request->publisher;
-            $product->platform = $request->platform;
-            $product->launcher = $request->launcher;
-            $product->save();
+            $validatedData = $request->validate([
+            'name' => 'required', 
+            'description' => 'required',    
+            'price' => 'required',
+            'stock' => 'required',
+            'developer' => 'required',
+            'publisher' => 'required',
+            'platform' => 'required',
+            'launcher' => 'nullable'
+        ]);
+        $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
             // probablemente por nombre de las cat ask team
             // if ($request->has('category_ids')) {
@@ -47,15 +41,17 @@ class ProductsController extends Controller
             //     }
 
 
-            DB::commit();
-            return back()->with('mensaje', 'Producto creado exitosamente')->with('product', $product);
-            //! para recogerlo en view {{ session('message') }} {{ session('product') }}   
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('mensaje', 'Error al crear el producto');
-        }
+        DB::commit();
+            return back()->with('mensaje', __('Product created successfully'))->with('product', $product);
+    //*Si la validación de datos falla se ejecuta el rollBack para  que no quede registro en BD.
+    } catch (ValidationException $e) { 
+        DB::rollBack();
+        return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('mensaje', __('Error creating product'));
     }
+}
 
     // Método para borrar productos
     public function delete($id)

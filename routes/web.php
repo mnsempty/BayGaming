@@ -24,7 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
+//Route::get( '/home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
 //Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
 
@@ -51,8 +51,9 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 // });
 
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('home', [ProductsController::class, 'listAll']);
-    Route::delete('home/{id}', [ProductsController::class, 'delete']);
+    Route::get('home', [ProductsController::class, 'listAll']) -> name('casa');
+    Route::delete('home/{id}', [ProductsController::class, 'delete']) -> name('delete');
+    Route::delete('home', [ProductsController::class, 'create']) -> name('create');
 });
 
 Route::get('/forbidden', function () {
