@@ -37,7 +37,7 @@
                 <td>{{ $product->platform }}</td>
                 <td>
                     <form action="{{ route('home',$product->id) }}" method="POST">
-                        <a class="btn btn-info" href="{{ route('products.show',$product->id) }}">Show</a>
+                        <a class="btn btn-info" href="{{ route('home',$product->id) }}">Show</a>
                         <a class="btn btn-primary" href="{{ route('products.edit',$product->id) }}">Edit</a>
                         @csrf
                         @method('DELETE')

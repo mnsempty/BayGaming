@@ -64,7 +64,8 @@ class ProductsController extends Controller
 
     
     }
-    //Route::delete('/products/{id}', 'ProductController@deleteProduct');
+
+    // Método para borrar productos
     public function readProducts($id){
         try {
             DB::beginTransaction();
@@ -72,19 +73,30 @@ class ProductsController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['message' => 'Error al eliminar un producto']);
+            return back()->with('mensaje', 'Producto borrado');
         }
     }
 
+    // Método para listar los productos
+    // Falta trabajar mas la paginacion en la vista
     public function listAll()
     {
-        $products = Product::all();
+        $products = Product::paginate(5);
         return view('auth.dashboard', @compact('products')) ;
     }
 
-    public function delete()
+    // Método para mostrat dettalles de productos
+    public function show($id)
+    {
+        $product = Product::finOrfail($id);
+        return view('auth.dashboard', @compact('products')) ;
+    }
+
+    // Método para editar dettalles de productos
+    public function edit()
     {
         return view('auth.dashboard', @compact('products')) ;
     }
+
 }
  
