@@ -130,6 +130,11 @@ class ProductsController extends Controller
     // Falta trabajar mas la paginacion en la vista
     public function listAll()
     {
+        $products = Product::paginate(5);
+        return view('auth.dashboard', @compact('products'));
+    }
+    public function listFew()
+    {
         $products = Product::where('mostrar', true)->paginate(5);
         return view('auth.dashboard', @compact('products'));
     }
