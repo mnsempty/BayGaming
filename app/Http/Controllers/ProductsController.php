@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class ProductsController extends Controller
@@ -25,9 +26,22 @@ class ProductsController extends Controller
             'developer' => 'required',
             'publisher' => 'required',
             'platform' => 'required',
-            'launcher' => 'nullable'
+            'launcher' => 'nullable',
+            'image' => 'required|image|max:2048'
         ]);
         $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
+
+          // Guarda la imagen en el servidor y obtén la URL de la imagen
+          $imagePath = $request->file('image')->store('product_images', 'public');
+          $imageUrl = Storage::url($imagePath);
+  
+          // Crea una nueva instancia de Image y guárdala
+          $image = new Image;
+          $image->url = $imageUrl;
+          $image->save();
+  
+          // Asocia la imagen con el producto
+          $product->images()->attach($image);
 
             // probablemente por nombre de las cat ask team
             // if ($request->has('category_ids')) {

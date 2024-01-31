@@ -39,7 +39,7 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
-    //? address relation 1-M
+    //? discounts relation 1-M
     public function discounts()
     {
         return $this->hasMany(Discount::class, 'products_id');
