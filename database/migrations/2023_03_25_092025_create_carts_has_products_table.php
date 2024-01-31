@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('carts_id')->references('id')->on('carts')->unique();
             $table->foreignId('products_id')->references('id')->on('products')->unique();
-            $table->foreignId('discounts_id')->references('id')->on('discounts')->unique();
             $table->timestamps();
 
-            $table->index(['carts_id', 'products_id', 'discounts_id'])->unique();
+            $table->index(['carts_id', 'products_id'])->unique();
         });
     }
 
