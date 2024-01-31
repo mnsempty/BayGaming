@@ -40,11 +40,11 @@
                     <td>{{ $product->developer }}</td>
                     <td>{{ $product->platform }}</td>
                     <td>
-                        <form action="{{ route('product.delete', $product->id) }}" method="POST">
+                        <form action="" method="POST">
                             @csrf
                             @method('DELETE')
                             {{-- {{ route('home',$product->id) }} --}}
-                            <a class="btn btn-info" href="">Show</a>
+                            <a class="btn btn-info" href="show">Show</a>
                             {{-- {{ route('products.edit',$product->id) }} --}}
                             <a class="btn btn-primary" href="">Edit</a>
                         </form>

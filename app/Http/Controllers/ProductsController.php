@@ -163,7 +163,7 @@ class ProductsController extends Controller
     // Método para mostrat dettalles de productos
     public function show($id)
     {
-        $product = Product::finOrfail($id);
+        $product = Product::findOrfail($id);
         return view('product.product', @compact('products'));
     }
 

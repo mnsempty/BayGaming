@@ -26,7 +26,8 @@ Route::get('/', function () {
 
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
-Route::get('product.delete', [ProductsController::class, 'readProducts'])->middleware(['auth', 'verified']);
+// Route::get('product.delete', [ProductsController::class, 'readProducts'])->middleware(['auth', 'verified']);
+// Route::get('show', [ProductsController::class, 'show'])->name('show');
 
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
@@ -49,12 +50,12 @@ Route::get('product.delete', [ProductsController::class, 'readProducts'])->middl
 //     }
 // });
 
-Route::group(['middleware' => 'admin'], function () {
-    Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
-    // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
+// Route::group(['middleware' => 'admin'], function () {
+//     Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
+//     Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
 
-    Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
-});
+//     Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
+// });
 
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
