@@ -24,8 +24,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
@@ -59,20 +57,20 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 //     abort(403, 'Acceso no autorizado.');
 // });
 
-Route::get('check-relationship2', function () {
-    $product = Product::find(1); // Obtiene el primer producto
-    // $product->categories()->attach(1);
-    // $product->categories()->detach(1);
-    $product->carts()->sync(1);
-    echo "productos" . "</br>";
-    echo $product;
-    $carts = $product->carts; // Obtiene las categorías del producto
-    echo "</br>";
-    echo "cart del usuario" . "</br>";
-    echo $carts;
-    echo "</br>";
-    echo "cart nombre¿?¿?¿?" . "</br>";
-    foreach ($carts as $cart) {
-        echo $cart->id;
-    }
-});
+// Route::get('check-relationship2', function () {
+//     $product = Product::find(1); // Obtiene el primer producto
+//     // $product->categories()->attach(1);
+//     // $product->categories()->detach(1);
+//     $product->carts()->sync(1);
+//     echo "productos" . "</br>";
+//     echo $product;
+//     $carts = $product->carts; // Obtiene las categorías del producto
+//     echo "</br>";
+//     echo "cart del usuario" . "</br>";
+//     echo $carts;
+//     echo "</br>";
+//     echo "cart nombre¿?¿?¿?" . "</br>";
+//     foreach ($carts as $cart) {
+//         echo $cart->id;
+//     }
+// });
