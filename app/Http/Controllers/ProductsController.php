@@ -115,7 +115,7 @@ class ProductsController extends Controller
         try {
             DB::beginTransaction();
             $productDelete = Product::findOrFail($id);
-            $productDelete->mostrar = false;
+            $productDelete->show = false;
             $productDelete->save();
 
             DB::commit();
@@ -135,7 +135,7 @@ class ProductsController extends Controller
     }
     public function listFew()
     {
-        $products = Product::where('mostrar', true)->paginate(5);
+        $products = Product::where('show', true)->paginate(5);
         return view('auth.dashboard', @compact('products'));
     }
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('developer');
             $table->string('publisher');
-            $table->boolean('mostrar')->default(false);
+            $table->boolean('show')->default(true);
             $table->enum('platform', ['PC', 'Ps5','Xbox','Nintendo Switch'])->default('PC');
             $table->enum('launcher',['Steam','Ubisoft Connect','EA App','Battle.net','Rockstar','GOG.com','Epic'])->nullable();
             $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
