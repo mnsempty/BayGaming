@@ -64,16 +64,16 @@ class ProductsController extends Controller
             DB::beginTransaction();
 
             $request->validate([
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required',
-                'stock' => 'required',
-                'developer' => 'required',
-                'publisher' => 'required',
-                'platform' => 'required',
-                'launcher' => 'nullable',
-                'images.*' => 'required',
-                'discounts.*' => 'required',
+                'name' => 'sometimes|required',
+                'description' => 'sometimes|required',
+                'price' => 'sometimes|required',
+                'stock' => 'sometimes|required',
+                'developer' => 'sometimes|required',
+                'publisher' => 'sometimes|required',
+                'platform' => 'sometimes|required',
+                'launcher' => 'sometimes|nullable',
+                'images.*' => 'sometimes|required',
+                'discounts.*' => 'sometimes|required',
             ]);
 
             $product = Product::findOrFail($id);
@@ -83,29 +83,31 @@ class ProductsController extends Controller
             $product->stock = $request->stock;
             $product->developer = $request->developer;
             $product->publisher = $request->publisher;
+            $product->show = $request->show;
             $product->platform = $request->platform;
             $product->launcher = $request->launcher;
             $product->save();
 
             // Update associated images
-            foreach ($request->images as $imageData) {
-                $image = Image::findOrFail($imageData['id']);
-                $image->url = $imageData['url'];
-                $image->save();
-            }
+            // foreach ($request->images as $imageData) {
+            //     $image = Image::findOrFail($imageData['id']);
+            //     $image->url = $imageData['url'];
+            //     $image->save();
+            // }
 
             // Update associated discounts
-            foreach ($request->discounts as $discountData) {
-                $discount = Discount::findOrFail($discountData['id']);
-                $discount->percent = $discountData['percent'];
-                $discount->save();
-            }
+            // foreach ($request->discounts as $discountData) {
+            //     $discount = Discount::findOrFail($discountData['id']);
+            //     $discount->percent = $discountData['percent'];
+            //     $discount->save();
+            // }
 
             DB::commit();
-            return back()->with('mensaje', 'Producto actualizado exitosamente');
+            //!para volver al dashboard, si lo hacemos modal idk quizá back()
+            return redirect()->route('casa', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Error al actualizar el producto');
+            return redirect()->route('casa', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
         }
     }
     //todo test
@@ -150,5 +152,11 @@ class ProductsController extends Controller
     public function edit()
     {
         return view('auth.dashboard', @compact('products'));
+    }
+
+    //! llevar a vista de editar
+    public function editView($id){
+        $product = Product::findOrFail($id);
+        return view ('auth.editProducts',@compact('product'));
     }
 }

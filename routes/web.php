@@ -49,6 +49,10 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
+    //! lleva a pagina de editar products
+    Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
+    //! update de products
+    Route::put('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 
     Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
 });

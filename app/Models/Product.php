@@ -47,7 +47,7 @@ class Product extends Model
     //? images relation N-M
     public function images()
     {
-        return $this->belongsToMany(Category::class, 'products_has_images', 'products_id', 'images_id')
+        return $this->belongsToMany(Image::class, 'products_has_images', 'products_id', 'images_id')
             ->withTimestamps();
     }
     
