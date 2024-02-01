@@ -26,10 +26,6 @@ Route::get('/', function () {
 
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
-// Route::get('product.delete', [ProductsController::class, 'readProducts'])->middleware(['auth', 'verified']);
-Route::get('show', [ProductsController::class, 'listFew'])->name('show');
-
-
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
