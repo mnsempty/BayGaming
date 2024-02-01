@@ -3,7 +3,8 @@
 use App\Models\Product;
 use App\Models\Category;
 
-use App\Http\Controllers\ProductsController; //delete
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\CategoriesController; //delete
 use Illuminate\Support\Facades\Route;
 
 /* Uso del controlador para asignarle rutas **/
@@ -21,10 +22,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('landing');
+    return view('welcome');
 });
 
 Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
+Route::get('home', [CategoriesController::class, 'listAll'])->middleware(['auth', 'verified']);
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
@@ -47,9 +49,9 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 // });
 
 // Route::group(['middleware' => 'admin'], function () {
-//     Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
+//     Route::get('home', [ProductsController::class, 'listAll'])->name('products.index');
+//     Route::get('home', [CategoriesController::class, 'listAll'])->name('categories.index');
 //     Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
-
 //     Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
 // });
 
