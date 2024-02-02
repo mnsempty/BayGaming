@@ -88,6 +88,7 @@ class ProductsController extends Controller
             $product->launcher = $request->launcher;
             $product->save();
 
+            //!en caso de que no tenga se hace insert
             foreach ($request->discounts as $discountData) {
                 $discount = Discount::findOrFail($discountData['id']);
                 $discount->percent = $discountData['percent'];

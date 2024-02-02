@@ -14,7 +14,7 @@ class ProductsHasImagesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $image = Image::find(1);
+        $image = Image::all();
         $product = Product::find(1);
 
         if ($image && $product) {

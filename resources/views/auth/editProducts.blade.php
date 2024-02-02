@@ -87,40 +87,58 @@
                                     </option>
                                 </select>
                             </div>
-                            {{--! esta parte no he conseguido sacarla por la parte de imagenes  --}}
+                            {{-- ! esta parte no he conseguido sacarla por la parte de imagenes  --}}
                             <!-- Formulario para las imágenes -->
                             <div class="mb-3">
                                 <h4>Images</h4>
                                 @foreach ($images as $index => $image)
-                                    <div class="form-group">
-                                        @if ($index == 0)
-                                        <label for="imageUrl{{ $index }}">Imagen perfil </label>
-
-                                        @else
-                                        <label for="imageUrl{{ $index }}">Imagen segundaria {{ $index + 1 }}</label>
-
-                                        @endif
-                                        <input type="text" class="form-control" id="imageUrl{{ $index }}"
-                                            name="images[{{ $index }}][url]" value="{{ $image->url }}" required>
-                                    </div>
-                                @endforeach
-                            </div>
+                                <div class="form-group">
+                                    @if ($index == 0)
+                                        <label for="image{{ $index }}">Imagen perfil</label>
+                                    @else
+                                        <label for="image{{ $index }}">Imagen secundaria {{ $index  }}</label>
+                                    @endif
+                                    <img src="{{ asset('storage/' . $image->url) }}" alt="Imagen del producto" style="width: 100px; height: auto;">
+                                    <input type="file" class="form-control" id="image{{ $index }}" name="images[{{ $index }}][file]" accept="image/*">
+                                </div>
+                            @endforeach
                             
+                            @for ($i = count($images); $i < 5; $i++)
+                                <div class="form-group">
+                                    <label for="image{{ $i }}">Imagen secundaria {{ $i  }}</label>
+                                    <button type="button" class="btn btn-primary"><i class="bi bi-plus"></i></button>
+                                    <input type="file" class="form-control d-none" id="image{{ $i }}" name="images[{{ $i }}][file]" accept="image/*">
+                                </div>
+                            @endfor
+                            
+                            </div>
+
 
                             <!-- Formulario para los descuentos -->
                             <div class="mb-3">
                                 <h4>Discounts</h4>
-                                @foreach ($discounts as $index => $discount)
+                                @if ($discounts->isEmpty())
                                     <div class="form-group">
-                                        <label for="discountPercentage{{ $index }}">Discount Percentage
-                                            {{ $index + 1 }}</label>
-                                        <input type="number" class="form-control"
-                                            id="discountPercentage{{ $index }}"
-                                            name="discounts[{{ $index }}][percent]" value="{{ $discount->percent }}"
-                                            min="0" max="100" step="1" required>
+                                        <label for="discountPercentage">Discount Percentage</label>
+                                        <input type="number" class="form-control" id="discountPercentage"
+                                            name="discounts[][percent]" value="" min="0" max="100"
+                                            step="1" required>
                                     </div>
-                                @endforeach
-                            </div> 
+                                @else
+                                    @foreach ($discounts as $index => $discount)
+                                        <div class="form-group">
+                                            <label for="discountPercentage{{ $index }}">Discount Percentage
+                                                {{ $index + 1 }}</label>
+                                            <input type="number" class="form-control"
+                                                id="discountPercentage{{ $index }}"
+                                                name="discounts[{{ $index }}][percent]"
+                                                value="{{ $discount->percent }}" min="0" max="100"
+                                                step="1" required>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
 
 
                             <button type="submit" class="btn btn-primary">Update Product</button>
