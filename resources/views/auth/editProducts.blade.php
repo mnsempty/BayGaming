@@ -89,31 +89,38 @@
                             </div>
                             {{--! esta parte no he conseguido sacarla por la parte de imagenes  --}}
                             <!-- Formulario para las imágenes -->
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <h4>Images</h4>
-                                @foreach ($imageUrls as $index => $url)
+                                @foreach ($images as $index => $image)
                                     <div class="form-group">
-                                        <label for="imageUrl{{ $index }}">Image URL {{ $index + 1 }}</label>
+                                        @if ($index == 0)
+                                        <label for="imageUrl{{ $index }}">Imagen perfil </label>
+
+                                        @else
+                                        <label for="imageUrl{{ $index }}">Imagen segundaria {{ $index + 1 }}</label>
+
+                                        @endif
                                         <input type="text" class="form-control" id="imageUrl{{ $index }}"
-                                            name="images[{{ $index }}][url]" value="{{ $url }}" required>
+                                            name="images[{{ $index }}][url]" value="{{ $image->url }}" required>
                                     </div>
                                 @endforeach
-                            </div> --}}
+                            </div>
+                            
 
                             <!-- Formulario para los descuentos -->
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <h4>Discounts</h4>
-                                @foreach ($discountPercentages as $index => $percentage)
+                                @foreach ($discounts as $index => $discount)
                                     <div class="form-group">
                                         <label for="discountPercentage{{ $index }}">Discount Percentage
                                             {{ $index + 1 }}</label>
                                         <input type="number" class="form-control"
                                             id="discountPercentage{{ $index }}"
-                                            name="discounts[{{ $index }}][percent]" value="{{ $percentage }}"
+                                            name="discounts[{{ $index }}][percent]" value="{{ $discount->percent }}"
                                             min="0" max="100" step="1" required>
                                     </div>
                                 @endforeach
-                            </div> --}}
+                            </div> 
 
 
                             <button type="submit" class="btn btn-primary">Update Product</button>

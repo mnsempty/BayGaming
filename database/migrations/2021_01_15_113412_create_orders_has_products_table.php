@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders_has_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orders_id')->references("id")->on("orders")->unique();
-            $table->foreignId('products_id')->references("id")->on("products")->unique();
+            $table->foreignId('orders_id')->references("id")->on("orders");
+            $table->foreignId('products_id')->references("id")->on("products");
             $table->timestamps();
             $table->index(['orders_id', 'products_id'])->unique();
         });
