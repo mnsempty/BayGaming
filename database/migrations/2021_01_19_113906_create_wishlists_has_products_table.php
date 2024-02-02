@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('wishlists_has_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wishlists_id')->references("id")->on("wishlists")->unique();
-            $table->foreignId('products_id')->references("id")->on("products")->unique();
+            $table->foreignId('wishlists_id')->references("id")->on("wishlists");
+            $table->foreignId('products_id')->references("id")->on("products");
             $table->timestamps();
             $table->index(['wishlists_id', 'products_id'])->unique();
         });

@@ -11,4 +11,7 @@ class HomeController extends Controller
     {
         return view('templates.template');
     }
+    public function roleRedirect(){
+       return auth()->check() && auth()->user()->role == 'user' ? view('landing') : redirect()->route('dashboard'); 
+    }
 }

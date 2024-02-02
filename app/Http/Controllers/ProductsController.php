@@ -101,26 +101,28 @@ class ProductsController extends Controller
             $product->launcher = $request->launcher;
             $product->save();
 
+            foreach ($request->discounts as $discountData) {
+                $discount = Discount::findOrFail($discountData['id']);
+                $discount->percent = $discountData['percent'];
+                $discount->save();
+            }
+
             // Update associated images
-            // foreach ($request->images as $imageData) {
-            //     $image = Image::findOrFail($imageData['id']);
-            //     $image->url = $imageData['url'];
-            //     $image->save();
-            // }
+            foreach ($request->images as $imageData) {
+                $image = Image::findOrFail($imageData['id']);
+                $image->url = $imageData['url'];
+                $image->save();
+            }
 
             // Update associated discounts
-            // foreach ($request->discounts as $discountData) {
-            //     $discount = Discount::findOrFail($discountData['id']);
-            //     $discount->percent = $discountData['percent'];
-            //     $discount->save();
-            // }
+
 
             DB::commit();
             //!para volver al dashboard, si lo hacemos modal idk quizá back()
-            return redirect()->route('casa', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
+            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('casa', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
+            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
         }
     }
     //todo test
@@ -154,22 +156,24 @@ class ProductsController extends Controller
         return view('auth.dashboard', @compact('products'));
     }
 
-    // Método para mostrat dettalles de productos
-    public function show($id)
-    {
-        $product = Product::finOrfail($id);
-        return view('auth.dashboard', @compact('products'));
-    }
+    //todo Método para mostrat dettalles de productos
+    // public function show($id)
+    // {
+    //     $product = Product::finOrfail($id);
+    //     return view('auth.dashboard', @compact('products'));
+    // }
 
-    // Método para editar dettalles de productos
-    public function edit()
-    {
-        return view('auth.dashboard', @compact('products'));
-    }
+    //todo Método para editar dettalles de productos
+    // public function edit()
+    // {
+    //     return view('auth.dashboard', @compact('products'));
+    // }
 
-    //! llevar a vista de editar
+    //! llevar a vista de editar productos
     public function editView($id){
         $product = Product::findOrFail($id);
-        return view ('auth.editProducts',@compact('product'));
+        $images = $product->images;
+        $discounts = $product->discounts;
+        return view('auth.editProducts', ['product' => $product, 'images' => $images,'discounts' => $discounts]);
     }
 }

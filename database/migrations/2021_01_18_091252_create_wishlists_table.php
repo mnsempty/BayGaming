@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('users_id')->nullable()->constrained()->references("id")->on("users")->unique();
             $table->timestamps();
-            //$table->index('products_id');
         });
     }
 

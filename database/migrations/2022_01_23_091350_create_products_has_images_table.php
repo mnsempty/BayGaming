@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('products_has_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('images_id')->references("id")->on("images")->unique();
-            $table->foreignId('products_id')->references("id")->on("products")->unique();
+            $table->foreignId('images_id')->references("id")->on("images");
+            $table->foreignId('products_id')->references("id")->on("products");
             $table->timestamps();
             $table->index(['images_id', 'products_id'])->unique();
         });
