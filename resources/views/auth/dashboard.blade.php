@@ -137,7 +137,6 @@
                                     Nintendo Switch
                                 </label>
                             </div>
-                            <!-- Repite para otras plataformas -->
                         </div>
                         <div class="form-group">
                             <label for="launcher">Launcher</label>
