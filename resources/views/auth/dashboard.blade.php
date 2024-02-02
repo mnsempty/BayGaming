@@ -23,6 +23,10 @@
                         {{ session('mensaje') }}
                     </div>
                 @endif
+                <!-- Botón para abrir el modal de creación de productos -->
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createProductModal">
+                    Create
+                </button>
             </div>
         </div>
     </div>
@@ -31,12 +35,8 @@
             <th>Name</th>
             <th>Price</th>
             <th>Developer</th>
+            <th>Platform</th>
             <th>Actions</th>
-            <th><!-- Botón para abrir el modal de creación de productos -->
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createProductModal">
-                    Create
-                </button>
-            </th>
         </tr>
         @if (@isset($products))
             @foreach ($products as $product)
@@ -83,7 +83,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulario para crear el producto -->
-                    <form action="{{ route('casa') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('products.create') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>

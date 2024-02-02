@@ -10,7 +10,18 @@ class Product extends Model
 {
     use HasFactory;
 
-   
+    protected $fillable = [
+        'name', // Asegúrate de que 'name' esté incluido aquí
+        'description',
+        'price',
+        'stock',
+        'developer',
+        'publisher',
+        'platform',
+        'launcher',
+        'users_id'
+    ];
+
     //relation carts M-M
     public function carts(){
         // id otra tabla, id propia, id intermedia

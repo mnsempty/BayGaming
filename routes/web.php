@@ -49,6 +49,7 @@ Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
+    Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products

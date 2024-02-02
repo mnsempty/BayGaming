@@ -30,6 +30,9 @@ class ProductsController extends Controller
             'launcher' => 'nullable',
             'image' => 'required|image|max:2048'
         ]);
+        // Agrega el ID del usuario autenticado a los datos validados
+        $validatedData['users_id'] = auth()->id();
+        
         $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
           // Guarda la imagen en el servidor y obtén la URL de la imagen
@@ -64,7 +67,7 @@ class ProductsController extends Controller
         return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
     } catch (\Exception $e) {
         DB::rollBack();
-        return back()->with('mensaje', __('Error creating product'));
+        return back()->with('mensaje', __('Error creating product '. $e->getMessage()));
     }
 }
     //todo test
