@@ -134,7 +134,6 @@ class ProductsController extends Controller
     {
         
         $products = Product::paginate(5);
-        dd($products);
         return view('auth.dashboard', compact('products'));
     }
 
