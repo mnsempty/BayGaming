@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Discount;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -66,36 +67,74 @@ class ProductsController extends Controller
         return back()->with('mensaje', __('Error creating product'));
     }
 }
+    //todo test
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
 
+            $request->validate([
+                'name' => 'sometimes|required',
+                'description' => 'sometimes|required',
+                'price' => 'sometimes|required',
+                'stock' => 'sometimes|required',
+                'developer' => 'sometimes|required',
+                'publisher' => 'sometimes|required',
+                'platform' => 'sometimes|required',
+                'launcher' => 'sometimes|nullable',
+                'images.*' => 'sometimes|required',
+                'discounts.*' => 'sometimes|required',
+            ]);
+
+            $product = Product::findOrFail($id);
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->stock = $request->stock;
+            $product->developer = $request->developer;
+            $product->publisher = $request->publisher;
+            $product->show = $request->show;
+            $product->platform = $request->platform;
+            $product->launcher = $request->launcher;
+            $product->save();
+
+            // Update associated images
+            // foreach ($request->images as $imageData) {
+            //     $image = Image::findOrFail($imageData['id']);
+            //     $image->url = $imageData['url'];
+            //     $image->save();
+            // }
+
+            // Update associated discounts
+            // foreach ($request->discounts as $discountData) {
+            //     $discount = Discount::findOrFail($discountData['id']);
+            //     $discount->percent = $discountData['percent'];
+            //     $discount->save();
+            // }
+
+            DB::commit();
+            //!para volver al dashboard, si lo hacemos modal idk quizá back()
+            return redirect()->route('casa', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('casa', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
+        }
+    }
+    //todo test
     // Método para borrar productos
     public function delete($id)
     {
         try {
             DB::beginTransaction();
             $productDelete = Product::findOrFail($id);
-
-            // Delete associated ids with images
-            //pluck selecciona solo la columna image_id
-            $productImages = DB::table('products_has_images')->where('product_id', $id)->pluck('image_id');
-            foreach ($productImages as $imageId) {
-                Image::findOrFail($imageId)->delete(); //eliminamos las imagenes de la tabla imagenes
-            }
-
-            // Delete associations with pivot
-            DB::table('products_has_images')->where('product_id', $id)->delete();
-            
-            //delete associated discounts
-            $productDelete->discounts()->delete();
-            //delete associated wishlish 
-            $productDelete->wishlists()->detach();
-
-            $productDelete->delete();
+            $productDelete->show = false;
+            $productDelete->save();
 
             DB::commit();
             return back()->with('mensaje', 'Producto eliminado');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Error al eliminar el producto');
+            return back()->with('mensaje', 'Error al eliminar el producto: ' . $e->getMessage());
         }
     }
 
@@ -104,6 +143,11 @@ class ProductsController extends Controller
     public function listAll()
     {
         $products = Product::paginate(5);
+        return view('auth.dashboard', @compact('products'));
+    }
+    public function listFew()
+    {
+        $products = Product::where('show', true)->paginate(5);
         return view('auth.dashboard', @compact('products'));
     }
 
@@ -118,5 +162,11 @@ class ProductsController extends Controller
     public function edit()
     {
         return view('auth.dashboard', @compact('products'));
+    }
+
+    //! llevar a vista de editar
+    public function editView($id){
+        $product = Product::findOrFail($id);
+        return view ('auth.editProducts',@compact('product'));
     }
 }

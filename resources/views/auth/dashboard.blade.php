@@ -18,6 +18,11 @@
                         You are logged in!
                     </div>
                 </div>
+                @if (session('mensaje'))
+                    <div class="alert alert-success">
+                        {{ session('mensaje') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -33,22 +38,32 @@
                 </button>
             </th>
         </tr>
-
         @if (@isset($products))
             @foreach ($products as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->developer }}</td>
+                    <td>{{ $product->platform }}</td>
                     <td>
-                        <form action="{{ route('casa', $product->id) }}" method="POST">
-                            <a class="btn btn-info" href="{{ route('casa', $product->id) }}">Show</a>
-                            <a class="btn btn-primary" href="{{ route('casa', $product->id) }}">Edit</a>
+                        {{-- <form action="{{ route('products.edit', $product->id) }}" method="POST">
+                            @csrf
+                            {{--* @method = a route::X --}}
+                            {{-- @method('PUT')
+                            <button type="submit" class="btn btn-warning">Delete</button>
+                        </form> --}} 
+                        
+                        <a class="btn btn-warning" href="{{ route('products.edit.view', $product->id) }}">Edit</a>
+
+                        <form action="{{ route('product.delete', $product->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
+                            {{-- {{ route('home',$product->id) }} --}}
+                            <a class="btn btn-info" href="">Show</a>
+
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
-
+                    </td>
                     </td>
                 </tr>
             @endforeach

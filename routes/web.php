@@ -24,11 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get( '/home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
-
-//Route::get('products.destroy', [ProductsController::class, 'delete'])->middleware(['auth', 'verified']);
-
-
+Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
@@ -51,9 +47,14 @@ Route::get('/', function () {
 // });
 
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('home', [ProductsController::class, 'listAll']) -> name('casa');
-    Route::delete('home/{id}', [ProductsController::class, 'delete']) -> name('delete');
-    Route::delete('home', [ProductsController::class, 'create']) -> name('create');
+    Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
+    // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
+    //! lleva a pagina de editar products
+    Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
+    //! update de products
+    Route::put('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
+
+    Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
 });
 
 Route::get('/forbidden', function () {
