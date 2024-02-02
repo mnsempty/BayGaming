@@ -24,7 +24,7 @@
                     </div>
                 @endif
                 <!-- Botón para abrir el modal de creación de productos -->
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createProductModal">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProductModal">
                     Create
                 </button>
             </div>
@@ -48,11 +48,11 @@
                     <td>
                         {{-- <form action="{{ route('products.edit', $product->id) }}" method="POST">
                             @csrf
-                            {{--* @method = a route::X --}}
-                            {{-- @method('PUT')
+                            {{-- * @method = a route::X --}}
+                        {{-- @method('PUT')
                             <button type="submit" class="btn btn-warning">Delete</button>
-                        </form> --}} 
-                        
+                        </form> --}}
+
                         <a class="btn btn-warning" href="{{ route('products.edit.view', $product->id) }}">Edit</a>
 
                         <form action="{{ route('product.delete', $product->id) }}" method="POST">
@@ -71,15 +71,12 @@
     </table>
 
     <!-- Modal de creación de productos -->
-    <div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="createProductModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createProductModalLabel">Crear Producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Formulario para crear el producto -->
@@ -134,8 +131,8 @@
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="platform" id="platformNintendoSwitch"
-                                    value="NintendoSwitch">
+                                <input class="form-check-input" type="radio" name="platform"
+                                    id="platformNintendoSwitch" value="NintendoSwitch">
                                 <label class="form-check-label" for="platformNintendoSwitch">
                                     Nintendo Switch
                                 </label>
@@ -165,10 +162,4 @@
             </div>
         </div>
     </div>
-
-    <!-- CSS de Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- JS de jQuery y Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 @endsection
