@@ -106,10 +106,10 @@ class ProductsController extends Controller
 
             DB::commit();
             //!para volver al dashboard, si lo hacemos modal idk quizá back()
-            return redirect()->route('casa', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
+            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('casa', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
+            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
         }
     }
     //todo test
@@ -143,18 +143,18 @@ class ProductsController extends Controller
         return view('auth.dashboard', @compact('products'));
     }
 
-    // Método para mostrat dettalles de productos
-    public function show($id)
-    {
-        $product = Product::finOrfail($id);
-        return view('auth.dashboard', @compact('products'));
-    }
+    //todo Método para mostrat dettalles de productos
+    // public function show($id)
+    // {
+    //     $product = Product::finOrfail($id);
+    //     return view('auth.dashboard', @compact('products'));
+    // }
 
-    // Método para editar dettalles de productos
-    public function edit()
-    {
-        return view('auth.dashboard', @compact('products'));
-    }
+    //todo Método para editar dettalles de productos
+    // public function edit()
+    // {
+    //     return view('auth.dashboard', @compact('products'));
+    // }
 
     //! llevar a vista de editar productos
     public function editView($id){

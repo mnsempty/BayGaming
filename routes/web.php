@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeCotroller;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -23,8 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get( 'home',[ProductsController::class, 'listAll'])->middleware(['auth', 'verified']);
+//! lleva a page de prueba landing
+Route::get( 'home',[HomeCotroller::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
@@ -46,16 +47,16 @@ Route::get('/check-relationship', function () {
     }
 });
 
-Route::group(['middleware' => 'admin'], function () {
-    Route::get('home', [ProductsController::class, 'listAll'])->name('casa');
+ Route::group(['middleware' => 'admin'], function () {
+    Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products
     Route::put('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 
-    Route::delete('home/{id}', [ProductsController::class, 'delete'])->name('product.delete');
-});
+    Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
+ });
 
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
