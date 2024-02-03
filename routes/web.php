@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartsController;
+use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Models\Product;
 use App\Models\Category;
@@ -29,6 +31,9 @@ Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth',
 
 //! RUTA PARA VER PRODUCTOS USER
 Route::get('home', [ProductsController::class, 'listFewL'])->middleware(['auth', 'verified']);
+
+//! RUTA PARA AÑADIR PRODUCTOS CART
+Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
