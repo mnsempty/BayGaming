@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartsController;
 use App\Http\Controllers\HomeController;
 use App\Models\Product;
 use App\Models\Category;
@@ -28,28 +29,30 @@ Route::get('/', function () {
 Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
-Route::get('home', [ProductsController::class, 'listFewL'])->middleware(['auth', 'verified']);
+Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
+//! RUTA PARA IR AL CARRITO 
+Route::get('homepage/cart', [CartsController::class, 'listProducts'])->name('cart');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
-Route::get('/check-relationship', function () {
-    $product = Product::find(1); // Obtiene el primer producto
-    // $product->categories()->attach(1);
-    // $product->categories()->detach(1);
-    $product->images();
-    echo "products"."</br>";
-    echo $product;
-    $images = $product->images; // Obtiene las categorías del producto
-    echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
-    echo $images;
-    echo "</br>";
-    echo "nombres de las categorias asociadas a ese producto"."</br>";
-    foreach ($images as $image) {
-        echo $image->id;
-        echo $image->url;
-    }
-});
+// Route::get('/check-relationship', function () {
+//     $product = Product::find(1); // Obtiene el primer producto
+//     // $product->categories()->attach(1);
+//     // $product->categories()->detach(1);
+//     $product->images();
+//     echo "products"."</br>";
+//     echo $product;
+//     $images = $product->images; // Obtiene las categorías del producto
+//     echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
+//     echo $images;
+//     echo "</br>";
+//     echo "nombres de las categorias asociadas a ese producto"."</br>";
+//     foreach ($images as $image) {
+//         echo $image->id;
+//         echo $image->url;
+//     }
+// });
 
  Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');

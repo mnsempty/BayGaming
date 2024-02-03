@@ -169,11 +169,11 @@ class ProductsController extends Controller
 
     // Método para listar los productos
     // Falta trabajar mas la paginacion en la vista
-    public function listAll()
-    {
-        $products = Product::paginate(10);
-        return view('auth.dashboard', @compact('products'));
-    }
+    // public function listAll()
+    // {
+    //     $products = Product::paginate(10);
+    //     return view('auth.dashboard', @compact('products'));
+    // }
     public function listFew()
     {
         $products = Product::where('show', true)->paginate(10);
