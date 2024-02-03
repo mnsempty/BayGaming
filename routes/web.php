@@ -35,7 +35,8 @@ Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing')
 //! RUTA PARA AÑADIR PRODUCTOS CART
 Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
 //! RUTA PARA IR AL CARRITO 
-Route::get('homepage/cart', [CartsController::class, 'listProducts'])->name('cart');
+Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart');
+
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 

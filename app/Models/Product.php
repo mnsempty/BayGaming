@@ -25,7 +25,7 @@ class Product extends Model
     //relation carts M-M
     public function carts(){
         // id otra tabla, id propia, id intermedia
-        return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id');
+        return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id')->withPivot('quantity');
     }
     //? relation categories M-M
     public function categories()
