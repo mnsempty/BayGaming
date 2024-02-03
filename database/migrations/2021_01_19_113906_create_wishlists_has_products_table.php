@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('wishlists_has_products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('wishlists_id')->references("id")->on("wishlists");
+            $table->foreignId('products_id')->references("id")->on("products");
             $table->timestamps();
+            $table->index(['wishlists_id', 'products_id'])->unique();
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discounts');
+        Schema::dropIfExists('wishlists_has_products');
     }
 };

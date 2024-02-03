@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('carts_has_products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('carts_id')->references('id')->on('carts');
+            $table->foreignId('products_id')->references('id')->on('products');
             $table->timestamps();
+
+            $table->index(['carts_id', 'products_id'])->unique();
         });
     }
 
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('cart_has_product');
     }
 };
