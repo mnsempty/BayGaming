@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartsController;
+use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Models\Product;
 use App\Models\Category;
@@ -30,6 +31,9 @@ Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth',
 
 //! RUTA PARA VER PRODUCTOS USER
 Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
+
+//! RUTA PARA AÑADIR PRODUCTOS CART
+Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
 //! RUTA PARA IR AL CARRITO 
 Route::get('homepage/cart', [CartsController::class, 'listProducts'])->name('cart');
 

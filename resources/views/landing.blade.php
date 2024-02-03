@@ -21,12 +21,18 @@
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->price }} {{ config('app.currency') }}</p>
                             <p class="card-text">Stock: {{ $product->stock }}</p>
+
                             <!-- añadir al carrito -->
-                            <a href="#" class="btn btn-primary">Añadir al carrito</a>
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <!-- sirve para crear una nueva fila después de cada tres tarjetas -->
+
+                <!-- crear una nueva fila después de cada tres tarjetas -->
                 @if ($loop->iteration % 3 == 0)
         </div>
         <div class="row">
