@@ -85,9 +85,9 @@ class ProductsController extends Controller
                 'publisher' => 'sometimes|required',
                 'platform' => 'sometimes|required',
                 'launcher' => 'sometimes|nullable',
-                'images.*' => 'sometimes|required',
-                'discounts.*' => 'sometimes|required',
+                'discount' => 'nullable|integer|min:0|max:100',
             ]);
+            // 'images.*' => 'sometimes|required',
 
             $product = Product::findOrFail($id);
             $product->name = $request->name;
@@ -101,18 +101,42 @@ class ProductsController extends Controller
             $product->launcher = $request->launcher;
             $product->save();
 
-            foreach ($request->discounts as $discountData) {
-                $discount = Discount::findOrFail($discountData['id']);
-                $discount->percent = $discountData['percent'];
-                $discount->save();
+            //!en caso de que no tenga se hace insert
+            $discount = $product->discounts->first();
+            $discount->percent = $request['discount'] ?? $discount->percent;
+            $discount->save();
+
+            //todo Update associated images
+            $imagesData = $request->input('images');
+
+            // Process each image
+            foreach ($imagesData as $imageData) {
+                // Extract the image ID and the uploaded files
+                $imageId = $imageData['id'] ?? null;
+                $uploadedFiles = $request->file("images.$imageId.file") ?? [];
+
+                // Loop through each uploaded file for the current image
+                foreach ($uploadedFiles as $file) {
+                    // Check if the file is valid
+                    if ($file && $file->isValid()) {
+                        // Find the image by its ID or create a new one if it doesn't exist
+                        $image = Image::find($imageId) ?? new Image;
+
+                        // Store the file and get the path
+                        $path = $file->store('product_images', 'public');
+
+                        // Set the image URL to the stored file path
+                        $image->url = $path;
+
+                        // Associate the image with the product (if applicable)
+                        // $image->product_id = $id; // Uncomment and set the appropriate product ID if needed
+
+                        // Save the image
+                        $image->save();
+                    }
+                }
             }
 
-            // Update associated images
-            foreach ($request->images as $imageData) {
-                $image = Image::findOrFail($imageData['id']);
-                $image->url = $imageData['url'];
-                $image->save();
-            }
 
             // Update associated discounts
 
@@ -170,10 +194,11 @@ class ProductsController extends Controller
     // }
 
     //! llevar a vista de editar productos
-    public function editView($id){
+    public function editView($id)
+    {
         $product = Product::findOrFail($id);
         $images = $product->images;
         $discounts = $product->discounts;
-        return view('auth.editProducts', ['product' => $product, 'images' => $images,'discounts' => $discounts]);
+        return view('auth.editProducts', ['product' => $product, 'images' => $images, 'discounts' => $discounts]);
     }
 }

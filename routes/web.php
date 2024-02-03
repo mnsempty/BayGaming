@@ -43,6 +43,7 @@ Route::get('/check-relationship', function () {
     echo "</br>";
     echo "nombres de las categorias asociadas a ese producto"."</br>";
     foreach ($images as $image) {
+        echo $image->id;
         echo $image->url;
     }
 });
@@ -54,7 +55,7 @@ Route::get('/check-relationship', function () {
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products
-    Route::put('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
+    Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
  });
