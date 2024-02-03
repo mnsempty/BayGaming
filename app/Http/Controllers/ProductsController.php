@@ -180,6 +180,17 @@ class ProductsController extends Controller
         return view('auth.dashboard', @compact('products'));
     }
 
+    //! VER PRODUCTOS USER
+    public function listFewL()
+    {
+        //* HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
+        //* php artisan storage:link
+        $products = Product::where('show', true)->with('images')->get();
+        return view('landing', compact('products'));
+    }
+    
+    
+
     //todo Método para mostrat dettalles de productos
     // public function show($id)
     // {

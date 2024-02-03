@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeCotroller;
+use App\Http\Controllers\HomeController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -24,8 +24,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-//! lleva a page de prueba landing
-Route::get( 'home',[HomeCotroller::class, 'roleRedirect'])->middleware(['auth', 'verified']);
+//! lleva a page de prueba landing 
+Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
+
+//! RUTA PARA VER PRODUCTOS USER
+Route::get('home', [ProductsController::class, 'listFewL'])->middleware(['auth', 'verified']);
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
@@ -81,4 +84,5 @@ Route::get('/forbidden', function () {
 //         echo $cart->id;
 //     }
 // });
+
 
