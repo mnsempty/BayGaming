@@ -4,11 +4,24 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Tienda</h1>
-            <a href="{{ route('cart') }}" class="btn btn-success">
+            <a href="{{ route('cart.list') }}" class="btn btn-success">
                 Carrito
                 <i class="bi bi-cart"></i>
             </a>
         </div>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div class="row">
             @foreach ($products as $product)
