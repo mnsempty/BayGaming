@@ -12,36 +12,44 @@ class CartsController extends Controller
 {
     public function addToCart(Request $request, $productId)
     {
-        $product = Product::findOrFail($productId);
-        $quantity = $request->input('quantity', 1); // asume 1 si no se especifica la cantidad
-
-        // verifica si el producto está disponible en stock
-        if ($product->stock < $quantity) {
-            return back()->withErrors(['message' => 'No hay suficiente stock para el producto.']);
-        }
-
-        // crea o actualizar el carrito del usuario actual
-        $cart = Cart::firstOrCreate(['users_id' => auth()->id()]);
-
-        // Comprueba si el producto ya está en el carrito
-        $existingProduct = $cart->products()->where('products.id', $productId)->first();
-
-        if ($existingProduct) {
-            if ($product->stock >= $quantity) {
-                //syncWithoutDetaching() actualiza los valores de la tabla intermedia
-            $cart->products()->updateExistingPivot($productId, ['quantity' => $quantity]);
-                return back()->with('success', 'Cantidad del producto actualizada en el carrito.');
-            } else {
-                return back()->withErrors(['message' => 'No hay suficiente stock para aumentar la cantidad del producto.']);
+        // try {
+        //     DB::beginTransaction();
+            $product = Product::findOrFail($productId);
+            $quantity = $request->input('quantity', 1); // asume 1 si no se especifica la cantidad
+            // verifica si el producto está disponible en stock
+            if ($product->stock < $quantity) {
+                return back()->withErrors(['message' => 'No hay suficiente stock para el producto.']);
             }
-        } else {
-            // Si el producto no está en el carrito, lo añade con la cantidad especificada
-            $cart->products()->attach($productId, ['quantity' => $quantity]);
-            return back()->with('success', 'Producto añadido al carrito con éxito.');
-        }
-        return back()->with('success', 'Producto añadido al carrito con éxito.');
+
+            // crea o actualizar el carrito del usuario actual
+            $cart = Cart::firstOrCreate(['users_id' => auth()->id()]);
+
+            // Comprueba si el producto ya está en el carrito
+            $existingProduct = $cart->products()->where('products.id', $productId)->first();
+
+            if ($existingProduct) {
+                if ($product->stock >= $quantity) {
+                    $cart->products()->updateExistingPivot($productId, ['quantity' => $quantity]);
+                    return back()->with('success', 'Cantidad del producto actualizada en el carrito.');
+                } else {
+                    return back()->withErrors(['message' => 'No hay suficiente stock para aumentar la cantidad del producto.']);
+                }
+            } else {
+                // Si el producto no está en el carrito, lo añade con la cantidad especificada
+                $cart->products()->attach($productId, ['quantity' => $quantity]);
+
+                return back()->with('success', 'Producto añadido al carrito con éxito. ya existe');
+            }
+            // DB::commit();
+            return back()->with('success', 'Producto añadido al carrito con éxito.commit done');
+        // } catch (\exception $e) {
+        //     DB::rollBack();
+
+        //     return back()->withErrors(['message' => 'Error al añadir un producto' . $e->getMessage()]);
+        // }
     }
-    
+
+
     //todo test
     public function deleteProducts($productId)
     {

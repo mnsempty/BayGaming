@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    // not now
-    // public function invoice() {
-    //     return $this->hasOne(Invoice::class);
-    // }
+    // done
+    public function invoice() {
+        return $this->hasOne(Invoice::class);
+    }
     //? done
     public function user()
     {

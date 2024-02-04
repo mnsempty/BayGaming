@@ -15,6 +15,19 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
         });
+        Schema::create('invoices', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('order_id')->references("id")->on("orders");
+            // $table->string('invoice_number');
+            $table->date('date');
+            // $table->date('due_date');
+            // $table->enum('status', ['pending', 'paid']);
+             $table->decimal('subtotal', 8, 2);
+            // $table->decimal('tax', 8, 2);
+            // $table->string('payment_method');
+            $table->timestamps();
+        });
+        
     }
 
     /**
