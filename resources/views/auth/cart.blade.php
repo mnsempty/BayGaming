@@ -54,11 +54,18 @@
                 </tbody>
             </table>
 
-                <div class="text-right">
-                    <strong>Total: $</strong>
-                    {{--! {{ route('checkout') }} --}}
-                    <a href="" class="btn btn-lg btn-success">Proceder al Pago</a>
-                </div>
+            <?php
+            $total = 0;
+            foreach ($products as $product) {
+                $total += $product->price * $product->pivot->quantity;
+            }
+            ?>
+
+            <div class="text-right">
+                <strong>Total: ${{ number_format($total, 2) }}</strong>
+                {{--! {{ route('checkout') }} --}}
+                <a href="" class="btn btn-lg btn-success">Proceder al Pago</a>
+            </div>
         @else
             <p>Tu carrito está vacío.</p>
         @endif
