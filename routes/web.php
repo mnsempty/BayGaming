@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartsController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoicesController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -51,7 +52,7 @@ Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymen
 Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
 
 //todo RUTA PARA ENVIAR FACTURA TEST
-Route::get('/send-invoice/{order}', [CartsController::class, 'sendInvoice'])->name('send.invoice');
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 

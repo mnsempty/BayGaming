@@ -14,6 +14,10 @@ class InvoicesTableSeeder extends Seeder
     public function run(): void
     {
         Invoice::create([
+            'date' => now(),
+            'subtotal' => 16.2,
+            'orders_id' => 1
         ]);
+
     }
 }

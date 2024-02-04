@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class InvoicesController extends Controller
 {
-    public function pay($orderId)
+    public function createAndSendInvoice($orderId)
     {
         try {
             DB::beginTransaction();
@@ -20,9 +20,9 @@ class InvoicesController extends Controller
             $order = Order::findOrFail($orderId);
 
             $invoice = new Invoice;
-            $invoice->order_id = $order->id;
-            $invoice->date = $order->now();
-            $invoice->subtotal = $order->totalPrice;
+            $invoice->orders_id = $order->id;
+            $invoice->date = now();
+            $invoice->subtotal = $order->total;
             // Guardar la factura en la base de datos
             $invoice->save();
 
@@ -31,10 +31,10 @@ class InvoicesController extends Controller
 
             DB::commit();
             // Redirigir al usuario a la página de éxito
-            return redirect()->route('success');
+            return back()->with('success', 'mail enviado');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Error al crear la factura.']);
+            return back()->withErrors(['message' => 'Error al crear la factura.'. $e->getMessage()]);
         }
     }
 }

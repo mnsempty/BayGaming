@@ -1,6 +1,17 @@
 @extends('auth.template')
 
 @section('content')
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+@if (session('errors'))
+<div class="alert alert-danger">
+    {{ session('errors')->first('message') }}
+</div>
+@endif
     <div class="container my-5">
         <h1 class="mb-4">Confirmación de Pago</h1>
 
@@ -10,7 +21,8 @@
                     <p class="fs-5">Su pago ha sido procesado exitosamente.</p>
                 </div>
                 <div class="col-auto ms-3">
-                    <a href="{{ route('send.invoice') }}" class="btn btn-dark">Enviar factura al correo</a>
+                    <a href="{{ route('send.invoice', ['order' => $order->id]) }}" class="btn btn-dark">Enviar factura al
+                        correo</a>
                 </div>
             </div>
         </div>

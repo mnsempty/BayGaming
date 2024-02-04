@@ -42,7 +42,8 @@ class InvoicePaid extends Notification
 
         return (new MailMessage)
             ->subject('Invoice Paid')
-            ->markdown('mail.invoice.paid', ['invoice' => $this->invoice, 'url' => $url]);
+            //todo url aun no hace nada,solamente lo dejamos para futuro
+            ->markdown('mail.invoice.paid', ['invoice' => $this->invoice, 'url' => $url,'name' => $notifiable->name]);
     }
 
     /**

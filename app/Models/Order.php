@@ -9,7 +9,8 @@ class Order extends Model
 {
     use HasFactory;
     // done
-    public function invoice() {
+    public function invoice()
+    {
         return $this->hasOne(Invoice::class);
     }
     protected $fillable = ['users_id', 'state', 'total'];
