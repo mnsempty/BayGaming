@@ -39,7 +39,7 @@ Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list')
 
 Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
 //ruta para aumentar quantity en cart
-Route::put('/update/', [CartsController::class, 'addToCart'])->name('cart.update');
+Route::put('/update/{product}', [CartsController::class, 'addToCart'])->name('cart.update');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 

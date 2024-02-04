@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        // rol admin sin verificación
+        // rol admin con verificación
         User::create([
             'name' => 'Admin',
             'email' => 'nonameb41@gmail.com',
@@ -23,14 +23,14 @@ class UsersTableSeeder extends Seeder
             'role' => 'admin',
         ]);
         
-        // rol admin con verificación
+        // rol admin sin verificación
         User::create([
             'name' => 'Admin2',
             'email' => 'example2a@gmail.com',
             'password' => Hash::make('qweqweqwe1234'),
             'role' => 'admin',
         ]);
-        // rol user sin verificación
+        // rol user con verificación
         User::create([
             'name' => 'testUser',
             'email' => 'mnsemptymail@gmail.com',
@@ -38,7 +38,7 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => '2024-01-30 10:30:43',
             'role' => 'user',
         ]);
-        // rol user con verificación
+        // rol user sin verificación
         User::create([
             'name' => 'testUser2',
             'email' => 'exampleawe@gmail.com',

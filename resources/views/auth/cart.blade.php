@@ -32,11 +32,11 @@
                         <tr>
                             <td>{{ $product->name }}</td>
                             <td>
-                                <form action="{{ route('cart.update', $product->pivot->id) }}" method="POST">
+                                <form action="{{ route('cart.update', ['product' => $product->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1"
-                                        max="{{ $product->stock }}">
+                                           max="{{ $product->stock }}">
                                     <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
                                 </form>
                             </td>
@@ -63,7 +63,7 @@
 
             <div class="text-right">
                 <strong>Total: ${{ number_format($total, 2) }}</strong>
-                {{--! {{ route('checkout') }} --}}
+                {{-- ! {{ route('checkout') }} --}}
                 <a href="" class="btn btn-lg btn-success">Proceder al Pago</a>
             </div>
         @else

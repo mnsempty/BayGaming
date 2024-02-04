@@ -26,11 +26,9 @@ class CartsController extends Controller
         $existingProduct = $cart->products()->where('products.id', $productId)->first();
 
         if ($existingProduct) {
-            // Si el producto ya está en el carrito, incrementa la cantidad
-            $newQuantity = $existingProduct->pivot->quantity + $quantity;
-            if ($product->stock >= $newQuantity) {
+            if ($product->stock >= $quantity) {
                 //syncWithoutDetaching() actualiza los valores de la tabla intermedia
-                $cart->products()->syncWithoutDetaching([$productId => ['quantity' => $newQuantity]]);
+            $cart->products()->updateExistingPivot($productId, ['quantity' => $quantity]);
                 return back()->with('success', 'Cantidad del producto actualizada en el carrito.');
             } else {
                 return back()->withErrors(['message' => 'No hay suficiente stock para aumentar la cantidad del producto.']);
@@ -40,10 +38,9 @@ class CartsController extends Controller
             $cart->products()->attach($productId, ['quantity' => $quantity]);
             return back()->with('success', 'Producto añadido al carrito con éxito.');
         }
-
-
         return back()->with('success', 'Producto añadido al carrito con éxito.');
     }
+    
     //todo test
     public function deleteProducts($productId)
     {
