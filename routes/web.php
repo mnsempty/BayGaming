@@ -34,12 +34,24 @@ Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing')
 
 //! RUTA PARA AÑADIR PRODUCTOS CART
 Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
+
 //! RUTA PARA IR AL CARRITO 
 Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list');
 
+//! RUTA PARA BORRAR PRODUCTOS CARRITO
 Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
-//ruta para aumentar quantity en cart
-Route::put('/update/{product}', [CartsController::class, 'addToCart'])->name('cart.update');
+
+// Ruta para actualizar la cantidad de un producto en el carrito
+Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
+
+// Lleva a la confirmacion de pago (funcion)
+Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+
+// Lleva a la confirmacion de pago de pago (modal)
+Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+
+//todo RUTA PARA ENVIAR FACTURA TEST
+Route::get('/send-invoice/{order}', [CartsController::class, 'sendInvoice'])->name('send.invoice');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
