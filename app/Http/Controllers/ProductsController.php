@@ -47,18 +47,6 @@ class ProductsController extends Controller
           // Asocia la imagen con el producto
           $product->images()->attach($image);
 
-            // probablemente por nombre de las cat ask team
-            // if ($request->has('category_ids')) {
-            //     foreach ($request->category_ids as $category_id) {
-            //         DB::table('categories_has_products')->insert([
-            //             'categories_id' => $category_id,
-            //             'products_id' => $product->id,
-            //             'created_at' => now(),
-            //             'updated_at' => now(),
-            //         ]);
-            //     }
-
-
         DB::commit();
             return back()->with('mensaje', __('Product created successfully'))->with('product', $product);
     //*Si la validación de datos falla se ejecuta el rollBack para  que no quede registro en BD.
