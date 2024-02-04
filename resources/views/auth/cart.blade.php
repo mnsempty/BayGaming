@@ -35,10 +35,9 @@
                                 <form action="{{ route('cart.update', ['product' => $product->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1"
-                                           max="{{ $product->stock }}">
+                                    <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1" max="{{ $product->stock }}">
                                     <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
-                                </form>
+                                </form>                               
                             </td>
                             <td>${{ number_format($product->price, 2) }}</td>
                             <td>${{ number_format($product->price * $product->pivot->quantity, 2) }}</td>
@@ -63,11 +62,36 @@
 
             <div class="text-right">
                 <strong>Total: ${{ number_format($total, 2) }}</strong>
-                {{-- ! {{ route('checkout') }} --}}
-                <a href="" class="btn btn-lg btn-success">Proceder al Pago</a>
+                <button type="button" class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                    Proceder al Pago
+                </button>
             </div>
         @else
             <p>Tu carrito está vacío.</p>
         @endif
     </div>
+
+    <!-- Modal de confirmación de pago -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Confirmar Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres proceder con el pago?
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('cart.proceedToPayment') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </form>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
 @endsection
