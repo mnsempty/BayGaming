@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartsController extends Controller
 {
@@ -44,21 +45,33 @@ class CartsController extends Controller
     //todo test
     public function deleteProducts($productId)
     {
-        $product = Product::findOrFail($productId);
-        $user = auth()->user();
-        $cart = $user->cart;
-        $cart->products()->detach($productId);
+        try {
+            DB::beginTransaction();
+            $product = Product::findOrFail($productId);
+            $user = auth()->user();
+            $cart = $user->cart;
+            $cart->products()->detach($productId);
+            DB::commit();
 
-        return back()->with('success', 'Producto eliminado del carrito con éxito.');
+            return back()->with('success', 'Producto eliminado del carrito con éxito.');
+        } catch (\exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors(['message' => 'Error al eliminar el producto']);
+        }
     }
 
     // cogemos los productos del cart de los users
     public function listProducts()
     {
-        $user = auth()->user();
-        $cart = $user->cart;
-        $products = $cart->products;
+        try {
+            $user = auth()->user();
+            $cart = $user->cart;
+            $products = $cart->products;
 
-        return view('auth.cart', compact('products'));
+            return view('auth.cart', compact('products'));
+        } catch (\exception $e) {
+            return back()->withErrors(['message' => 'No hay productos en el carrito']);
+        }
     }
 }
