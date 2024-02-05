@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartsController;
+use App\Models\Cart;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoicesController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -28,28 +31,49 @@ Route::get('/', function () {
 Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
-Route::get('home', [ProductsController::class, 'listFewL'])->middleware(['auth', 'verified']);
+Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
+
+//! RUTA PARA AÑADIR PRODUCTOS CART
+Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
+
+//! RUTA PARA IR AL CARRITO 
+Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list');
+
+//! RUTA PARA BORRAR PRODUCTOS CARRITO
+Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
+
+// Ruta para actualizar la cantidad de un producto en el carrito
+Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
+
+// Lleva a la confirmacion de pago (funcion)
+Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+
+// Lleva a la confirmacion de pago de pago (modal)
+Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+
+//todo RUTA PARA ENVIAR FACTURA TEST
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
 
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
-Route::get('/check-relationship', function () {
-    $product = Product::find(1); // Obtiene el primer producto
-    // $product->categories()->attach(1);
-    // $product->categories()->detach(1);
-    $product->images();
-    echo "products"."</br>";
-    echo $product;
-    $images = $product->images; // Obtiene las categorías del producto
-    echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
-    echo $images;
-    echo "</br>";
-    echo "nombres de las categorias asociadas a ese producto"."</br>";
-    foreach ($images as $image) {
-        echo $image->id;
-        echo $image->url;
-    }
-});
+// Route::get('/check-relationship', function () {
+//     $product = Product::find(1); // Obtiene el primer producto
+//     // $product->categories()->attach(1);
+//     // $product->categories()->detach(1);
+//     $product->images();
+//     echo "products"."</br>";
+//     echo $product;
+//     $images = $product->images; // Obtiene las categorías del producto
+//     echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
+//     echo $images;
+//     echo "</br>";
+//     echo "nombres de las categorias asociadas a ese producto"."</br>";
+//     foreach ($images as $image) {
+//         echo $image->id;
+//         echo $image->url;
+//     }
+// });
 
  Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');

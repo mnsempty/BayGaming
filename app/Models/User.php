@@ -46,20 +46,21 @@ class User extends Authenticatable implements MustVerifyEmail
     //? address relation 1-M
     public function addresses()
     {
-        return $this->hasMany(Address::class, 'user_id');
+        return $this->hasMany(Address::class, 'users_id');
     }
 
     //? orders relation 1-M
     public function orders()
     {
-        return $this->hasMany(Order::class, 'user_id');
+        return $this->hasMany(Order::class, 'users_id');
     }
-    //? done
+
+    //? 1-M
     public function cart()
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasOne(Cart::class, 'users_id');
     }
-    //? done
+    //? 1-1
     public function wishlist()
     {
         return $this->hasOne(Wishlist::class);
@@ -67,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //? address relation 1-M
     public function products()
     {
-        return $this->hasMany(Product::class, 'user_id');
+        return $this->hasMany(Product::class, 'users_id');
     }
 
     
