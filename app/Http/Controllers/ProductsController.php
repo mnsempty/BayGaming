@@ -20,62 +20,62 @@ class ProductsController extends Controller
         try {
             DB::beginTransaction();
             $validatedData = $request->validate([
-            'name' => 'required', 
-            'description' => 'required',    
-            'price' => 'required',
-            'stock' => 'required',
-            'developer' => 'required',
-            'publisher' => 'required',
-            'platform' => 'required',
-            'launcher' => 'nullable',
-            'image' => 'required|image|max:2048'
-        ]);
-        // Agrega el ID del usuario autenticado a los datos validados
-        $validatedData['users_id'] = auth()->id();
-        
-        $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
+                'name' => 'required',
+                'description' => 'required',
+                'price' => 'required',
+                'stock' => 'required',
+                'developer' => 'required',
+                'publisher' => 'required',
+                'platform' => 'required',
+                'launcher' => 'nullable',
+                'image' => 'required|image|max:2048'
+            ]);
+            // Agrega el ID del usuario autenticado a los datos validados
+            $validatedData['users_id'] = auth()->id();
 
-          // Guarda la imagen en el servidor y obtén la URL de la imagen
-          $imagePath = $request->file('image')->store('product_images', 'public');
-          $imageUrl = Storage::url($imagePath);
-  
-          // Crea una nueva instancia de Image y guárdala
-          $image = new Image;
-          $image->url = $imageUrl;
-          $image->save();
-  
-          // Asocia la imagen con el producto
-          $product->images()->attach($image);
+            $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
-        DB::commit();
+            // Guarda la imagen en el servidor y obtén la URL de la imagen
+            $imagePath = $request->file('image')->store('product_images', 'public');
+            $imageUrl = Storage::url($imagePath);
+
+            // Crea una nueva instancia de Image y guárdala
+            $image = new Image;
+            $image->url = $imageUrl;
+            $image->save();
+
+            // Asocia la imagen con el producto
+            $product->images()->attach($image);
+
+            DB::commit();
             return back()->with('mensaje', __('Product created successfully'))->with('product', $product);
-    //*Si la validación de datos falla se ejecuta el rollBack para  que no quede registro en BD.
-    } catch (ValidationException $e) { 
-        DB::rollBack();
-        return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->with('mensaje', __('Error creating product '. $e->getMessage()));
+            //*Si la validación de datos falla se ejecuta el rollBack para  que no quede registro en BD.
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('mensaje', __('Error creating product ' . $e->getMessage()));
+        }
     }
-}
     //todo test
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'name' => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'price' => 'sometimes|required',
+            'stock' => 'sometimes|required',
+            'developer' => 'sometimes|required',
+            'publisher' => 'sometimes|required',
+            'platform' => 'sometimes|required',
+            'launcher' => 'sometimes|nullable',
+            'discount' => 'nullable|integer|min:0|max:100',
+        ]);
+        // 'images.*' => 'sometimes|required',
         try {
             DB::beginTransaction();
-
-            $request->validate([
-                'name' => 'sometimes|required',
-                'description' => 'sometimes|required',
-                'price' => 'sometimes|required',
-                'stock' => 'sometimes|required',
-                'developer' => 'sometimes|required',
-                'publisher' => 'sometimes|required',
-                'platform' => 'sometimes|required',
-                'launcher' => 'sometimes|nullable',
-                'discount' => 'nullable|integer|min:0|max:100',
-            ]);
-            // 'images.*' => 'sometimes|required',
 
             $product = Product::findOrFail($id);
             $product->name = $request->name;
@@ -176,8 +176,8 @@ class ProductsController extends Controller
         $products = Product::where('show', true)->with('images')->get();
         return view('landing', compact('products'));
     }
-    
-    
+
+
 
     //todo Método para mostrat dettalles de productos
     // public function show($id)
