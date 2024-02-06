@@ -16,5 +16,8 @@ class ImagesTableSeeder extends Seeder
         Image::create([
             'url' => 'lanogalada.com',
         ]);
+        Image::create([
+            'url' => 'lanogalada2.com',
+        ]);
     }
 }

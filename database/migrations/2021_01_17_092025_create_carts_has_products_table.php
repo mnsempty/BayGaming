@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('carts_has_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carts_id')->references('id')->on('carts')->unique();
-            $table->foreignId('products_id')->references('id')->on('products')->unique();
+            $table->foreignId('carts_id')->references('id')->on('carts');
+            $table->foreignId('products_id')->references('id')->on('products');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
 
             $table->index(['carts_id', 'products_id'])->unique();

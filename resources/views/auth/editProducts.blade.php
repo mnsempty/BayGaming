@@ -8,9 +8,9 @@
                     <div class="card-header">Edit Product</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('products.edit', $product->id) }}">
+                        <form method="POST" action="{{ route('products.edit', $product->id) }}" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
+                            @method('POST')
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
@@ -87,33 +87,34 @@
                                     </option>
                                 </select>
                             </div>
-                            {{--! esta parte no he conseguido sacarla por la parte de imagenes  --}}
+                            {{-- ! esta parte no he conseguido sacarla por la parte de imagenes  --}}
                             <!-- Formulario para las imágenes -->
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <h4>Images</h4>
-                                @foreach ($imageUrls as $index => $url)
+                                @foreach ($images as $image)
                                     <div class="form-group">
-                                        <label for="imageUrl{{ $index }}">Image URL {{ $index + 1 }}</label>
-                                        <input type="text" class="form-control" id="imageUrl{{ $index }}"
-                                            name="images[{{ $index }}][url]" value="{{ $url }}" required>
+                                        <label for="image{{ $image->id }}">Imagen</label>
+                                        <img src="{{ asset('storage/' . $image->url) }}" alt="Imagen del producto"
+                                            style="width: 100px; height: auto;">
+                                        <input type="hidden" name="images[{{ $image->id }}][id]"
+                                            value="{{ $image->id }}">
+                                        <input type="file" class="form-control" id="image{{ $image->id }}"
+                                            name="images[{{ $image->id }}][file][]" accept="image/*" multiple>
                                     </div>
                                 @endforeach
-                            </div> --}}
+
+                            </div>
+
 
                             <!-- Formulario para los descuentos -->
-                            {{-- <div class="mb-3">
+                            <div class="mb-3">
                                 <h4>Discounts</h4>
-                                @foreach ($discountPercentages as $index => $percentage)
-                                    <div class="form-group">
-                                        <label for="discountPercentage{{ $index }}">Discount Percentage
-                                            {{ $index + 1 }}</label>
-                                        <input type="number" class="form-control"
-                                            id="discountPercentage{{ $index }}"
-                                            name="discounts[{{ $index }}][percent]" value="{{ $percentage }}"
-                                            min="0" max="100" step="1" required>
-                                    </div>
-                                @endforeach
-                            </div> --}}
+                                <div class="form-group">
+                                    <label for="discount">Discount Percentage</label>
+                                    <input type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="{{ old('discount', $discounts->first()->percent ?? '') }}">
+                                </div>
+                            </div>
+
 
 
                             <button type="submit" class="btn btn-primary">Update Product</button>

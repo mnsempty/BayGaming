@@ -16,7 +16,6 @@ return new class extends Migration
             $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
             $table->decimal('total',10,2);
             $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
-            // $table->foreignId('invoices_id')->references("id")->on("invoices");
             $table->timestamps();
         });
     }

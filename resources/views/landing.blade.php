@@ -1,160 +1,56 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('auth.template')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Diario del Programador') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
-</head>
-
-<body>
-    <div id="app">
-        <div class="container-fluid">
-            <ul class="nav border-bottom">
-                <li class="nav-item">
-                    <a href="{{ url('/') }}">{{ __('TRENDS') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/') }}">{{ __('UPCOMING RELEASES') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/') }}">{{ __('REVIEWS') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/') }}">{{ __('24/7 SUPPORT') }}</a>
-                </li>
-            </ul>
-        </div>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <a class="navbar-brand align-self-start" href="{{ url('/') }}">
-                {{ config('app.name', 'Diario del Programador') }}
+@section('content')
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Tienda</h1>
+            <a href="{{ route('cart.list') }}" class="btn btn-success">
+                Carrito
+                <i class="bi bi-cart"></i>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="container-fluid">
-                {{-- Opciones de menú superior --}}
-                {{-- <div class="">
-                    <a href="{{ url('/') }}">{{ __('TRENDS') }}</a>
-                    <a href="{{ url('/') }}">{{ __('UPCOMING RELEASES') }}</a>
-                    <a href="{{ url('/') }}">{{ __('REVIEWS') }}</a>
-                    <a href="{{ url('/') }}">{{ __('24/7 SUPPORT') }}</a>
-                </div> --}}
-                {{-- Opciones de Platafomras y consolas --}}
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                PC
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Playstation
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Xbox
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Nintendo
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href=""></a>
-                        </li>
-                    </ul>
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->name }}
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
-                                    </li>
-                                </ul>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        @endguest
-                    </ul>
-                </div>
+        </div>
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </nav>
+        @endif
 
-        <main class="pt-4">
-            @yield('content')
-        </main>
+        @if (session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <div class="row">
+            @foreach ($products as $product)
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        @if ($product->images->isNotEmpty())
+                            <img src="{{ $product->images->first()->url }}" class="card-img-top" alt="{{ $product->name }}">
+                        @endif
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text">{{ $product->price }} {{ config('app.currency') }}</p>
+                            <p class="card-text">Stock: {{ $product->stock }}</p>
+
+                            <!-- añadir al carrito -->
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- crear una nueva fila después de cada tres tarjetas -->
+                @if ($loop->iteration % 3 == 0)
+        </div>
+        <div class="row">
+            @endif
+            @endforeach
+        </div>
     </div>
-
-
-</body>
-
-</html>
+@endsection

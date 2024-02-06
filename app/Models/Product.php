@@ -10,11 +10,22 @@ class Product extends Model
 {
     use HasFactory;
 
-   
+    protected $fillable = [
+        'name', // Asegúrate de que 'name' esté incluido aquí
+        'description',
+        'price',
+        'stock',
+        'developer',
+        'publisher',
+        'platform',
+        'launcher',
+        'users_id'
+    ];
+
     //relation carts M-M
     public function carts(){
         // id otra tabla, id propia, id intermedia
-        return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id');
+        return $this->belongsToMany(Cart::class, 'carts_has_products', 'products_id', 'carts_id')->withPivot('quantity');
     }
     //? relation categories M-M
     public function categories()
@@ -39,7 +50,7 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
-    //? address relation 1-M
+    //? discounts relation 1-M
     public function discounts()
     {
         return $this->hasMany(Discount::class, 'products_id');
