@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 
 use App\Http\Controllers\ProductsController; //delete
+use App\Http\Controllers\WhishlistsController;
 use Illuminate\Support\Facades\Route;
 
 /* Uso del controlador para asignarle rutas **/
@@ -29,7 +30,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 //! lleva a page de prueba landing 
-Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
+Route::get('home', [HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
 Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
@@ -45,6 +46,12 @@ Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name(
 
 // Ruta para actualizar la cantidad de un producto en el carrito
 Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
+
+// Rutas para controlar la lista de favoritos
+Route::post('/wishlist/add/{product_id}', [WhishlistsController::class, 'addToWishlist'])->name('wishlist.add');
+Route::post('/wishlist/remove/{product_id}', [WhishlistsController::class, 'removeFromWishlist'])->name('wishlist.remove');
+Route::get('/wishlist/load', [WhishlistsController::class, 'showWishlist'])->name('wishlist.load');
+Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'toggleWishlist'])->name('wishlist.toggle');
 
 // Lleva a la confirmacion de pago (funcion)
 Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
@@ -78,17 +85,17 @@ Route::post('/language', [LanguageController::class, 'change'])->name('language.
 //     }
 // });
 
- Route::group(['middleware' => 'admin'], function () {
+Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
     //! lleva a pagina de editar products
-    Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
+    Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
- });
+});
 
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
@@ -111,5 +118,3 @@ Route::get('/forbidden', function () {
 //         echo $cart->id;
 //     }
 // });
-
-
