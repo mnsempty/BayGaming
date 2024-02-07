@@ -15,6 +15,7 @@ class AddressesTableSeeder extends Seeder
     {
         Address::create([
             'address' => '123 Callejón Nogalada',
+            'secondary_address' => '1234 te mato',
             'tax_code' => '41020',
             'country' => 'USA',
             'telephone_number' => '123456789',

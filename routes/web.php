@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CartsController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
@@ -52,6 +53,8 @@ Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymen
 // Lleva a la confirmacion de pago de pago (modal)
 Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
 
+// ruta para guardar datos de dirección
+Route::post('/saveAddress', [AddressesController::class, 'saveAddress'])->name('address.create');
 //todo RUTA PARA ENVIAR FACTURA TEST
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
 

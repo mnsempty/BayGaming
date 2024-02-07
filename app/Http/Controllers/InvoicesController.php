@@ -12,10 +12,9 @@ class InvoicesController extends Controller
 {
     public function createAndSendInvoice($orderId)
     {
+
         try {
             DB::beginTransaction();
-
-
             // Buscar la orden por ID
             $order = Order::findOrFail($orderId);
 
@@ -37,4 +36,5 @@ class InvoicesController extends Controller
             return back()->withErrors(['message' => 'Error al crear la factura.'. $e->getMessage()]);
         }
     }
+
 }

@@ -168,6 +168,10 @@ class CartsController extends Controller
         // Actualiza el total de la orden
         $order->update(['total' => $total]);
 
+        // guardamos el id del pedido creado para enviar la factura atraves del controlador de address
+        // se podría hacer todo en invoices but i love order
+        session(['orderId' => $order->id]);
+
         // Limpia el carrito
         $cart->products()->detach();
 
