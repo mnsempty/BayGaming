@@ -76,19 +76,21 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
 
-            $request->validate([
-                'name' => 'sometimes|required',
-                'description' => 'sometimes|required',
-                'price' => 'sometimes|required',
-                'stock' => 'sometimes|required',
-                'developer' => 'sometimes|required',
-                'publisher' => 'sometimes|required',
-                'platform' => 'sometimes|required',
-                'launcher' => 'sometimes|nullable',
-                'images.*' => 'sometimes|required',
-                'discount' => 'nullable|integer|min:0|max:100',
-            ]);
-
+        $request->validate([
+            'name' => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'price' => 'sometimes|required',
+            'stock' => 'sometimes|required',
+            'developer' => 'sometimes|required',
+            'publisher' => 'sometimes|required',
+            'platform' => 'sometimes|required',
+            'launcher' => 'sometimes|nullable',
+            'images.*' => 'sometimes|required',
+            'discount' => 'sometimes|integer|min:0|max:100',
+        ]);
+        // dd($request->all());
+        try {
+            DB::beginTransaction();
             $product = Product::findOrFail($id);
             $product->name = $request->name;
             $product->description = $request->description;
@@ -100,9 +102,10 @@ class ProductsController extends Controller
             $product->platform = $request->platform;
             $product->launcher = $request->launcher;
             $product->save();
-
             //!en caso de que no tenga se hace insert
             $discount = $product->discounts->first();
+            // dd($product->discounts->first());
+
             $discount->percent = $request['discount'] ?? $discount->percent;
             $discount->save();
 
@@ -132,7 +135,7 @@ class ProductsController extends Controller
 
                         // Store the file and get the path
                         $imagePath = $file->storeAs("product_images/$folderName", $imageFullName, 'public');
-                        
+
                         // Set the image URL to the stored file path
                         $image->url = '/storage/' . $imagePath;
 
@@ -144,11 +147,6 @@ class ProductsController extends Controller
                     }
                 }
             }
-
-
-            // Update associated discounts
-
-
             DB::commit();
             //!para volver al dashboard, si lo hacemos modal idk quizá back()
             return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');

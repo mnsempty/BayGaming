@@ -41,7 +41,7 @@ Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name(
 Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list');
 
 //! RUTA PARA BORRAR PRODUCTOS CARRITO
-Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
+Route::get('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
 
 // Ruta para actualizar la cantidad de un producto en el carrito
 Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
