@@ -4,6 +4,7 @@ use App\Http\Controllers\CartsController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
+use App\Http\Controllers\LanguageController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -54,6 +55,8 @@ Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])
 //todo RUTA PARA ENVIAR FACTURA TEST
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
 
+//Controlador para cambio de idioma
+Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
