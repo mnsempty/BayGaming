@@ -35,8 +35,22 @@ class ProductsController extends Controller
 
             $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
-            // Guarda la imagen en el servidor y obtén la URL de la imagen
-            $imagePath = $request->file('image')->store('product_images', 'public');
+            // Obtiene el ID del producto recién creado
+            $productId = $product->id;
+            // Define el nombre de la carpeta basándose en el ID del producto
+            $folderName = "Producto_con_id_$productId";
+
+            // Calcula el índice de la nueva imagen basándose en las existentes
+            $productImage = Product::with('images')->find($productId); // Busca el producto y carga sus imágenes relacionadas
+            $existingImagesCount = $productImage->images->count(); // Cuenta las imágenes a través de la relación
+
+            //todo en un futuro cuando se pueda añadir varias imagenes servirá para renombrarlas y ordenarlas de momento no es muy útil
+            $imageName = "imagen_" . ($existingImagesCount + 1);
+            $imageExtension = $request->file('image')->getClientOriginalExtension();
+            $imageFullName = "$imageName.$imageExtension";
+
+            // Guarda la imagen en la carpeta específica del producto dentro de 'product_images'
+            $imagePath = $request->file('image')->storeAs("product_images/$folderName", $imageFullName, 'public');
             $imageUrl = Storage::url($imagePath);
 
             // Crea una nueva instancia de Image y guárdala
@@ -62,20 +76,18 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
 
-        $request->validate([
-            'name' => 'sometimes|required',
-            'description' => 'sometimes|required',
-            'price' => 'sometimes|required',
-            'stock' => 'sometimes|required',
-            'developer' => 'sometimes|required',
-            'publisher' => 'sometimes|required',
-            'platform' => 'sometimes|required',
-            'launcher' => 'sometimes|nullable',
-            'discount' => 'nullable|integer|min:0|max:100',
-        ]);
-        // 'images.*' => 'sometimes|required',
-        try {
-            DB::beginTransaction();
+            $request->validate([
+                'name' => 'sometimes|required',
+                'description' => 'sometimes|required',
+                'price' => 'sometimes|required',
+                'stock' => 'sometimes|required',
+                'developer' => 'sometimes|required',
+                'publisher' => 'sometimes|required',
+                'platform' => 'sometimes|required',
+                'launcher' => 'sometimes|nullable',
+                'images.*' => 'sometimes|required',
+                'discount' => 'nullable|integer|min:0|max:100',
+            ]);
 
             $product = Product::findOrFail($id);
             $product->name = $request->name;
@@ -94,14 +106,13 @@ class ProductsController extends Controller
             $discount->percent = $request['discount'] ?? $discount->percent;
             $discount->save();
 
-            //todo Update associated images
+            // Todo Update associated images
             $imagesData = $request->input('images');
 
             // Process each image
-            foreach ($imagesData as $imageData) {
-                // Extract the image ID and the uploaded files
-                $imageId = $imageData['id'] ?? null;
-                $uploadedFiles = $request->file("images.$imageId.file") ?? [];
+            foreach ($imagesData as $imageId => $imageData) {
+                // Extract the uploaded files
+                $uploadedFiles = $request->file("images.$imageId.file");
 
                 // Loop through each uploaded file for the current image
                 foreach ($uploadedFiles as $file) {
@@ -110,17 +121,26 @@ class ProductsController extends Controller
                         // Find the image by its ID or create a new one if it doesn't exist
                         $image = Image::find($imageId) ?? new Image;
 
+                        // Define the folder name based on the product ID
+                        $folderName = "Producto_con_id_{$product->id}";
+
+                        // Calculate the index of the new image based on existing ones
+                        $existingImagesCount = $product->images()->count();
+                        $imageName = "imagen_" . ($existingImagesCount +   1);
+                        $imageExtension = $file->getClientOriginalExtension();
+                        $imageFullName = "$imageName.$imageExtension";
+
                         // Store the file and get the path
-                        $path = $file->store('product_images', 'public');
-
+                        $imagePath = $file->storeAs("product_images/$folderName", $imageFullName, 'public');
+                        
                         // Set the image URL to the stored file path
-                        $image->url = $path;
-
-                        // Associate the image with the product (if applicable)
-                        // $image->product_id = $id; // Uncomment and set the appropriate product ID if needed
+                        $image->url = '/storage/' . $imagePath;
 
                         // Save the image
                         $image->save();
+
+                        // Attach the image to the product using the pivot table
+                        $product->images()->sync([$image->id]);
                     }
                 }
             }
@@ -155,13 +175,7 @@ class ProductsController extends Controller
         }
     }
 
-    // Método para listar los productos
-    // Falta trabajar mas la paginacion en la vista
-    // public function listAll()
-    // {
-    //     $products = Product::paginate(10);
-    //     return view('auth.dashboard', @compact('products'));
-    // }
+
     public function listFew()
     {
         $products = Product::where('show', true)->paginate(10);
@@ -171,26 +185,14 @@ class ProductsController extends Controller
     //! VER PRODUCTOS USER
     public function listFewL()
     {
-        //* HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
-        //* php artisan storage:link
+        //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
+        //! php artisan storage:link
         $products = Product::where('show', true)->with('images')->get();
         return view('landing', compact('products'));
     }
 
 
 
-    //todo Método para mostrat dettalles de productos
-    // public function show($id)
-    // {
-    //     $product = Product::finOrfail($id);
-    //     return view('auth.dashboard', @compact('products'));
-    // }
-
-    //todo Método para editar dettalles de productos
-    // public function edit()
-    // {
-    //     return view('auth.dashboard', @compact('products'));
-    // }
 
     //! llevar a vista de editar productos
     public function editView($id)
