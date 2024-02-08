@@ -29,11 +29,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
 //! lleva a page de prueba landing 
-Route::get( 'home',[HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
+Route::get('home', [HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
-Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
+Route::get('homepage', [ProductsController::class, 'listFew'])->name('landing');
 
 //! RUTA PARA AÑADIR PRODUCTOS CART
 Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
@@ -79,17 +80,32 @@ Route::post('/language', [LanguageController::class, 'change'])->name('language.
 //     }
 // });
 
- Route::group(['middleware' => 'admin'], function () {
-    Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
+// // Ruta para la vista de productos
+// Route::get('/dashboard/products', [ProductsController::class, 'listFew'])->name('dashboard.products');
+// // Ruta para la vista de categorías    
+// Route::get('/dashboard/categories', [CategoriesController::class, 'listAll'])->name('dashboard.categories');
+
+Route::group(['middleware' => 'admin'], function () {
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
+
+    // Ruta para la vista de productos
+    Route::get('/dashboard/products', [ProductsController::class, 'listFew'])->name('dashboard.products');
+    
+    // Ruta para la vista de categorías    
+    Route::get('/dashboard/categories', [CategoriesController::class, 'listAll'])->name('dashboard.categories');
+
+    Route::get('/dashboard', function () {
+        return view('auth.dashboard');
+    })->name('dashboard');
+    
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
     //! lleva a pagina de editar products
-    Route::get('/products/{id}/edit',[ProductsController::class, 'editView'])->name('products.edit.view');
+    Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
- });
+});
 
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
@@ -112,5 +128,3 @@ Route::get('/forbidden', function () {
 //         echo $cart->id;
 //     }
 // });
-
-

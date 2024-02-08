@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Image;
 use App\Models\Product;
@@ -180,7 +181,7 @@ class ProductsController extends Controller
     public function listFew()
     {
         $products = Product::where('show', true)->paginate(10);
-        return view('auth.dashboard', @compact('products'));
+        return view('auth.products', compact('products'));
     }
 
     // Método para mostrat dettalles de productos
@@ -191,9 +192,6 @@ class ProductsController extends Controller
         $products = Product::where('show', true)->with('images')->get();
         return view('landing', compact('products'));
     }
-
-
-
 
     //! llevar a vista de editar productos
     public function editView($id)
