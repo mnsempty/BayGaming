@@ -101,10 +101,11 @@ class WhishlistsController extends Controller
 
 
     public function mostFavoritedProducts()
-    {
-        // Get all the products sorted in descending order
-        $mostFavorited = Product::withCount('wishlists')->orderByDesc('wishlists_count')->take(10)->get();
+{
+    // Get all the products sorted in descending order
+    $mostFavorited = Product::withCount('wishlists')->orderByDesc('wishlists_count')->take(10)->get();
 
-        return view('admin.most_favorited_products', ['products' => $mostFavorited]);
-    }
+    // Retornar la vista con los datos
+    return view('auth.dashboard', ['mostFavorited' => $mostFavorited]);
+}
 }

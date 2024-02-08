@@ -52,8 +52,6 @@ Route::post('/wishlist/add/{product_id}', [WhishlistsController::class, 'addToWi
 Route::post('/wishlist/remove/{product_id}', [WhishlistsController::class, 'removeFromWishlist'])->name('wishlist.remove');
 Route::get('/wishlist/load', [WhishlistsController::class, 'showWishlist'])->name('wishlist.load');
 Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'toggleWishlist'])->name('wishlist.toggle');
-
-// Lleva a la confirmacion de pago (funcion)
 Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
 
 // Lleva a la confirmacion de pago de pago (modal)
@@ -93,8 +91,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
-
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
+    Route::get('/dashboard/favorited', [WhishlistsController::class, 'mostFavoritedProducts'])->name('dashboard.favorited');
 });
 
 Route::get('/forbidden', function () {
