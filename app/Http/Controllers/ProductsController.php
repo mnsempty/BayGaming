@@ -35,6 +35,12 @@ class ProductsController extends Controller
 
             $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
+            // Crear una entrada de descuento para el producto recién creado
+            $discount = new Discount;
+            $discount->percent =  0;
+            $discount->products_id = $product->id; // Asocia el descuento con el producto recién creado
+
+            $discount->save();
             // Obtiene el ID del producto recién creado
             $productId = $product->id;
             // Define el nombre de la carpeta basándose en el ID del producto
@@ -116,40 +122,39 @@ class ProductsController extends Controller
                 // Extract the uploaded files
                 $uploadedFiles = $request->file("images.$imageId.file");
 
-                // Loop through each uploaded file for the current image
-                foreach ($uploadedFiles as $file) {
-                    // Check if the file is valid
-                    if ($file && $file->isValid()) {
-                        // Find the image by its ID or create a new one if it doesn't exist
-                        $image = Image::find($imageId) ?? new Image;
+                if (!empty($uploadedFiles)) {
 
-                        // Define the folder name based on the product ID
-                        $folderName = "Producto_con_id_{$product->id}";
+                    // Loop through each uploaded file for the current image
+                    foreach ($uploadedFiles as $file) {
+                        // Check if the file is valid
+                        if ($file && $file->isValid()) {
+                            // Find the image by its ID or create a new one if it doesn't exist
+                            $image = Image::find($imageId) ?? new Image;
 
-                        // Calculate the index of the new image based on existing ones
-                        $existingImagesCount = $product->images()->count();
-                        $imageName = "imagen_" . ($existingImagesCount +   1);
-                        $imageExtension = $file->getClientOriginalExtension();
-                        $imageFullName = "$imageName.$imageExtension";
+                            // Define the folder name based on the product ID
+                            $folderName = "Producto_con_id_{$product->id}";
 
-                        // Store the file and get the path
-                        $imagePath = $file->storeAs("product_images/$folderName", $imageFullName, 'public');
-                        
-                        // Set the image URL to the stored file path
-                        $image->url = '/storage/' . $imagePath;
+                            // Calculate the index of the new image based on existing ones
+                            $existingImagesCount = $product->images()->count();
+                            $imageName = "imagen_" . ($existingImagesCount +   1);
+                            $imageExtension = $file->getClientOriginalExtension();
+                            $imageFullName = "$imageName.$imageExtension";
 
-                        // Save the image
-                        $image->save();
+                            // Store the file and get the path
+                            $imagePath = $file->storeAs("product_images/$folderName", $imageFullName, 'public');
 
-                        // Attach the image to the product using the pivot table
-                        $product->images()->sync([$image->id]);
+                            // Set the image URL to the stored file path
+                            $image->url = '/storage/' . $imagePath;
+
+                            // Save the image
+                            $image->save();
+
+                            // Attach the image to the product using the pivot table
+                            $product->images()->sync([$image->id]);
+                        }
                     }
                 }
             }
-
-
-            // Update associated discounts
-
 
             DB::commit();
             //!para volver al dashboard, si lo hacemos modal idk quizá back()
@@ -182,9 +187,9 @@ class ProductsController extends Controller
     {
         $whishlistsController = new WhishlistsController();
         $mostFavorited = $whishlistsController->getMostFavoritedProducts();
-        
+
         $products = Product::where('show', true)->paginate(10);
-        return view('auth.dashboard', @compact('products') , compact('mostFavorited'));
+        return view('auth.dashboard', @compact('products'), compact('mostFavorited'));
     }
 
     //! VER PRODUCTOS USER

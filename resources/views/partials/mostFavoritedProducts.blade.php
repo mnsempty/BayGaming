@@ -18,8 +18,6 @@
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->developer }}</td>
                         <td>{{ $product->platform }}</td>
-                        <td>
-                        </td>
                     </tr>
                 @endforeach
             </tbody>
