@@ -100,15 +100,9 @@ class WhishlistsController extends Controller
     }
 
 
-    public function mostFavoritedProducts()
+    public function getMostFavoritedProducts()
     {
         // Get all the products sorted in descending order
-        $mostFavorited = Product::withCount('wishlists')->orderByDesc('wishlists_count')->take(10)->get();
-
-        // Get all the products
-        $allProducts = Product::all(); // O cualquier otro método que uses para obtener la lista de productos
-
-        // Retornar la vista con los datos
-        return view('auth.dashboard', ['mostFavorited' => $mostFavorited, 'allProducts' => $allProducts]);
+        return Product::whereHas('wishlists')->withCount('wishlists')->orderByDesc('wishlists_count')->take(10)->get();
     }
 }

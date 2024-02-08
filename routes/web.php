@@ -92,7 +92,6 @@ Route::group(['middleware' => 'admin'], function () {
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
-    Route::get('/dashboard/favorited', [WhishlistsController::class, 'mostFavoritedProducts'])->name('dashboard.favorited');
 });
 
 Route::get('/forbidden', function () {

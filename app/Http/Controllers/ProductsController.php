@@ -180,8 +180,11 @@ class ProductsController extends Controller
 
     public function listFew()
     {
+        $whishlistsController = new WhishlistsController();
+        $mostFavorited = $whishlistsController->getMostFavoritedProducts();
+        
         $products = Product::where('show', true)->paginate(10);
-        return view('auth.dashboard', @compact('products'));
+        return view('auth.dashboard', @compact('products') , compact('mostFavorited'));
     }
 
     //! VER PRODUCTOS USER

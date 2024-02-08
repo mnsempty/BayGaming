@@ -63,67 +63,9 @@
         @endif
     </table>
 
-    <!-- Sección para mostrar la lista de productos favoritos -->
-<div class="container mt-4">
-    <h2>Productos más favoritos</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Desarrollador</th>
-                <th>Plataforma</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($products)
-                @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->developer }}</td>
-                        <td>{{ $product->platform }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="4">No hay productos favoritos disponibles.</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-</div>
+    <!-- Añadir la tabla con los productos más favoritos-->
+    @include('partials.mostFavoritedProducts')
 
-<!-- Sección para mostrar la lista de todos los productos -->
-<div class="container mt-4">
-    <h2>Lista de Productos</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Desarrollador</th>
-                <th>Plataforma</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($allProducts)
-                @foreach ($allProducts as $product)
-                    <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->developer }}</td>
-                        <td>{{ $product->platform }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="4">No hay productos disponibles.</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-</div>
 
 
     <!-- Modal de creación de productos -->
