@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('address');
             $table->string('secondary_address')->nullable();
-            $table->string('tax_code');
+            $table->string('zip');
             $table->string('country');
             $table->string('telephone_number')->nullable();
             $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();

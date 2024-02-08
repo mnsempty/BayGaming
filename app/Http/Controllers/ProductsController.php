@@ -88,7 +88,6 @@ class ProductsController extends Controller
             'images.*' => 'sometimes|required',
             'discount' => 'sometimes|integer|min:0|max:100',
         ]);
-        // dd($request->all());
         try {
             DB::beginTransaction();
             $product = Product::findOrFail($id);
@@ -104,7 +103,7 @@ class ProductsController extends Controller
             $product->save();
             //!en caso de que no tenga se hace insert
             $discount = $product->discounts->first();
-            // dd($product->discounts->first());
+             dd($product->discounts->first());
 
             $discount->percent = $request['discount'] ?? $discount->percent;
             $discount->save();

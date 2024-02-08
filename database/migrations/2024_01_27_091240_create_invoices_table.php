@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            // $table->string('invoice_number');
+            //$table->string('invoice_number');
             $table->date('date');
             // $table->date('due_date');
-            // $table->enum('status', ['pending', 'paid']);
             $table->decimal('subtotal', 8, 2);
             // $table->decimal('tax', 8, 2);
-            // $table->string('payment_method');
             $table->foreignId('orders_id')->references("id")->on("orders");
             $table->timestamps();
         });

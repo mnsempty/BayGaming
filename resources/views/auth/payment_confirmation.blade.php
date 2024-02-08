@@ -61,6 +61,23 @@
                     </div>
                 </form>
             </div>
+            {{-- test --}}
+            <div class="col-md-7 col-lg-8">
+                <div class="card w-50">
+                    <div class="card-body">
+                        <h5 class="card-title">User Address</h5>
+                        <p class="card-text">
+                            <strong>Address:</strong> 123 Main St<br>
+                            <strong>Zip Code:</strong> 90210<br>
+                            <strong>Country:</strong> United States
+                        </p>
+                        <!-- Add buttons or links as needed -->
+                        <a href="#" class="btn btn-primary">Edit Address</a>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-success mb-3">Add New Address</button>
+
             {{-- direcciones --}}
             <div class="col-md-7 col-lg-8">
                 <h4 class="mb-3">Billing address</h4>
@@ -87,21 +104,9 @@
                         </div>
 
                         <div class="col-12">
-                            <label for="username" class="form-label">Username</label>
-                            <div class="input-group has-validation">
-                                <span class="input-group-text">@</span>
-                                <input type="text" class="form-control" id="username" placeholder="Username"
-                                    required="">
-                                <div class="invalid-feedback">
-                                    Your username is required.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <label for="email" class="form-label">Phone <span
+                            <label for="telephone_number" class="form-label">Phone <span
                                     class="text-body-secondary">(Optional)</span></label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                            <input type="number" class="form-control" id="telephone_number" placeholder="472410399">
                             <div class="invalid-feedback">
                                 Please enter a valid email address for shipping updates.
                             </div>
@@ -109,25 +114,44 @@
 
                         <div class="col-12">
                             <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" placeholder="1234 Main St"
-                                required="">
+                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
                             <div class="invalid-feedback">
                                 Please enter your shipping address.
                             </div>
                         </div>
 
                         <div class="col-12">
-                            <label for="address2" class="form-label">Address 2 <span
+                            <label for="secondary_address" class="form-label">Address<span
                                     class="text-body-secondary">(Optional)</span></label>
-                            <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                            <input type="text" class="form-control" id="secondary_address"
+                                placeholder="Apartment or suite">
                         </div>
 
                         <div class="col-md-5">
                             <label for="country" class="form-label">Country</label>
-                            <select class="form-select" id="country" required="">
+                            <select class="form-select" id="country" required>
                                 <option value="">Choose...</option>
                                 <option>United States</option>
+                                <option>China</option>
+                                <option>India</option>
+                                <option>Japan</option>
+                                <option>Germany</option>
+                                <option>United Kingdom</option>
+                                <option>Russia</option>
+                                <option>France</option>
+                                <option>Brazil</option>
+                                <option>Italy</option>
+                                <option>Canada</option>
+                                <option>South Korea</option>
+                                <option>Australia</option>
+                                <option>Spain</option>
+                                <option>Mexico</option>
+                                <option>Indonesia</option>
+                                <option>Netherlands</option>
+                                <option>Saudi Arabia</option>
+                                <option>Turkey</option>
                             </select>
+
                             <div class="invalid-feedback">
                                 Please select a valid country.
                             </div>
@@ -135,14 +159,22 @@
 
                         <div class="col-md-3">
                             <label for="zip" class="form-label">Zip</label>
-                            <input type="text" class="form-control" id="zip" placeholder="" required="">
+                            <input type="text" class="form-control" id="zip" placeholder="" required>
                             <div class="invalid-feedback">
                                 Zip code required.
                             </div>
                         </div>
+                        <hr class="my-4">
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="same-address">
+                            <label class="form-check-label" for="same-address">Not save the direcction</label>
+                        </div>
+
+                        <hr class="my-4">
+
                     </div>
 
-                    <hr class="my-4">
                     <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
                         data-bs-target="#buyAndReturnModal">
                         Comprar
