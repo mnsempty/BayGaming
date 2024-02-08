@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class AddressesController extends Controller
 {
+    //!save address un table and orders
     public function saveAddress(Request $request)
     {
         // Validar los datos del formulario
@@ -16,7 +17,7 @@ class AddressesController extends Controller
             'address' => 'required',
             // Agrega aquí las reglas de validación para los demás campos
         ]);
-    
+        //todo en user guardar 
         // Crear o actualizar la dirección en la base de datos
         // Asegúrate de que tienes un modelo Address y que los campos coinciden con los del formulario
         $address = new Address();
@@ -31,8 +32,9 @@ class AddressesController extends Controller
     
         // Obtener el ID del pedido de la sesión
         $orderId = session('orderId');
-    
-        // Redirigir a la ruta 'send.invoice' con el ID del pedido
-        return redirect()->route('send.invoice', ['order' => $orderId]);
+        
+        // Redirigir a landing
+        // return redirect()->route('send.invoice', ['order' => $orderId]);
+        return null;
     }
 }

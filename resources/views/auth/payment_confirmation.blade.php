@@ -23,7 +23,7 @@
                     $subtotal += $product->price * $product->pivot->quantity;
                 }
             @endphp
-
+            {{-- resumen compras --}}
             <div class="col-md-5 col-lg-4 order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">Resumen de compra</span>
@@ -63,24 +63,26 @@
             </div>
             {{-- test --}}
             <div class="col-md-7 col-lg-8">
-                <div class="card w-50">
+                @foreach ($addresses as $address)
+                <div class="card w-50 mb-3">
                     <div class="card-body">
                         <h5 class="card-title">User Address</h5>
                         <p class="card-text">
-                            <strong>Address:</strong> 123 Main St<br>
-                            <strong>Zip Code:</strong> 90210<br>
-                            <strong>Country:</strong> United States
+                            <strong>Address:</strong> {{ $address->address }}<br>
+                            <strong>Zip Code:</strong> {{ $address->zip }}<br>
+                            <strong>Country:</strong> {{ $address->country }}
                         </p>
                         <!-- Add buttons or links as needed -->
-                        <a href="#" class="btn btn-primary">Edit Address</a>
+                        {{-- <a href="{{ route('address.edit', $address->id) }}" class="btn btn-primary">Edit Address</a> --}}
                     </div>
                 </div>
+            @endforeach
             </div>
             <button type="button" class="btn btn-success mb-3">Add New Address</button>
 
             {{-- direcciones --}}
             <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Billing address</h4>
+                <h4 class="mb-3">Order address</h4>
                 <form class="needs-validation" action="{{ route('address.create') }}" method="post">
                     @csrf
                     @method('POST')

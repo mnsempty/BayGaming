@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrdersController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -47,16 +48,19 @@ Route::get('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('ca
 // Ruta para actualizar la cantidad de un producto en el carrito
 Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
 
+//todo orders
 // Lleva a la confirmacion de pago (funcion)
-Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+Route::get('/payment-confirmation/{order}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
 
-// Lleva a la confirmacion de pago de pago (modal)
-Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
-
+// Lleva a la vista de pagar
+Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+//todo rutas de direcciones
 // ruta para guardar datos de dirección
 Route::post('/saveAddress', [AddressesController::class, 'saveAddress'])->name('address.create');
-//todo RUTA PARA ENVIAR FACTURA TEST
-Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
+//todo rutas de invoices
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
+//Ruta para crear invoices
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
