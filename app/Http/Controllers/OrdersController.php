@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
-        //! en verdad lleva a la order puesto que no hay pagos reales ni guardamos datos de pago
+    //! en verdad lleva a la order puesto que no hay pagos reales ni guardamos datos de pago
     public function proceedToPayment(Request $request)
     {
         // Obtén el carrito del usuario actual
         $cart = Cart::where('users_id', auth()->id())->first();
-
-        // Busca una orden existente para el usuario
-        $order = Order::where('users_id', auth()->id())->first();
 
         //guardamos los datos de la dirección del pedido en un string para evitar que al
         //borrar un pedido se borren
@@ -30,32 +29,18 @@ class OrdersController extends Controller
                 ],
          */
         // Si no hay una orden existente, crea una nueva
-        if (!$order) {
-            $user = auth()->user();
-            $orderData = [
-                'user' => [
-                    'real_name' => $user->real_name,
-                    'surname' => $user->surname,
-                ],
 
-            ];
-            $serializedOrderData = json_encode($orderData);
-            $order = Order::create([
-                'users_id' => auth()->id(),
-                'state' => 'processing',
-                'orderData' => $serializedOrderData,
-                'total' => 0
-            ]);
-        }
+        $order = Order::create([
+            'users_id' => auth()->id(),
+            'state' => 'processing',
+            'total' => 0
+        ]);
         // Calcula el total de la orden y añade los productos del carrito a la orden
         $total = 0;
         foreach ($cart->products as $product) {
             $quantity = $product->pivot->quantity;
             $subtotal = $product->price * $quantity;
             $total += $subtotal;
-
-            // Verifica si el producto ya está en la orden
-            $existingProduct = $order->products()->where('products.id', $product->id)->first();
 
             // Verifica si el producto ya está en la orden
             $existingProduct = $order->products()->where('products.id', $product->id)->first();
@@ -81,10 +66,8 @@ class OrdersController extends Controller
         // Limpia el carrito
         $cart->products()->detach();
         //! no encuenta datos
-        $addresses = auth()->user()->addresses;
 
-        // Redirige al usuario a la vista de confirmación de pago
-        return redirect()->route('payment.confirmation', ['order' => $order->id, 'addresses' => $addresses]);
+        return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
 
 
@@ -95,8 +78,48 @@ class OrdersController extends Controller
         if ($order->users_id !== auth()->id()) {
             abort(403, 'Acceso no autorizado.');
         }
+        $addresses = auth()->user()->addresses;
 
         // Pasa la orden a la vista
-        return view('auth.payment_confirmation', compact('order'));
+        return view('auth.payment_confirmation', compact('order', 'addresses'));
+    }
+    // OrdersController.php
+
+    public function saveOrder($addressId)
+    {
+
+        // Buscar la dirección en la base de datos
+        $address = Address::findOrFail($addressId);
+
+        // Obtener el ID de la orden de la sesión
+        $orderId = session('orderId');
+        try {
+            DB::beginTransaction();
+            // Buscar la orden en la base de datos
+            $order = Order::findOrFail($orderId);
+            $user = $order->user;
+            // Preparar los datos de la dirección para actualizar orderData
+            $orderData = [
+                'user' => [
+                    'real_name' => $user->real_name, // Asegúrate de que estos campos existan en tu modelo Address
+                    'surname' => $user->surname, // Asegúrate de que estos campos existan en tu modelo Address
+                ],
+                'address' => [
+                    'address' => $address->address,
+                    'secondary_address' => $address->secondary_address,
+                    'country' => $address->country,
+                    'zip' => $address->zip,
+                ],
+            ];
+
+            // Actualizar orderData en la orden
+            $order->orderData = json_encode($orderData);
+            $order->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['message' => 'Error al guardar las orders: ' . $e->getMessage()]);
+        }
+        return redirect()->route('create.invoice', ['order' => $orderId]);
     }
 }

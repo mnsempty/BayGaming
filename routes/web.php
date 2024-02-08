@@ -55,8 +55,13 @@ Route::get('/payment-confirmation/{order}', [OrdersController::class, 'showPayme
 // Lleva a la vista de pagar
 Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
 //todo rutas de direcciones
-// ruta para guardar datos de dirección
-Route::post('/saveAddress', [AddressesController::class, 'saveAddress'])->name('address.create');
+// ruta para guardar datos o no de dirección y además crear order y factura
+Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name('address.create');
+// ruta para con una direccion dada crear datos de order y factura
+Route::post('/order/save/{addressId}', [OrdersController::class, 'saveOrder'])->name('order.save');
+
+Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
+
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices

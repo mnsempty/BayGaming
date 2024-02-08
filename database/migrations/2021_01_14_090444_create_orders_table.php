@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
-            $table->string('orderData',  1000)->default("texnull");
+            $table->text('orderData')->default('void');
             $table->decimal('total',10,2);
             $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
             $table->timestamps();
