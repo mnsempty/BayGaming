@@ -69,7 +69,7 @@ Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
 // update dirección dado un id, != a la anterior por miedo a represalias
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
-Route::get('/order',[OrdersController::class,'showMyOrders'])->name('orders.show');
+Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices

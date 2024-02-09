@@ -15,23 +15,42 @@ class OrdersTableSeeder extends Seeder
     {
         Order::create([
             'state' => 'pending',
-            'orderData'=> 'Nombre2 del2 Cliente2: Juan Pérez2
-            Dirección2 de Envío2: Calle Principal, 123, Ciudad, País
-            Correo2 Electrónico2: juanperez@example.com
-            Teléfono2: +1234567890',
+            'orderData' => '{
+                "user": {
+                    "real_name": "María Rodríguez",
+                    "surname": "García"
+                },
+                "address": {
+                    "address": "Avenida de América,  456, Madrid, España",
+                    "secondary_address": "Piso  3, Puerta  5",
+                    "country": "España",
+                    "zip": "28001",
+                    "telephone_number": "+34912345678"
+                }
+            }
+            ',
             'total' => 100.00,
             'users_id' => 1,
         ]);
 
         Order::create([
             'state' => 'completed',
-            'orderData'=> 'Nombre del Cliente: Juan Pérez
-            Dirección de Envío: Calle Principal, 123, Ciudad, País
-            Correo Electrónico: juanperez@example.com
-            Teléfono: +1234567890',
+            'orderData' => '{
+                "user": {
+                    "real_name": "Juan Pérez2",
+                    "surname": ""
+                },
+                "address": {
+                    "address": "Calle Principal,   123, Ciudad, País",
+                    "secondary_address": null,
+                    "country": "",
+                    "zip": "",
+                    "telephone_number": "+1234567890"
+                }
+            }
+            ',
             'total' => 200.00,
             'users_id' => 2,
         ]);
-
     }
 }

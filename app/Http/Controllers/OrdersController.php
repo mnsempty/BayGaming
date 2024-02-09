@@ -131,7 +131,7 @@ class OrdersController extends Controller
         $orders = Order::where('users_id', $userId)->get();
     
         // Devuelve la vista con las órdenes del usuario
-        return view('auth.orders', compact('orders'));
+        return view('auth.my_orders', compact('orders'));
     }
     public function showAllOrders() {
         
