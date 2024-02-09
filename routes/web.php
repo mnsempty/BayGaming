@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CartsController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrdersController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -42,7 +44,7 @@ Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name(
 Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list');
 
 //! RUTA PARA BORRAR PRODUCTOS CARRITO
-Route::delete('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
+Route::get('/delete/{id}', [CartsController::class, 'deleteProducts'])->name('cart.delete');
 
 // Ruta para actualizar la cantidad de un producto en el carrito
 Route::put('/cart/update/{product}', [CartsController::class, 'updateProductQuantity'])->name('cart.update');
@@ -52,13 +54,21 @@ Route::post('/wishlist/add/{product_id}', [WhishlistsController::class, 'addToWi
 Route::post('/wishlist/remove/{product_id}', [WhishlistsController::class, 'removeFromWishlist'])->name('wishlist.remove');
 Route::get('/wishlist/load', [WhishlistsController::class, 'showWishlist'])->name('wishlist.load');
 Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'toggleWishlist'])->name('wishlist.toggle');
-Route::get('/payment-confirmation/{order}', [CartsController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+Route::get('/payment-confirmation/{order}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+// Lleva a la vista de pagar
+Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+//todo rutas de direcciones
+// ruta para guardar datos o no de dirección y además crear order y factura
+Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name('address.create');
+// ruta para con una direccion dada crear datos de order y factura
+Route::post('/order/save/{addressId}', [OrdersController::class, 'saveOrder'])->name('order.save');
 
-// Lleva a la confirmacion de pago de pago (modal)
-Route::post('/proceed-to-payment', [CartsController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
 
-//todo RUTA PARA ENVIAR FACTURA TEST
-Route::get('/send-invoice/{order}', [InvoicesController::class, 'createAndSendInvoice'])->name('send.invoice');
+//todo rutas de invoices
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
+//Ruta para crear invoices
+Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');

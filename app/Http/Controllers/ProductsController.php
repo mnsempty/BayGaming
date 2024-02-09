@@ -81,22 +81,21 @@ class ProductsController extends Controller
     //todo test
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'name' => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'price' => 'sometimes|required',
+            'stock' => 'sometimes|required',
+            'developer' => 'sometimes|required',
+            'publisher' => 'sometimes|required',
+            'platform' => 'sometimes|required',
+            'launcher' => 'sometimes|nullable',
+            'images.*' => 'sometimes|required',
+            'discount' => 'sometimes|integer|min:0|max:100',
+        ]);
         try {
             DB::beginTransaction();
-
-            $request->validate([
-                'name' => 'sometimes|required',
-                'description' => 'sometimes|required',
-                'price' => 'sometimes|required',
-                'stock' => 'sometimes|required',
-                'developer' => 'sometimes|required',
-                'publisher' => 'sometimes|required',
-                'platform' => 'sometimes|required',
-                'launcher' => 'sometimes|nullable',
-                'images.*' => 'sometimes|required',
-                'discount' => 'nullable|integer|min:0|max:100',
-            ]);
-
             $product = Product::findOrFail($id);
             $product->name = $request->name;
             $product->description = $request->description;
@@ -108,9 +107,10 @@ class ProductsController extends Controller
             $product->platform = $request->platform;
             $product->launcher = $request->launcher;
             $product->save();
-
             //!en caso de que no tenga se hace insert
             $discount = $product->discounts->first();
+            //  dd($product->discounts->first());
+
             $discount->percent = $request['discount'] ?? $discount->percent;
             $discount->save();
 

@@ -49,5 +49,5 @@ https://codersfree.com/courses-status/aprende-laravel-avanzado/grupo-de-rutas
             abort(403, 'Acceso no autorizado.');
         }
     }
-# ver vista de errores
+# ver vistas de errores
 ```PS C:\xampp\htdocs\BayGaming> php artisan vendor:publish --tag=laravel-errors```
