@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class AddressesController extends Controller
 {
@@ -83,7 +84,45 @@ class AddressesController extends Controller
         // return redirect()->route('send.invoice', ['order' => $orderId]);
         return redirect()->route('create.invoice', ['order' => $orderId]);
     }
+    public function updateAddress(Request $request, $id)
+    {
+        try{
+        $request->validate([
+            'address' => 'required',
+            'secondary_address' => 'nullable',
+            'telephone_number' => 'nullable',
+            'country' => 'required',
+            'zip' => 'required',
+        ]);
+    } catch(ValidationException $ev){
+        return back()->withErrors(['message' => 'Error de validación.'. $ev->getMessage()]);
+    }
+    try {
+        DB::beginTransaction();
 
+        // Encuentra la dirección por su ID y actualiza los datos
+        $address = Address::findOrFail($id);
+        $address->address= $request->address;
+        $address->secondary_address= $request->secondary_address;
+        $address->telephone_number = $request->telephone_number;
+        $address->country= $request->country;
+        $address->zip= $request->zip;
+        $address->save();
+        // Redirige al usuario con un mensaje de éxito
+        DB::commit();
+        // Redirigir al usuario a la página de éxito
+        return back()->with('success', 'Dirección actualizada con éxito.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withErrors(['message' => 'Error al modificar la dirección.'. $e->getMessage()]);
+    }
+        
+    }
+    public function showAddress($addressId) {
+        $address = Address::findOrFail($addressId);
+         return response()->json($address);
+    }
+    
     public function deleteAddress($addressId)
     {
         // Buscar la dirección en la base de datos

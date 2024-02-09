@@ -63,7 +63,7 @@
                     </div>
                 </form>
             </div>
-            {{-- test --}}
+            {{-- panel direcciones --}}
             <div class="col-md-7 col-lg-6 order-md-1">
                 @foreach ($addresses as $address)
                     <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post">
@@ -79,14 +79,65 @@
                                 </p>
                             </div>
                             <!-- Botón de comprar dentro de la tarjeta -->
-                            <a class="btn btn-danger bi bi-trash3-fill" href="{{route('addresses.delete', ['addressId' => $address->id])}}">Eliminar address</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#editAddressModal" onclick="loadAddressData({{ $address->id }})">
+                                Editar datos
+                            </button>
+                            <a class="btn btn-danger bi bi-trash3-fill"
+                                href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Eliminar address</a>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Buy</button>
                             </div>
                         </div>
                     </form>
                 @endforeach
-
+                {{-- editar datos direcciones --}}
+                <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAddressModalLabel">Editar Dirección</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editAddressForm"
+                                     method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="editAddress" class="form-label">Dirección</label>
+                                        <input type="text" class="form-control" id="editAddress" name="address" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editSecondaryAddress" class="form-label">Dirección Secundaria</label>
+                                        <input type="text" class="form-control" id="editSecondaryAddress"
+                                            name="secondary_address">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editTelephoneNumber" class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control" id="editTelephoneNumber" name="telephone_number">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editCountry" class="form-label">País</label>
+                                        <input type="text" class="form-control" id="editCountry" name="country" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editZip" class="form-label">Código Postal</label>
+                                        <input type="text" class="form-control" id="editZip" name="zip" required>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary" form="editAddressForm">Guardar
+                                    Cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- boton nuevas direcciones --}}
                 <button type="button" class="btn btn-primary w-100 bi bi-plus" data-bs-toggle="collapse"
                     data-bs-target="#orderAddressDiv" aria-expanded="false" aria-controls="orderAddressDiv"
                     id="newAddressToggle">
@@ -226,4 +277,25 @@
             </div>
         </div>
     </main>
+    {{--!DANGER NINO NINO NINO  --}}
+    <script>
+        function loadAddressData(addressId) {
+            // Realiza una solicitud AJAX para obtener los datos de la dirección
+            fetch('/addresses/' + addressId)
+                .then(response => response.json())
+                .then(data => {
+                    // Llena los campos del formulario en el modal con los datos de la dirección
+                    document.getElementById('editAddress').value = data.address;
+                    document.getElementById('editSecondaryAddress').value = data.secondary_address;
+                    document.getElementById('editTelephoneNumber').value = data.telephone_number;
+                    document.getElementById('editCountry').value = data.country;
+                    document.getElementById('editZip').value = data.zip;
+                    document.getElementById('editAddressForm').action = '/addresses/update/' + data.id;
+
+                })
+                .catch(error => {
+                    console.error('Error de recogida de datos:', error);
+                });
+        }
+    </script>
 @endsection

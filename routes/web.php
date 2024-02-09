@@ -55,16 +55,21 @@ Route::post('/wishlist/remove/{product_id}', [WhishlistsController::class, 'remo
 Route::get('/wishlist/load', [WhishlistsController::class, 'showWishlist'])->name('wishlist.load');
 Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'toggleWishlist'])->name('wishlist.toggle');
 Route::get('/payment-confirmation/{order}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
-// Lleva a la vista de pagar
+// Lleva a la vista de pagar/checkout
 Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
 //todo rutas de direcciones
 // ruta para guardar datos o no de dirección y además crear order y factura
 Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name('address.create');
-// ruta para con una direccion dada crear datos de order y factura
+// idem anterior pero sin la parte de crear address, dado un address actualiza order y factura
 Route::post('/order/save/{addressId}', [OrdersController::class, 'saveOrder'])->name('order.save');
 
 Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
-
+// datos de tabla direcciones dado un id
+Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
+// update dirección dado un id, != a la anterior por miedo a represalias
+Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
+//todo ruta de orders
+Route::get('/order',[OrdersController::class,'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices

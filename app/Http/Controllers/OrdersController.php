@@ -78,12 +78,12 @@ class OrdersController extends Controller
         if ($order->users_id !== auth()->id()) {
             abort(403, 'Acceso no autorizado.');
         }
+        // direcciones para la tabla de direcciones
         $addresses = auth()->user()->addresses;
 
         // Pasa la orden a la vista
         return view('auth.payment_confirmation', compact('order', 'addresses'));
     }
-    // OrdersController.php
 
     public function saveOrder($addressId)
     {
@@ -121,5 +121,19 @@ class OrdersController extends Controller
             return back()->withErrors(['message' => 'Error al guardar las orders: ' . $e->getMessage()]);
         }
         return redirect()->route('create.invoice', ['order' => $orderId]);
+    }
+    public function showMyOrders()
+    {
+        // Obtén el ID del usuario autenticado
+        $userId = auth()->id();
+    
+        // Busca las órdenes del usuario autenticado
+        $orders = Order::where('users_id', $userId)->get();
+    
+        // Devuelve la vista con las órdenes del usuario
+        return view('auth.orders', compact('orders'));
+    }
+    public function showAllOrders() {
+        
     }
 }
