@@ -88,19 +88,15 @@ Route::post('/language', [LanguageController::class, 'change'])->name('language.
 Route::group(['middleware' => 'admin'], function () {
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
 
-    // Ruta para la vista de productos
-    Route::get('/dashboard/products', [ProductsController::class, 'listFew'])->name('dashboard.products');
-    
-    // Ruta para la vista de categorías    
-    Route::get('/dashboard/categories', [CategoriesController::class, 'listAll'])->name('dashboard.categories');
+    // Ruta para la vista de productos y categorias
+    Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard.products');
 
-    Route::get('/dashboard', function () {
-        return view('auth.dashboard');
-    })->name('dashboard');
-    
+    //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
+
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
+
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
 

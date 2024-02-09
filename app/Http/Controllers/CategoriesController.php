@@ -11,6 +11,6 @@ class CategoriesController extends Controller
     public function listAll()
     {
         $categories = Category::paginate(5);
-        return view('auth.categories', compact('categories'));
+        // return view('auth.categories', compact('categories'));
     }
 }

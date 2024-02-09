@@ -181,7 +181,8 @@ class ProductsController extends Controller
     public function listFew()
     {
         $products = Product::where('show', true)->paginate(10);
-        return view('auth.products', compact('products'));
+        $categories = Category::paginate(5);
+        return view('auth.dashboard', ['products' => $products, 'categories' => $categories]);
     }
 
     // Método para mostrat dettalles de productos
