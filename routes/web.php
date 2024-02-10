@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Category;
 
 use App\Http\Controllers\ProductsController; //delete
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WhishlistsController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,12 +70,19 @@ Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
 // update dirección dado un id, != a la anterior por miedo a represalias
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
+// ver orders de un user
 Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
-
+//todo ruta provisional edit profile
+Route::post('/editProfile',[UsersController::class,'updateProfile'])->name('profile.edit');
+Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile.show');
+//! solamente por comodidad
+Route::get('/profile',function(){
+    return view('auth.editProfile');
+});
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 

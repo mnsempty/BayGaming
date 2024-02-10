@@ -133,7 +133,7 @@ class OrdersController extends Controller
         // Devuelve la vista con las órdenes del usuario
         return view('auth.my_orders', compact('orders'));
     }
-    public function showAllOrders()
-    {
-    }
+    // public function showAllOrders() {
+        
+    // }
 }

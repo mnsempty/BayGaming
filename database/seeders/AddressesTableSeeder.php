@@ -15,7 +15,7 @@ class AddressesTableSeeder extends Seeder
     {
         Address::create([
             'address' => '123 Callejón Nogalada',
-            'secondary_address' => '1234 te mato',
+            'secondary_address' => '1234 seida',
             'zip' => '41020',
             'country' => 'USA',
             'telephone_number' => '123456789',
@@ -23,7 +23,7 @@ class AddressesTableSeeder extends Seeder
         ]);
         Address::create([
             'address' => '123 Callejón2 Nogalada2',
-            'secondary_address' => '1234 te mato',
+            'secondary_address' => '1234 juan',
             'zip' => '41020',
             'country' => 'USA',
             'telephone_number' => '123456789',
@@ -31,7 +31,7 @@ class AddressesTableSeeder extends Seeder
         ]);
         Address::create([
             'address' => '123 Callejón3 Nogalada3',
-            'secondary_address' => '1234 te mato',
+            'secondary_address' => '1234 ',
             'zip' => '41020',
             'country' => 'USA',
             'telephone_number' => '123456789',
