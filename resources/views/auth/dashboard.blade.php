@@ -23,13 +23,30 @@
                         {{ session('mensaje') }}
                     </div>
                 @endif
-                <!-- Botón para abrir el modal de creación de productos -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProductModal">
-                    Create
-                </button>
+                <div class="row align-items-center">
+                    <!-- Button for opening the product creation modal -->
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#createProductModal">
+                            Create
+                        </button>
+                    </div>
+                    <!-- Single Toggle Switch for Showing Deleted Products -->
+                    <div class="col-auto">
+                        <div class="form-check form-switch mt-3">
+                            <input class="form-check-input" type="checkbox" id="filterToggle">
+                            <label class="form-check-label" for="filterToggle">Show Deleted Products</label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
+
+
+
     <table class="container table table-bordered">
         <tr>
             <th>Name</th>
@@ -65,6 +82,16 @@
 
     <!-- Añadir la tabla con los productos más favoritos-->
     @include('partials.mostFavoritedProducts')
+
+
+    <!-- "PRODUCTOS ELIMINADOS" -->
+    <div class="container mt-4">
+        <h2 class="mb-3">Productos eliminados</h2>
+        <div id="productTableContainer" style="display: none;">
+            <!-- La tabla se rellena aquí mediante JavaScript -->
+        </div>
+    </div>
+
 
 
 

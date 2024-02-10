@@ -1,4 +1,3 @@
-<!-- resources/views/partials/most_favorited_products.blade.php -->
 @if ($mostFavorited)
     <div class="container mt-4">
         <h2>Productos más favoritos</h2>

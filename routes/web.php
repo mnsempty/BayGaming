@@ -89,6 +89,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
+    Route::post('/products/toggleStatus/{id}', [ProductsController::class, 'toggleStatus'])->name('products.toggleStatus');
+    Route::get('/products/fetchDeleted', [ProductsController::class, 'fetchDeleted'])->name('products.fetchDeleted');
+
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');

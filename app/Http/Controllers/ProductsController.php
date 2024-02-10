@@ -192,6 +192,23 @@ class ProductsController extends Controller
         return view('auth.dashboard', @compact('products'), compact('mostFavorited'));
     }
 
+    public function toggleStatus(Request $request, $id)
+    {
+        $product = Product::findOrFail($request->product_id);
+        $product->is_active = $request->status;
+        $product->save();
+
+        return response()->json(['message' => 'Status updated successfully.']);
+    }
+
+    public function fetchDeleted(Request $request)
+    {
+        $products = Product::where('show', false)->get();
+        return response()->json($products);
+    }
+
+
+
     //! VER PRODUCTOS USER
     public function listFewL()
     {

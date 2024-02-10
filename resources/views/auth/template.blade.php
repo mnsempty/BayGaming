@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css" />
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
@@ -74,26 +76,8 @@
     </div>
 
     <!-- Se ha intentado enlazar un js con mix no se que y no he podido-->
-    <script>
-        $(document).ready(function() {
-            $('#wishlistModal').on('show.bs.modal', function() {
-                $.ajax({
-                    url: '/wishlist/load',
-                    method: 'GET',
-                    success: function(response) {
-                        var wishlistItems = '';
-                        $.each(response.wishlist.products, function(key, product) {
-                            wishlistItems += '<li>' + product.name + '</li>';
-                        });
-                        $('#wishlistItems').html(wishlistItems);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error loading wishlist: ', error);
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('js/showWishlist.js') }}"></script>
+    <script src="{{ asset('js/showDeletedProducts.js') }}"></script>
 </body>
 
 </html>
