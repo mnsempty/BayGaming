@@ -10,12 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class InvoicesController extends Controller
 {
-    public function createAndSendInvoice($orderId)
+    public function createInvoice($orderId)
     {
+
         try {
             DB::beginTransaction();
-
-
             // Buscar la orden por ID
             $order = Order::findOrFail($orderId);
 
@@ -27,14 +26,31 @@ class InvoicesController extends Controller
             $invoice->save();
 
             // Notificar al usuario por correo electrónico
-            $order->user->notify(new InvoicePaid($invoice));
+            // $order->user->notify(new InvoicePaid($invoice));
 
             DB::commit();
             // Redirigir al usuario a la página de éxito
-            return back()->with('success', 'mail enviado');
+            return back()->with('success', 'Factura creada');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors(['message' => 'Error al crear la factura.'. $e->getMessage()]);
         }
     }
+    //todo check
+    public function sendInvoice($orderId){
+        try {
+            DB::beginTransaction();
+            $order = Order::findOrFail($orderId);
+            $invoiceId = $order->invoice->id;
+            $order->user->notify(new InvoicePaid($invoiceId));
+
+            DB::commit();
+            // Redirigir al usuario a la página de éxito
+            return back()->with('success', 'mail enviado');
+        } catch (\exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['message' => 'Error al enviar la factura.'. $e->getMessage()]);
+        }
+    }
+
 }

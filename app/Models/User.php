@@ -63,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //? 1-1
     public function wishlist()
     {
-        return $this->hasOne(Wishlist::class);
+        return $this->hasOne(Wishlist::class, 'users_id'); 
     }
     //? address relation 1-M
     public function products()

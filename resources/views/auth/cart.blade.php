@@ -29,43 +29,45 @@
                 </thead>
                 <tbody>
                     @foreach ($products as $product)
-                        <tr>
-                            <td>{{ $product->name }}</td>
-                            <td>
-                                <form action="{{ route('cart.update', ['product' => $product->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="number" name="quantity" value="{{ $product->pivot->quantity }}" min="1" max="{{ $product->stock }}">
-                                    <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
-                                </form>                               
-                            </td>
-                            <td>${{ number_format($product->price, 2) }}</td>
-                            <td>${{ number_format($product->price * $product->pivot->quantity, 2) }}</td>
-                            <td>
-                                <form action="{{ route('cart.delete', $product->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
+                    <tr>
+                        <td>{{ $product->name }}</td>
+                        <td>
+                            <form action="{{ route('cart.update', ['product' => $product->id]) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" name="action" value="decrement" class="btn btn-sm btn-primary">-</button>
+                                <span id="quantity-{{ $product->id }}">{{ $product->pivot->quantity }}</span>
+                                <button type="submit" name="action" value="increment" class="btn btn-sm btn-primary">+</button>
+                            </form>
+                        </td>
+                        <td>${{ number_format($product->price,  2) }}</td>
+                        <td>${{ number_format($product->price * $product->pivot->quantity,  2) }}</td>
+                        <td>
+                            <form action="{{ route('cart.delete', $product->id) }}" method="get">
+                                @csrf
+                                @method('get')
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
-            </table>
-
-            <?php
-            $total = 0;
-            foreach ($products as $product) {
-                $total += $product->price * $product->pivot->quantity;
-            }
-            ?>
-
-            <div class="text-right">
-                <strong>Total: ${{ number_format($total, 2) }}</strong>
-                <button type="button" class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                    Proceder al Pago
-                </button>
-            </div>
+                </table>
+                
+                <?php
+                $total =  0;
+                foreach ($products as $product) {
+                    $total += $product->price * $product->pivot->quantity;
+                }
+                ?>
+                
+                <div class="text-right">
+                    <strong>Total: ${{ number_format($total,  2) }}</strong>
+                    <button type="button" class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                        Proceder al Pago
+                    </button>
+                </div>
+                
         @else
             <p>Tu carrito está vacío.</p>
         @endif

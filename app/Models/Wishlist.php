@@ -9,10 +9,15 @@ class Wishlist extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = [
+        'users_id',
+    ];
+
     //? users relation 1-1
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id'); 
     }
 
     //?relation categories M-M

@@ -23,21 +23,28 @@
                         {{ session('mensaje') }}
                     </div>
                 @endif
-                <!-- Botón para abrir el modal de creación de productos -->
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createProductModal">
-                    Create
-                </button>
+                <div class="row align-items-center">
+                    <!-- Button for opening the product creation modal -->
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#createProductModal">
+                            Create
+                        </button>
+                    </div>
+                    <!-- Single Toggle Switch for Showing Deleted Products -->
+                    <div class="col-auto">
+                        <div class="form-check form-switch mt-3">
+                            <input class="form-check-input" type="checkbox" id="filterToggle">
+                            <label class="form-check-label" for="filterToggle">Show Deleted Products</label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-    
-     <!-- Código para mostrar los productos -->
-     <table class="container table table-bordered">
-        <tr>
-            <h4 class="text-center">
-                Productos
-            </h4>
-        </tr>
+
+    <table class="container table table-bordered">
         <tr>
             <th>Name</th>
             <th>Price</th>
@@ -68,9 +75,25 @@
             @endforeach
         @endif
     </table>
-    
+
+    <!-- Añadir la tabla con los productos más favoritos-->
+    @include('partials.mostFavoritedProducts')
+
+
+    <!-- "PRODUCTOS ELIMINADOS" -->
+    <div class="container mt-4">
+        <h2 class="mb-3">Productos eliminados</h2>
+        <div id="productTableContainer" style="display: none;">
+            <!-- La tabla se rellena aquí mediante JavaScript -->
+        </div>
+    </div>
+
+
+
+
     <!-- Modal de creación de productos -->
-    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -160,36 +183,6 @@
             </div>
         </div>
     </div>
-     
-     <!-- Código para mostrar las categorías -->
-     <table class="container table table-bordered">
-        <tr>
-            <h4 class="text-center">
-                Categorias
-            </h4>
-        </tr>
-        <tr>
-            <th>Name</th>
-        </tr>
-        @if (isset($categories))
-            @foreach ($categories as $category)
-                <tr>
-                    <td>{{ $category->id }}</td>
-                    <td>{{ $category->name }}</td>
-                    <td>
-                        {{-- <form action="{{ route('product.delete', $category->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            {{ route('home',$product->id) }}
-                            <a class="btn btn-info" href="show">Show</a>
-                            {{ route('products.edit',$product->id) }}
-                            <a class="btn btn-primary" href="">Edit</a>
-                        </form>  --}}
-                    </td>
-                </tr>
-            @endforeach
-        @endif
-    </table>
 
-    
+
 @endsection
