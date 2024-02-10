@@ -68,7 +68,7 @@
                 @foreach ($addresses as $address)
                     <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post">
                         @csrf
-                        @method('get')
+                        @method('post')
                         <div class="card w-75 mb-3 mt-5">
                             <div class="card-body">
                                 <h5 class="card-title">User Address</h5>

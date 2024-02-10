@@ -47,10 +47,10 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal"  onclick="loadUserData()">
         Editar Perfil
     </button>
+    {{-- todo  <script src="{{ asset('js/showWishlist.js') }}"></script> --}}
     <script defer>
             // Función para cargar los datos del usuario en el modal
             function loadUserData() {
-              console.log("test");
                 // Realiza una solicitud AJAX para obtener los datos del usuario
                 fetch('/userProfile')
                     .then(response => response.json())
