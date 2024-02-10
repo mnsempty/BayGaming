@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,10 @@ class AddressesController extends Controller
                 //guardamos el json_encoded(sin encoded no funca)en la db
                 $order->orderData = $serializedOrderData;
                 $order->save();
+                
+                // Limpia el carrito
+                $cart = Cart::where('users_id', auth()->id())->first();
+                $cart->products()->detach();
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -86,47 +91,47 @@ class AddressesController extends Controller
     }
     public function updateAddress(Request $request, $id)
     {
-        try{
-        $request->validate([
-            'address' => 'required',
-            'secondary_address' => 'nullable',
-            'telephone_number' => 'nullable',
-            'country' => 'required',
-            'zip' => 'required',
-        ]);
-    } catch(ValidationException $ev){
-        return back()->withErrors(['message' => 'Error de validación.'. $ev->getMessage()]);
-    }
-    try {
-        DB::beginTransaction();
+        try {
+            $request->validate([
+                'address' => 'required',
+                'secondary_address' => 'nullable',
+                'telephone_number' => 'nullable',
+                'country' => 'required',
+                'zip' => 'required',
+            ]);
+        } catch (ValidationException $ev) {
+            return back()->withErrors(['message' => 'Error de validación.' . $ev->getMessage()]);
+        }
+        try {
+            DB::beginTransaction();
 
-        // Encuentra la dirección por su ID y actualiza los datos
-        $address = Address::findOrFail($id);
-        $address->address= $request->address;
-        $address->secondary_address= $request->secondary_address;
-        $address->telephone_number = $request->telephone_number;
-        $address->country= $request->country;
-        $address->zip= $request->zip;
-        $address->save();
-        // Redirige al usuario con un mensaje de éxito
-        DB::commit();
-        // Redirigir al usuario a la página de éxito
-        return back()->with('success', 'Dirección actualizada con éxito.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->withErrors(['message' => 'Error al modificar la dirección.'. $e->getMessage()]);
+            // Encuentra la dirección por su ID y actualiza los datos
+            $address = Address::findOrFail($id);
+            $address->address = $request->address;
+            $address->secondary_address = $request->secondary_address;
+            $address->telephone_number = $request->telephone_number;
+            $address->country = $request->country;
+            $address->zip = $request->zip;
+            $address->save();
+            // Redirige al usuario con un mensaje de éxito
+            DB::commit();
+            // Redirigir al usuario a la página de éxito
+            return back()->with('success', 'Dirección actualizada con éxito.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['message' => 'Error al modificar la dirección.' . $e->getMessage()]);
+        }
     }
-        
-    }
-    public function showAddress($addressId) {
+    public function showAddress($addressId)
+    {
         $address = Address::findOrFail($addressId);
-         return response()->json($address);
+        return response()->json($address);
     }
-    
+
     public function deleteAddress($addressId)
     {
         // Buscar la dirección en la base de datos
-        try{
+        try {
             DB::beginTransaction();
             $address = Address::findOrFail($addressId);
 
@@ -137,7 +142,7 @@ class AddressesController extends Controller
             return back()->with('success', 'Dirección eliminada');
         } catch (\exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Error al borrar la dirección.'. $e->getMessage()]);
+            return back()->withErrors(['message' => 'Error al borrar la dirección.' . $e->getMessage()]);
         }
     }
 }
