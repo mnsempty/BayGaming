@@ -21,7 +21,7 @@ class UsersController extends Controller
                 'surname' => 'nullable|string|max:255',
                 'email' => 'required|string|email|max:255',
                 'password' => 'nullable|string|min:8|confirmed',
-                'confirm_password' => 'same:password',
+                'password_confirmation' => 'same:password',
             ]);
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada

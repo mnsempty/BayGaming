@@ -31,7 +31,7 @@
                         <input type="text" id="editSurname" name="surname" class="form-control" placeholder="Apellido">
                         <input type="email" id="editEmail" name="email" class="form-control" placeholder="Email">
                         <input type="password" name="password" class="form-control" placeholder="Contraseña">
-                        <input type="password" name="confirm_password" class="form-control"
+                        <input type="password" name="password_confirmation" class="form-control"
                             placeholder="Confirmar Contraseña">
                     </div>
                     <div class="modal-footer">
