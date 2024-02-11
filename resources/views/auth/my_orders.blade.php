@@ -50,9 +50,9 @@
                                 <a href="{{ route('send.invoice', ['order' => $order->id]) }}"
                                     class="btn btn-primary btn-lg bi bi-file-earmark-arrow-down-fill"></a>
                                 {{-- bi bi-envelope-check-fill --}}
-                                <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill send-invoice-btn"
+                                <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill" data-id-order="{{ $order->id }}"
                                     onclick="sendMail({{ $order->id }})">
-                                 </a>
+                                </a>
                             </td>
                         @else
                             <td colspan="5 justify-content-center">Error en los detalles del pedido</td>
@@ -66,7 +66,8 @@
         function sendMail(orderId) {
             let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
             let url = `/send-invoice/${orderId}`;
-            console.log(url);
+            let enlace = document.querySelector(`a[data-id-order="${orderId}"]`);
+            console.log(enlace);
 
             fetch(url, {
                     method: 'GET',
@@ -79,9 +80,9 @@
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    if (response.ok) {
-                        console.log("funca");
-                    }
+                    enlace.classList.remove('btn-primary','bi-envelope-arrow-down-fill');
+                    enlace.classList.add('btn-success','bi-envelope-check-fill');
+
                 })
                 .catch(error => {
                     console.error('Error al enviar la factura:', error);

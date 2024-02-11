@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Notifications\InvoicePaid;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,15 @@ class InvoicesController extends Controller
         try {
             DB::beginTransaction();
             $order = Order::findOrFail($orderId);
+
+            if (auth()->id() !== $order->user_id) {
+                // Enviar correo electrónico de notificación de intento de conseguir info pedidos no tenga el user
+                //todo mail a nuestro mail advirtiendo de un actividades ilícitas
+                //Mail::to('baygaming@thunder.com')->send(new \App\Mail\AuthorizationErrorMail());
+    
+                throw new AuthorizationException('No tienes permiso para enviar esta factura.');
+            }
+
             $invoice = $order->invoice;
             $order->user->notify(new InvoicePaid($invoice));
 
