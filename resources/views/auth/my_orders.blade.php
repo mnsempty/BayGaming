@@ -47,7 +47,8 @@
                                 <strong>Código Postal:</strong> {{ $orderDetails['address']['zip'] ?? '' }}
                             </td>
                             <td>
-                                <a href="{{ route('send.invoice', ['order' => $order->id]) }}"
+                                
+                                <a href="{{ route('generate.pdf', ['orderId' => $order->id]) }}"
                                     class="btn btn-primary btn-lg bi bi-file-earmark-arrow-down-fill"></a>
                                 {{-- bi bi-envelope-check-fill --}}
                                 <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill" data-id-order="{{ $order->id }}"
