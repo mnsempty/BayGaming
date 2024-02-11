@@ -25,9 +25,6 @@ class InvoicesController extends Controller
             // Guardar la factura en la base de datos
             $invoice->save();
 
-            // Notificar al usuario por correo electrónico
-            // $order->user->notify(new InvoicePaid($invoice));
-
             DB::commit();
             // Redirigir al usuario a la página de éxito
             return back()->with('success', 'Factura creada');
@@ -41,8 +38,8 @@ class InvoicesController extends Controller
         try {
             DB::beginTransaction();
             $order = Order::findOrFail($orderId);
-            $invoiceId = $order->invoice->id;
-            $order->user->notify(new InvoicePaid($invoiceId));
+            $invoice = $order->invoice;
+            $order->user->notify(new InvoicePaid($invoice));
 
             DB::commit();
             // Redirigir al usuario a la página de éxito

@@ -2,6 +2,20 @@
 
 @section('content')
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <h1>Mis Órdenes</h1>
         <table class="table table-striped">
             <thead>
@@ -33,9 +47,12 @@
                                 <strong>Código Postal:</strong> {{ $orderDetails['address']['zip'] ?? '' }}
                             </td>
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm bi bi-file-earmark-arrow-down-fill"></a>
+                                <a href="{{ route('send.invoice', ['order' => $order->id]) }}"
+                                    class="btn btn-primary btn-lg bi bi-file-earmark-arrow-down-fill"></a>
                                 {{-- bi bi-envelope-check-fill --}}
-                                <a href="#" class="btn btn-secondary btn-sm bi bi-envelope-arrow-down-fill"></a>
+                                <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill send-invoice-btn"
+                                    onclick="sendMail({{ $order->id }})">
+                                 </a>
                             </td>
                         @else
                             <td colspan="5 justify-content-center">Error en los detalles del pedido</td>
@@ -45,4 +62,31 @@
             </tbody>
         </table>
     </div>
+    <script defer>
+        function sendMail(orderId) {
+            let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            let url = `/send-invoice/${orderId}`;
+            console.log(url);
+
+            fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    if (response.ok) {
+                        console.log("funca");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al enviar la factura:', error);
+                    alert('Hubo un error al intentar enviar la factura');
+                });
+        }
+    </script>
 @endsection

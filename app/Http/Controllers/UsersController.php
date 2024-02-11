@@ -22,6 +22,7 @@ class UsersController extends Controller
                 'email' => 'required|string|email|max:255',
                 'password' => 'nullable|string|min:8|confirmed',
                 'password_confirmation' => 'same:password',
+                //password_confirmation obligatoriamente por el confirmed y laravel
             ]);
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada

@@ -75,7 +75,8 @@ Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.s
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
-Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
+//! cambiado check errors
+Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 //todo ruta provisional edit profile
 Route::post('/editProfile',[UsersController::class,'updateProfile'])->name('profile.edit');
 Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile.show');
