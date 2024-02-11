@@ -47,12 +47,14 @@
                                 <strong>Código Postal:</strong> {{ $orderDetails['address']['zip'] ?? '' }}
                             </td>
                             <td>
-                                
-                                <a href="{{ route('generate.pdf', ['orderId' => $order->id]) }}"
-                                    class="btn btn-primary btn-lg bi bi-file-earmark-arrow-down-fill"></a>
-                                {{-- bi bi-envelope-check-fill --}}
-                                <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill" data-id-order="{{ $order->id }}"
-                                    onclick="sendMail({{ $order->id }})">
+
+                                <a class="btn btn-primary btn-lg bi bi-file-earmark-arrow-down-fill"
+                                    href="{{ route('generate.pdf', ['orderId' => $order->id]) }}"
+                                    data-id-order-pdf="{{ $order->id }}"
+                                    onclick="downloadPDF({{ $order->id }})"></a>
+
+                                <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill"
+                                    data-id-order="{{ $order->id }}" onclick="sendMail({{ $order->id }})">
                                 </a>
                             </td>
                         @else
@@ -68,7 +70,6 @@
             let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
             let url = `/send-invoice/${orderId}`;
             let enlace = document.querySelector(`a[data-id-order="${orderId}"]`);
-            console.log(enlace);
 
             fetch(url, {
                     method: 'GET',
@@ -81,14 +82,21 @@
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    enlace.classList.remove('btn-primary','bi-envelope-arrow-down-fill');
-                    enlace.classList.add('btn-success','bi-envelope-check-fill');
+                    enlace.classList.remove('btn-primary', 'bi-envelope-arrow-down-fill');
+                    enlace.classList.add('btn-success', 'bi-envelope-check-fill');
 
                 })
                 .catch(error => {
                     console.error('Error al enviar la factura:', error);
                     alert('Hubo un error al intentar enviar la factura');
                 });
+        }
+
+        function downloadPDF(orderId) {
+            let enlace = document.querySelector(`a[data-id-order-pdf="${orderId}"]`);
+            // Actualiza el estado del botón
+            enlace.classList.remove('btn-primary', 'bi-file-earmark-arrow-down-fill');
+            enlace.classList.add('btn-success', 'bi-file-earmark-check-fill');
         }
     </script>
 @endsection
