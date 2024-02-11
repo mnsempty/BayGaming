@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PDFController;
 use App\Models\Product;
 use App\Models\Category;
 
@@ -75,7 +76,8 @@ Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.s
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
-Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
+//! cambiado check errors
+Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 //todo ruta provisional edit profile
 Route::post('/editProfile',[UsersController::class,'updateProfile'])->name('profile.edit');
 Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile.show');
@@ -83,6 +85,10 @@ Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile
 Route::get('/profile',function(){
     return view('auth.editProfile');
 });
+//*
+
+Route::get('/generate-pdf/{orderId}', [PDFController::class, 'generatePDF'])->name('generate.pdf');
+
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
 //Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
