@@ -54,7 +54,7 @@ return [
     'localize'        => 'Localize',
     'named'           => [
         'choose'    => 'Choose :name',
-        'duplicate' => 'Duplicate: name',
+        'duplicate' => 'Duplicate :name',
         'edit'      => 'Edit :name',
         'hide'      => 'Hide :name',
         'import'    => 'Import :name',
