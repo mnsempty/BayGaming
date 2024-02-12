@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+
 
 class CategoriesController extends Controller
 {
@@ -25,19 +30,44 @@ class CategoriesController extends Controller
             'name' => 'required|max:255',
         ]);
 
-        Category::create($validatedData);
+        DB::beginTransaction();
 
-        return redirect()->route('categories')
-            ->with('mensaje', 'Category created successfully.');
+        try {
+            Category::create($validatedData);
+            DB::commit();
+
+            return redirect()->route('categories')
+                ->with('mensaje', 'Category created successfully.');
+        } catch (\Exception $e) {
+            db::rollBack();
+
+            Log::error('Error creating category: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['msg' => 'There was a problem creating the category.'])
+                ->withInput();
+        }
     }
 
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
+        DB::beginTransaction();
 
-        return redirect()->route('categories')
-            ->with('mensaje', 'Category deleted successfully.');
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+            DB::commit();
+
+            return redirect()->route('categories')
+                ->with('mensaje', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+
+            Log::error('Error deleting category: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['msg' => 'There was a problem deleting the category.']);
+        }
     }
-
 }
