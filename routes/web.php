@@ -126,7 +126,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
 
     Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
-    
+
 });
 
 Route::get('/forbidden', function () {
