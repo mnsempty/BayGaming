@@ -32,7 +32,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//! lleva a page de prueba landing 
+//! lleva a page de prueba landing
 Route::get('home', [HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
@@ -41,7 +41,7 @@ Route::get('homepage', [ProductsController::class, 'listFew'])->name('landing');
 //! RUTA PARA AÑADIR PRODUCTOS CART
 Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
 
-//! RUTA PARA IR AL CARRITO 
+//! RUTA PARA IR AL CARRITO
 Route::get('/cart', [CartsController::class, 'listProducts'])->name('cart.list');
 
 //! RUTA PARA BORRAR PRODUCTOS CARRITO
@@ -78,7 +78,7 @@ Route::get('/send-invoice/{order}', [InvoicesController::class, 'createInvoice']
 
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
-//Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update'); 
+//Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update');
 
 //https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
 // Route::get('/check-relationship', function () {
