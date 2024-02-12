@@ -71,7 +71,7 @@ Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
 // update dirección dado un id, != a la anterior por miedo a represalias
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
-Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.show');
+Route::get('/myOrders', [OrdersController::class, 'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
@@ -119,7 +119,14 @@ Route::group(['middleware' => 'admin'], function () {
     //! Ruta de listado de categorias
     Route::get('/categories', [CategoriesController::class, 'listAll'])->name('categories');
 
+    Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
 
+    Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+
+    Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
+
+    Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+    
 });
 
 Route::get('/forbidden', function () {

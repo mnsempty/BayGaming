@@ -16,51 +16,28 @@ class CategoriesController extends Controller
 
     public function create()
     {
-        return view('categories.create');
+        return view('auth.categories-create');
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            // Add validation rules for other fields as needed
         ]);
 
-        $category = Category::create($validatedData);
+        Category::create($validatedData);
 
-        return redirect()->route('categories.index')
-                         ->with('success','Category created successfully.');
+        return redirect()->route('categories')
+            ->with('mensaje', 'Category created successfully.');
     }
 
-    public function show(Category $category)
+    public function destroy($id)
     {
-        return view('categories.show', compact('category'));
-    }
-
-    public function edit(Category $category)
-    {
-        return view('categories.edit', compact('category'));
-    }
-
-    public function update(Request $request, Category $category)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            // Add validation rules for other fields as needed
-        ]);
-
-        $category->update($validatedData);
-
-        return redirect()->route('categories.index')
-                         ->with('success','Category updated successfully.');
-    }
-
-    public function destroy(Category $category)
-    {
+        $category = Category::findOrFail($id);
         $category->delete();
 
         return redirect()->route('categories.index')
-                         ->with('success','Category deleted successfully.');
+            ->with('mensaje', 'Category deleted successfully.');
     }
-
+    
 }

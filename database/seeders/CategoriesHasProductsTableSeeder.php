@@ -14,11 +14,13 @@ class CategoriesHasProductsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $category = Category::find(1);
+        $category = Category::all();
         $product = Product::find(1);
 
         if ($category && $product) {
-            $category->products()->attach($product);
+            foreach ($category as $category) {
+                $category->products()->attach($product->id);
+            }
         }
     }
 }
