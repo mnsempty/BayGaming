@@ -27,7 +27,7 @@ class CategoriesController extends Controller
 
         Category::create($validatedData);
 
-        return redirect()->route('auth.categories')
+        return redirect()->route('categories')
             ->with('mensaje', 'Category created successfully.');
     }
 
@@ -36,7 +36,7 @@ class CategoriesController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('auth.categories')
+        return redirect()->route('categories')
             ->with('mensaje', 'Category deleted successfully.');
     }
 
