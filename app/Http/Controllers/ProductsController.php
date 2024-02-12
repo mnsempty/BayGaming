@@ -15,7 +15,7 @@ class ProductsController extends Controller
 {
     // Create Read Update Delete
     // crear producto mediante una transacción
-    // 
+    //
     public function create(Request $request)
     {
         try {
@@ -82,7 +82,7 @@ class ProductsController extends Controller
     //todo test
     public function update(Request $request, $id)
     {
-
+        
         $request->validate([
             'name' => 'sometimes|required',
             'description' => 'sometimes|required',

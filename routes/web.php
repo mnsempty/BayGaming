@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CartsController;
+use App\Http\Controllers\CategoriesController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
@@ -103,6 +104,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
 
+    Route::get('/categories', [CategoriesController::class, 'listAll'])->name('categories');
+    
     //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
 
@@ -114,6 +117,8 @@ Route::group(['middleware' => 'admin'], function () {
     //! update de products
     Route::post('/products/{id}', [ProductsController::class, 'update'])->name('products.edit');
     Route::delete('dashboard/{id}', [ProductsController::class, 'delete'])->name('product.delete');
+
+
 });
 
 Route::get('/forbidden', function () {
