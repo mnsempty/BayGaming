@@ -103,9 +103,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
     // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
 
-    // Ruta para la vista de productos y categorias
-    Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard.products');
-
     //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
 
