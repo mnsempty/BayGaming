@@ -121,8 +121,6 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
 
-    Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
-
     Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
 
     Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
