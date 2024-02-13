@@ -18,7 +18,7 @@ class PDFController extends Controller
 
         // Obtén los datos necesarios para la vista
         $data = [
-            'title' => 'Factura del pedido',
+            'title' => 'Factura del pedido nº'.$order->id,
             'order' => $order,
             'orderData' => $orderData,
         ];

@@ -66,6 +66,7 @@ class AddressesController extends Controller
                     'address' => [
                         'address' => $request->address,
                         'secondary_address' => $request->secondary_address,
+                        'telephone_number' => $request->telephone_number,
                         'country' => $request->country,
                         'zip' => $request->zip,
                     ],
@@ -81,7 +82,6 @@ class AddressesController extends Controller
             return back()->withErrors(['message' => 'Error al guardar las orders: ' . $e->getMessage()]);
         }
         // Redirigir a landing
-        // return redirect()->route('send.invoice', ['order' => $orderId]);
         return redirect()->route('create.invoice', ['order' => $orderId]);
     }
     public function updateAddress(Request $request, $id)
@@ -118,6 +118,7 @@ class AddressesController extends Controller
     }
         
     }
+    //buscamos los datos con el id dado y lo devolvemos en json para el value del edit modal
     public function showAddress($addressId) {
         $address = Address::findOrFail($addressId);
          return response()->json($address);

@@ -21,7 +21,7 @@
             <!-- Botón para abrir el modal de la lista de deseos -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wishlistModal">
                 {{ __('landing.view_wishlist') }}
-                <i class="bi bi-star"></i>
+                <i class="bi bi-heart"></i>
             </button>
             <a href="{{ route('cart.list') }}" class="btn btn-success">
                 {{ __('landing.cart') }}

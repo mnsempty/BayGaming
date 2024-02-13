@@ -5,41 +5,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </head>
-    
-    <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #FFA500; /* Naranja */
+        }
+
+        .card {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #FFA500; /* Naranja */
+            color: #fff;
+        }
+
+        tfoot {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
     <div class="container">
-        <h1 class="my-4">{{ $title }}</h1>
+        <h1>{{ $title }}</h1>
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">Detalles de la Orden</h2>
+                <h2>Detalles del pedido</h2>
                 <p><strong>Estado de la Orden:</strong> {{ ucfirst($order->state) }}</p>
                 <p><strong>Total:</strong> {{ number_format($order->total, 2) }}</p>
                 <h3>Datos del Usuario</h3>
-                <ul class="list-unstyled">
+                <ul>
                     <li>Nombre: {{ $orderData['user']['real_name'] }}</li>
                     <li>Apellido: {{ $orderData['user']['surname'] }}</li>
                 </ul>
                 <h3>Dirección</h3>
-                <ul class="list-unstyled">
+                <ul>
                     <li>Dirección: {{ $orderData['address']['address'] }}</li>
+                    @if (isset($orderData['address']['secondary_address']))
+                        <li>Dirección Secundaria (opcional): {{ $orderData['address']['secondary_address'] }}</li>
+                    @endif
+                    @if (isset($orderData['address']['telephone_number']))
+                    <li>Teléfono (opcional): {{ $orderData['address']['telephone_number'] }}</li>
+                @endif
                     <li>País: {{ $orderData['address']['country'] }}</li>
                     <li>Código Postal: {{ $orderData['address']['zip'] }}</li>
-                    @if (isset($orderData['address']['telephone_number']))
-                        <li>Teléfono: {{ $orderData['address']['telephone_number'] }}</li>
-                    @endif
-                    @if (isset($orderData['address']['secondary_address']))
-                        <li>Dirección Secundaria: {{ $orderData['address']['secondary_address'] }}</li>
-                    @endif
+
                 </ul>
             </div>
         </div>
-        <div class="card my-4">
+        <div class="card">
             <div class="card-body">
-                <h2 class="card-title">Productos en la Orden</h2>
-                <table class="table table-striped">
+                <h2>Productos</h2>
+                <table>
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -76,8 +131,6 @@
             </div>
         </div>
     </div>
-</body>
-
 </body>
 
 </html>
