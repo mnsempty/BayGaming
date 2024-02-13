@@ -118,6 +118,10 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                         </div>
+                        <!-- include de partial para seleccionar categorías-->
+                        <!-- Add this section for categories selection -->
+
+                        <!-- ------------------------------------------------>
                         <div class="form-group">
                             <label for="price">Price</label>
                             <input type="number" step="0.01" class="form-control" id="price" name="price"
@@ -135,6 +139,7 @@
                             <label for="publisher">Publisher</label>
                             <input type="text" class="form-control" id="publisher" name="publisher" required>
                         </div>
+
                         <div class="form-group">
                             <label>Platform</label>
                             <div class="form-check">

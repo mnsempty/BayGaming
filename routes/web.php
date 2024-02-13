@@ -107,6 +107,7 @@ Route::group(['middleware' => 'admin'], function () {
     //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
 
+
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
     Route::post('/products/toggleStatus/{id}', [ProductsController::class, 'toggleStatus'])->name('products.toggleStatus');
