@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Diario del Programador') }}</title>
+    <title>{{ config('app.name', 'BayGaming') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,7 +18,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-
+    <!--js para ajax-->
+    <script defer src="{{ asset('js/editProfile.js') }}"></script>
+    <script defer src="{{ asset('js/sendDownloadInvoiceUser.js') }}"></script>
+    <script defer src="{{ asset('js/updateAddresses.js') }}"></script>
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
 </head>
@@ -75,9 +78,6 @@
         </main>
     </div>
 
-    <!-- Se ha intentado enlazar un js con mix no se que y no he podido-->
-    <script src="{{ asset('js/showWishlist.js') }}"></script>
-    <script src="{{ asset('js/showDeletedProducts.js') }}"></script>
 </body>
 
 </html>
