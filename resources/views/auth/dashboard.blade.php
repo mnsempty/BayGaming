@@ -158,7 +158,7 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="platform"
-                                    id="platformNintendoSwitch" value="NintendoSwitch">
+                                    id="platformNintendoSwitch" value="Nintendo Switch">
                                 <label class="form-check-label" for="platformNintendoSwitch">
                                     Nintendo Switch
                                 </label>
