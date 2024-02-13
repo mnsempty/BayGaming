@@ -51,8 +51,6 @@
             </div>
         </div>
 
-
-
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -81,16 +79,15 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">{{ $product->price }} {{ config('app.currency') }}</p>
-                            <p class="card-text">Stock: {{ $product->stock }}</p>
 
                             <!-- Botón para añadir o quitar de la lista de deseos -->
                             <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-wishlist">
                                     @if ($product->wishlists()->where('users_id', Auth::id())->exists())
-                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-heart-fill"></i>
                                     @else
-                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-heart"></i>
                                     @endif
                                 </button>
                             </form>
@@ -114,5 +111,7 @@
             @endif
             @endforeach
         </div>
+        {{ $products->links() }}
+
     </div>
 @endsection

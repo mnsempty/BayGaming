@@ -78,6 +78,9 @@
         </main>
     </div>
 
+    <!-- Se ha intentado enlazar un js con mix no se que y no he podido-->
+    <script src="{{ asset('js/showWishlist.js') }}"></script>
+    <script src="{{ asset('js/showDeletedProducts.js') }}"></script>
 </body>
 
 </html>

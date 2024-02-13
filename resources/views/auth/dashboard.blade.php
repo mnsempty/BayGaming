@@ -44,9 +44,6 @@
         </div>
     </div>
 
-
-
-
     <table class="container table table-bordered">
         <tr>
             <th>Name</th>
@@ -79,7 +76,8 @@
             @endforeach
         @endif
     </table>
-
+    {{ $products->links() }}
+    
     <!-- Añadir la tabla con los productos más favoritos-->
     @include('partials.mostFavoritedProducts')
 

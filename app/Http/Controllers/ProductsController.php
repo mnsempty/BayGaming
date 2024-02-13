@@ -188,7 +188,7 @@ class ProductsController extends Controller
         $whishlistsController = new WhishlistsController();
         $mostFavorited = $whishlistsController->getMostFavoritedProducts();
 
-        $products = Product::where('show', true)->paginate(10);
+        $products = Product::where('show', true)->Paginate(10);
         return view('auth.dashboard', @compact('products'), compact('mostFavorited'));
     }
 
@@ -214,11 +214,9 @@ class ProductsController extends Controller
     {
         //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
         //! php artisan storage:link
-        $products = Product::where('show', true)->with('images')->get();
+        $products = Product::where('show', true)->with('images')->paginate(5);
         return view('landing', compact('products'));
     }
-
-
 
 
     //! llevar a vista de editar productos
