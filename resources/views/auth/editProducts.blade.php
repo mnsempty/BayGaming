@@ -99,7 +99,7 @@
                                         <input type="hidden" name="images[{{ $image->id }}][id]"
                                             value="{{ $image->id }}">
                                         <input type="file" class="form-control" id="image{{ $image->id }}"
-                                            name="images[{{ $image->id }}][file][]" accept="image/*" multiple>
+                                            name="images[{{ $image->id }}][file][]" accept="image/*">
                                     </div>
                                 @endforeach
 
