@@ -50,6 +50,7 @@
             <th>Price</th>
             <th>Developer</th>
             <th>Platform</th>
+            <th>Categories</th>
             <th>Actions</th>
         </tr>
         @if (isset($products))
@@ -60,14 +61,19 @@
                     <td>{{ $product->developer }}</td>
                     <td>{{ $product->platform }}</td>
                     <td>
+                        @foreach ($product->categories as $category)
+                            <span class="badge bg-primary">{{ $category->name }}</span>
+                        @endforeach
+                    </td>
+                    <td>
                         <a class="btn btn-warning" href="{{ route('products.edit.view', $product->id) }}">Edit</a>
-    
+
                         <form action="{{ route('product.delete', $product->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             {{-- {{ route('home',$product->id) }} --}}
                             <a class="btn btn-info" href="">Show</a>
-    
+
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
