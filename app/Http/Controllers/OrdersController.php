@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -133,7 +134,13 @@ class OrdersController extends Controller
         // Devuelve la vista con las órdenes del usuario
         return view('auth.my_orders', compact('orders'));
     }
-    // public function showAllOrders() {
-        
-    // }
+    public function showAllOrders() {
+        $userId = auth()->id();
+        $userAdmin = User::find($userId);
+        if ($userAdmin->role !== 'admin') {
+            return back();
+        }
+        $orders =Order::all();
+        return view('auth.admin_orders',compact('orders'));
+    }
 }
