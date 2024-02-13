@@ -83,13 +83,6 @@ class ProductsController extends Controller
         }
     }
 
-    // Fetch de todas la categorías
-    public function showCreateForm()
-    {
-
-        $categories = Category::all();
-        return view('auth.dashboard', compact('categories'));
-    }
 
     //todo test
     public function update(Request $request, $id)
@@ -200,10 +193,12 @@ class ProductsController extends Controller
         $whishlistsController = new WhishlistsController();
         $mostFavorited = $whishlistsController->getMostFavoritedProducts();
 
-        $categori = Category::all();
+        // Fetch de todas la categorías
+        $categories = Category::all();
+
         // ! se añade with() para el uso de eager loading en laravel, mejor para el rendimiento, etc
         $products = Product::with('categories')->where('show', true)->paginate(10);
-        return view('auth.dashboard', compact('products', 'mostFavorited', 'categori'));
+        return view('auth.dashboard', compact('products', 'mostFavorited', 'categories'));
     }
 
     public function toggleStatus(Request $request, $id)
