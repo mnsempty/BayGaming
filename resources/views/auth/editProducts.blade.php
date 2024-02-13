@@ -22,7 +22,18 @@
                                 <label for="description" class="form-label">Description</label>
                                 <textarea class="form-control" id="description" name="description" rows="3" required>{{ $product->description }}</textarea>
                             </div>
-
+                            <!-- Añadido categorias a la hora de editar producto en vista-->
+                            <div class="mb-3">
+                                <label for="categories" class="form-label">Categories</label>
+                                <select name="categories[]" id="categories" class="form-control" multiple>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $product->categories->contains($category->id) ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-------------------------------------------------->
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price</label>
                                 <input type="number" step="0.01" class="form-control" id="price" name="price"

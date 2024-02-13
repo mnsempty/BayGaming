@@ -82,8 +82,6 @@ class ProductsController extends Controller
             return back()->with('mensaje', __('Error creating product ' . $e->getMessage()));
         }
     }
-
-
     //todo test
     public function update(Request $request, $id)
     {
@@ -187,7 +185,6 @@ class ProductsController extends Controller
             return back()->with('mensaje', 'Error al eliminar el producto: ' . $e->getMessage());
         }
     }
-
     public function listFew()
     {
         $whishlistsController = new WhishlistsController();
@@ -200,7 +197,6 @@ class ProductsController extends Controller
         $products = Product::with('categories')->where('show', true)->paginate(10);
         return view('auth.dashboard', compact('products', 'mostFavorited', 'categories'));
     }
-
     public function toggleStatus(Request $request, $id)
     {
         $product = Product::findOrFail($request->product_id);
@@ -209,15 +205,11 @@ class ProductsController extends Controller
 
         return response()->json(['message' => 'Status updated successfully.']);
     }
-
     public function fetchDeleted(Request $request)
     {
         $products = Product::where('show', false)->get();
         return response()->json($products);
     }
-
-
-
     //! VER PRODUCTOS USER
     public function listFewL()
     {
@@ -226,13 +218,17 @@ class ProductsController extends Controller
         $products = Product::where('show', true)->with('images')->get();
         return view('landing', compact('products'));
     }
-
     //! llevar a vista de editar productos
     public function editView($id)
     {
-        $product = Product::findOrFail($id);
+        //! Uso de with() para que se vean las categorias de cada producto si la tienen
+        $product = Product::with('categories')->findOrFail($id);
+
+        // fetch de todas las categorias
+        $categories = Category::all();
+
         $images = $product->images;
         $discounts = $product->discounts;
-        return view('auth.editProducts', ['product' => $product, 'images' => $images, 'discounts' => $discounts]);
+        return view('auth.editProducts', compact('product', 'categories', 'images', 'discounts'));
     }
 }
