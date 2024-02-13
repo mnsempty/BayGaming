@@ -62,7 +62,7 @@
                     <td>{{ $product->platform }}</td>
                     <td>
                         @foreach ($product->categories as $category)
-                            <span class="badge bg-primary">{{ $category->name }}</span>
+                            <span class="badge bg-primary me-2">{{ $category->name }}</span>
                         @endforeach
                     </td>
                     <td>
