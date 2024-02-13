@@ -126,6 +126,23 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    /**
+     * 
+     *  Provider y alias de doompdf
+     *  composer require barryvdh/laravel-dompdf
+     */
+
+     'providers' => [
+        // ...
+        Barryvdh\DomPDF\ServiceProvider::class,
+    ],
+    
+    'aliases' => [
+        // ...
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+    ],
+    
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#filterToggle').change(function() {
-        var showDeleted = $(this).prop('checked');
-        var url = showDeleted ? '/products/fetchDeleted' : '/products';
+        let showDeleted = $(this).prop('checked');
+        let url = showDeleted ? '/products/fetchDeleted' : '/products';
 
         if (showDeleted) {
             // Busca y enseña los productos eliminados
@@ -10,7 +10,7 @@ $(document).ready(function() {
                 url: url,
                 dataType: "json",
                 success: function(products) {
-                    var html =
+                    let html =
                         '<table class="table"><thead><tr><th>Name</th><th>Price</th><th>Developer</th><th>Platform</th></tr></thead><tbody>';
                     $.each(products, function(i, product) {
                         html += '<tr><td>' + product.name + '</td><td>' +

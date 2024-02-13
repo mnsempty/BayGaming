@@ -4,7 +4,7 @@ $(document).ready(function() {
             url: '/wishlist/load',
             method: 'GET',
             success: function(response) {
-                var wishlistItems = '';
+                let wishlistItems = '';
                 $.each(response.wishlist.products, function(key, product) {
                     wishlistItems += '<li>' + product.name + '</li>';
                 });

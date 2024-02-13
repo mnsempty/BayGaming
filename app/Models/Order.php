@@ -11,7 +11,7 @@ class Order extends Model
     // done
     public function invoice()
     {
-        return $this->hasOne(Invoice::class);
+        return $this->hasOne(Invoice::class,'orders_id');
     }
     protected $fillable = ['users_id', 'state', 'total'];
 

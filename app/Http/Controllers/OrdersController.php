@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,11 +63,6 @@ class OrdersController extends Controller
         // se podría hacer todo en invoices but i love order
         session(['orderId' => $order->id]);
 
-        //! probablemente eliminar
-        // Limpia el carrito
-        $cart->products()->detach();
-        //! no encuenta datos
-
         return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
 
@@ -115,6 +111,11 @@ class OrdersController extends Controller
             // Actualizar orderData en la orden
             $order->orderData = json_encode($orderData);
             $order->save();
+
+            // Limpia el carrito
+            $cart = Cart::where('users_id', auth()->id())->first();
+            $cart->products()->detach();
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -126,14 +127,20 @@ class OrdersController extends Controller
     {
         // Obtén el ID del usuario autenticado
         $userId = auth()->id();
-    
+
         // Busca las órdenes del usuario autenticado
         $orders = Order::where('users_id', $userId)->get();
-    
+
         // Devuelve la vista con las órdenes del usuario
         return view('auth.my_orders', compact('orders'));
     }
     public function showAllOrders() {
-        
+        $userId = auth()->id();
+        $userAdmin = User::find($userId);
+        if ($userAdmin->role !== 'admin') {
+            return back();
+        }
+        $orders =Order::all();
+        return view('auth.admin_orders',compact('orders'));
     }
 }

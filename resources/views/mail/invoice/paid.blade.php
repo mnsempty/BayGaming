@@ -52,7 +52,9 @@
             @endforeach
         </tbody>
     </table>
-    <p><strong>Date:</strong> {{ $invoice->date->format('F d, Y') }}</p>
+    {{-- pasar el string date en la bbdd(he intentado cambiarlo a date pero no funca)
+        así que lo pasamos aquí a cabon para pasarlo a fecha y formatear --}}
+    <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($invoice->date)->format('d F, Y') }}</p>
     <p><strong>Total:</strong> ${{ number_format($invoice->subtotal, 2) }}</p>
     <p>Thank you for choosing our services.</p>
     <p>Best regards,<br>{{ config('app.name', 'BayGaming') }}</p>
