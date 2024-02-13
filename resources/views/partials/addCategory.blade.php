@@ -1,10 +1,10 @@
 <div class="form-group">
-    <label for="categories">Categories</label>
-    <select name="categories[]" id="categories" class="form-control" multiple>
-        @if (isset($products))
+    @if (isset($categories))
+        <label for="categories">Categories</label>
+        <select name="categories[]" id="categories" class="form-control" multiple>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
-        @endif
-    </select>
+        </select>
+    @endif
 </div>

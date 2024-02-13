@@ -120,7 +120,14 @@
                         </div>
                         <!-- include de partial para seleccionar categorías-->
                         <!-- Add this section for categories selection -->
-
+                        <div class="form-group">
+                            <label for="categories">Categories</label>
+                            <select name="categories[]" id="categories" class="form-control" multiple>
+                                @foreach ($categori as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <!-- ------------------------------------------------>
                         <div class="form-group">
                             <label for="price">Price</label>

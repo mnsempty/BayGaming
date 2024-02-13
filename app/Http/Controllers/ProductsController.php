@@ -37,7 +37,7 @@ class ProductsController extends Controller
             $product = Product::create($validatedData); //Uso de Mass Assignment con método create de Eloquent en vez de asignar uno a uno cada producto
 
             // //! Creación de un producto: permita a los usuarios seleccionar categorías al crear un producto.
-            // $product->categories()->attach($request->input('categories'));
+            $product->categories()->attach($request->input('categories'));
 
             // Crear una entrada de descuento para el producto recién creado
             $discount = new Discount;
@@ -83,9 +83,11 @@ class ProductsController extends Controller
         }
     }
 
+    // Fetch de todas la categorías
     public function showCreateForm()
     {
-        $categories = Category::all(); // Fetch all categories
+
+        $categories = Category::all();
         return view('auth.dashboard', compact('categories'));
     }
 
@@ -198,9 +200,10 @@ class ProductsController extends Controller
         $whishlistsController = new WhishlistsController();
         $mostFavorited = $whishlistsController->getMostFavoritedProducts();
 
+        $categori = Category::all();
         // ! se añade with() para el uso de eager loading en laravel, mejor para el rendimiento, etc
         $products = Product::with('categories')->where('show', true)->paginate(10);
-        return view('auth.dashboard', @compact('products'), compact('mostFavorited'));
+        return view('auth.dashboard', compact('products', 'mostFavorited', 'categori'));
     }
 
     public function toggleStatus(Request $request, $id)
