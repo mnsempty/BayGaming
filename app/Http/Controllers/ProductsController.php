@@ -101,6 +101,12 @@ class ProductsController extends Controller
         try {
             DB::beginTransaction();
             $product = Product::findOrFail($id);
+
+            // Actualiza los atributos del producto
+            $product->update($request->all());
+            // Sincro de las categorias
+            $product->categories()->sync($request->input('categories', []));
+
             $product->name = $request->name;
             $product->description = $request->description;
             $product->price = $request->price;
