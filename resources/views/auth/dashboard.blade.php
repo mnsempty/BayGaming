@@ -118,8 +118,7 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                         </div>
-                        <!-- include de partial para seleccionar categorías-->
-                        <!-- Add this section for categories selection -->
+                        <!-- Para seleccionar categorías-->
                         <div class="form-group">
                             <label for="categories">Categories</label>
                             <select name="categories[]" id="categories" class="form-control" multiple>
@@ -128,7 +127,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <!-- ------------------------------------------------>
+                        <!--------------------------------->
                         <div class="form-group">
                             <label for="price">Price</label>
                             <input type="number" step="0.01" class="form-control" id="price" name="price"
@@ -172,7 +171,7 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="platform"
-                                    id="platformNintendoSwitch" value="NintendoSwitch">
+                                    id="platformNintendoSwitch" value="Nintendo Switch">
                                 <label class="form-check-label" for="platformNintendoSwitch">
                                     Nintendo Switch
                                 </label>
