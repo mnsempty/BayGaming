@@ -188,7 +188,7 @@ class ProductsController extends Controller
         $whishlistsController = new WhishlistsController();
         $mostFavorited = $whishlistsController->getMostFavoritedProducts();
 
-        $products = Product::where('show', true)->Paginate(10);
+        $products = Product::where('show', true)->Paginate(5);
         return view('auth.dashboard', @compact('products'), compact('mostFavorited'));
     }
 
