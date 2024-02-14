@@ -70,4 +70,36 @@ class CategoriesController extends Controller
                 ->withErrors(['msg' => 'There was a problem deleting the category.']);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $category = Category::findOrFail($id);
+            $category->update($validatedData);
+            DB::commit();
+
+            return redirect()->route('categories')
+                ->with('mensaje', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Error updating category: ' . $e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['msg' => 'There was a problem updating the category.'])
+                ->withInput();
+        }
+    }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('auth.editCategory', compact('category'));
+    }
 }

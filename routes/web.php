@@ -140,6 +140,10 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
+    Route::put('/categories/{id}', [CategoriesController::class, 'update'])->name('categories.update');
+
+    Route::get('/categories/{id}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
+
 });
 
 Route::get('/forbidden', function () {
