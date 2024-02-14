@@ -69,9 +69,9 @@
         <div class="card">
             <div class="card-body">
                 <h2>Detalles del pedido</h2>
-                <p><strong>Estado de la Orden:</strong> {{ ucfirst($order->state) }}</p>
+                <p><strong>Estado del pedido:</strong> {{ ucfirst($order->state) }}</p>
                 <p><strong>Total:</strong> {{ number_format($order->total, 2) }}</p>
-                <h3>Datos del Usuario</h3>
+                <h3>Datos del comprador</h3>
                 <ul>
                     <li>Nombre: {{ $orderData['user']['real_name'] }}</li>
                     <li>Apellido: {{ $orderData['user']['surname'] }}</li>
