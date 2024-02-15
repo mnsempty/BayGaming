@@ -27,7 +27,7 @@ class InvoicesController extends Controller
             $invoice->save();
 
             DB::commit();
-            // Redirigir al usuario a la página de éxito
+            // Redirigir al landing
             return back()->with('success', 'Factura creada');
         } catch (\Exception $e) {
             DB::rollBack();

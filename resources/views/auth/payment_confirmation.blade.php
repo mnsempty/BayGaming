@@ -277,25 +277,4 @@
             </div>
         </div>
     </main>
-    {{--!DANGER NINO NINO NINO  --}}
-    <script>
-        function loadAddressData(addressId) {
-            // Realiza una solicitud AJAX para obtener los datos de la dirección
-            fetch('/addresses/' + addressId)
-                .then(response => response.json())
-                .then(data => {
-                    // Llena los campos del formulario en el modal con los datos de la dirección
-                    document.getElementById('editAddress').value = data.address;
-                    document.getElementById('editSecondaryAddress').value = data.secondary_address;
-                    document.getElementById('editTelephoneNumber').value = data.telephone_number;
-                    document.getElementById('editCountry').value = data.country;
-                    document.getElementById('editZip').value = data.zip;
-                    document.getElementById('editAddressForm').action = '/addresses/update/' + data.id;
-
-                })
-                .catch(error => {
-                    console.error('Error de recogida de datos:', error);
-                });
-        }
-    </script>
 @endsection

@@ -129,8 +129,8 @@ class OrdersController extends Controller
         $userId = auth()->id();
 
         // Busca las órdenes del usuario autenticado
-        $orders = Order::where('users_id', $userId)->get();
-
+        $orders = Order::where('users_id', $userId)->paginate(4);
+    
         // Devuelve la vista con las órdenes del usuario
         return view('auth.my_orders', compact('orders'));
     }

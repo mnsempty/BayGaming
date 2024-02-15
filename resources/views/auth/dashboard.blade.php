@@ -81,7 +81,8 @@
             @endforeach
         @endif
     </table>
-
+    {{ $products->links() }}
+    
     <!-- Añadir la tabla con los productos más favoritos-->
     @include('partials.mostFavoritedProducts')
 

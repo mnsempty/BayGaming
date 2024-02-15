@@ -221,7 +221,7 @@ class ProductsController extends Controller
     {
         //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
         //! php artisan storage:link
-        $products = Product::where('show', true)->with('images')->get();
+        $products = Product::where('show', true)->with('images')->paginate(5);
         return view('landing', compact('products'));
     }
     //! llevar a vista de editar productos

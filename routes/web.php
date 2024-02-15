@@ -68,9 +68,9 @@ Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name
 Route::post('/order/save/{addressId}', [OrdersController::class, 'saveOrder'])->name('order.save');
 
 Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
-// datos de tabla direcciones dado un id
+// datos de tabla de direcciones dada el id de una dirección para el modal de update (.value)
 Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
-// update dirección dado un id, != a la anterior por miedo a represalias
+// update dirección dado un id, (envia datos)
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
 // ver orders de un user
