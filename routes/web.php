@@ -39,7 +39,7 @@ Route::get('/', function () {
 Route::get('home', [HomeController::class, 'roleRedirect'])->middleware(['auth', 'verified']);
 
 //! RUTA PARA VER PRODUCTOS USER
-Route::get('homepage', [ProductsController::class, 'listFew'])->name('landing');
+Route::get('homepage', [ProductsController::class, 'listFewL'])->name('landing');
 
 //! RUTA PARA AÑADIR PRODUCTOS CART
 Route::post('/cart/add/{product}', [CartsController::class, 'addToCart'])->name('cart.add');
