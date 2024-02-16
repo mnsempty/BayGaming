@@ -109,7 +109,7 @@
                         @endphp
                         @foreach ($order->products as $product)
                             @php
-                                $quantity = $product->pivot->quantity; // Asumiendo que la cantidad está en la tabla pivot
+                                $quantity = $product->pivot->quantity;
                                 $productTotal = $product->price * $quantity;
                                 $total += $productTotal;
                             @endphp

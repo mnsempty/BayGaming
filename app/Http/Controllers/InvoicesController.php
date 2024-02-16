@@ -27,7 +27,22 @@ class InvoicesController extends Controller
             $invoice->save();
 
             DB::commit();
-            // Redirigir al landing
+            /**
+             * quizá modificar invoice para guardar cantidad e id del producto
+             * @foreach ($order->products as $product)
+                            @php
+                                $quantity = $product->pivot->quantity;
+                                $productTotal = $product->price * $quantity;
+                                $total += $productTotal;
+                            @endphp
+                            <tr>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ number_format($product->price, 2) }}</td>
+                                <td>{{ $quantity }}</td>
+                                <td>{{ number_format($productTotal, 2) }}</td>
+                            </tr>
+                        @endforeach
+             */
             return back()->with('success', 'Factura creada');
         } catch (\Exception $e) {
             DB::rollBack();

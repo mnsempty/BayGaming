@@ -87,7 +87,9 @@ class AddressesController extends Controller
             return back()->withErrors(['message' => 'Error al guardar las orders: ' . $e->getMessage()]);
         }
         // Redirigir a landing
-        return redirect()->route('create.invoice', ['order' => $orderId]);
+        /*        return redirect()->route('create.invoice', ['order' => $orderId]);*/
+        // con un if user role == user/admin modificable
+        return redirect()->route('landing');
     }
     public function updateAddress(Request $request, $id)
     {
