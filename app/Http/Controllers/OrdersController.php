@@ -138,17 +138,48 @@ class OrdersController extends Controller
         if ($userAdmin->role !== 'admin') {
             return back();
         }
-        $orders = Order::all();
+        $orders = Order::paginate(5);
         return view('auth.admin_orders', compact('orders'));
     }
-    // update the state of the product to completed
+    // update the state of the product to completed and reduce stock
     public function acceptOrder(Order $order)
     {
-        $order->update(['state' => 'completed']);
-        return back()->with('success', 'Pedido aceptado con éxito.');
+        if ($order->state !== 'completed' && $order->state !== 'cancelled') {
+            // Inicia una transacción para asegurar la consistencia de los datos
+            DB::beginTransaction();
+
+            try {
+                // checks stock of every product and throws error in case that any of them can`t be reduce
+                foreach ($order->products as $product) {
+                    if ($product->pivot->quantity > $product->stock) {
+                        //! no funciona el update por el rollback
+                        $order->update(['state' => 'cancelled']);
+                        throw new \Exception('No hay suficiente stock para el producto: ' . $product->name);
+                    }
+                }
+                // Actualiza el estado del pedido a 'completed'
+                $order->update(['state' => 'completed']);
+
+                // reduce every product stock in case of
+                foreach ($order->products as $product) {
+                    $product->decrement('stock', $product->pivot->quantity);
+                }
+                DB::commit();
+
+                return back()->with('success', 'Pedido aceptado con éxito y stock actualizado.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return back()->withErrors(['message' => 'Error al aceptar el pedido: ' . $e->getMessage()]);
+            }
+        } else {
+            // error if the order is completed or cancelled
+            //todo dejar el boton de completar pedido como disabled
+            return back()->withErrors(['message' => 'El pedido ya está completado o cancelado.']);
+        }
     }
 
-    // Método para cancelar el pedido
+    // update de state of the product to cancelled
     public function cancelOrder(Order $order)
     {
         $order->update(['state' => 'cancelled']);

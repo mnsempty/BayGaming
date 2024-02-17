@@ -74,51 +74,28 @@ Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
 // ver orders de un user
-Route::get('/myOrders',[OrdersController::class,'showMyOrders'])->name('orders.show');
+Route::get('/myOrders', [OrdersController::class, 'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
 //! cambiado check errors
 Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 //todo ruta provisional edit profile
-Route::post('/editProfile',[UsersController::class,'updateProfile'])->name('profile.edit');
-Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile.show');
+Route::post('/editProfile', [UsersController::class, 'updateProfile'])->name('profile.edit');
+Route::get('/userProfile', [UsersController::class, 'showProfile'])->name('profile.show');
 //! solamente por comodidad
-Route::get('/profile',function(){
+Route::get('/profile', function () {
     return view('auth.editProfile');
 });
-//aceptar/cancelar pedidos, al aceptar se reduce el stock del producto
-Route::put('/order/accept/{order}', [OrdersController::class, 'acceptOrder'])->name('order.accept');
-Route::put('/order/cancel/{order}', [OrdersController::class, 'cancelOrder'])->name('order.cancel');
+
 //*ruta para generar el pdf
 Route::get('/generate-pdf/{orderId}', [PDFController::class, 'generatePDF'])->name('generate.pdf');
 
 //Controlador para cambio de idioma
 Route::post('/language', [LanguageController::class, 'change'])->name('language.change');
-//Route::put('edit_note/{id}', [ NotesController::class, 'update' ]) -> name('notes.update');
-
-//https://codersfree.com/courses-status/aprende-laravel-desde-cero/relacion-muchos-a-muchos
-// Route::get('/check-relationship', function () {
-//     $product = Product::find(1); // Obtiene el primer producto
-//     // $product->categories()->attach(1);
-//     // $product->categories()->detach(1);
-//     $product->images();
-//     echo "products"."</br>";
-//     echo $product;
-//     $images = $product->images; // Obtiene las categorías del producto
-//     echo "</br>"."datos de la tabla pivote asociadas a ese producto"."</br>";
-//     echo $images;
-//     echo "</br>";
-//     echo "nombres de las categorias asociadas a ese producto"."</br>";
-//     foreach ($images as $image) {
-//         echo $image->id;
-//         echo $image->url;
-//     }
-// });
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/dashboard', [ProductsController::class, 'listFew'])->name('dashboard');
-    // Route::get('home/{id}', [ProductsController::class, 'show'])->name('show');
 
     //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
@@ -146,26 +123,14 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/categories/{id}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
 
-});
+    //!vista de todas las orders si funciona move a dashboard
+    Route::get('/admin/orders', [OrdersController::class, 'showAllOrders'])->name('showAll.admin');
 
+    //aceptar/cancelar pedidos, al aceptar se reduce el stock del producto
+    Route::put('/order/accept/{order}', [OrdersController::class, 'acceptOrder'])->name('order.accept');
+    Route::put('/order/cancel/{order}', [OrdersController::class, 'cancelOrder'])->name('order.cancel');
+});
+//! error de acesso si no eres admin
 Route::get('/forbidden', function () {
     abort(403, 'Acceso no autorizado.');
 });
-
-// Route::get('check-relationship2', function () {
-//     $product = Product::find(1); // Obtiene el primer producto
-//     // $product->categories()->attach(1);
-//     // $product->categories()->detach(1);
-//     $product->carts()->sync(1);
-//     echo "productos" . "</br>";
-//     echo $product;
-//     $carts = $product->carts; // Obtiene las categorías del producto
-//     echo "</br>";
-//     echo "cart del usuario" . "</br>";
-//     echo $carts;
-//     echo "</br>";
-//     echo "cart nombre¿?¿?¿?" . "</br>";
-//     foreach ($carts as $cart) {
-//         echo $cart->id;
-//     }
-// });
