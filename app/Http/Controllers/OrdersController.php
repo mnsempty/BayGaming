@@ -123,24 +123,35 @@ class OrdersController extends Controller
         }
         return redirect()->route('create.invoice', ['order' => $orderId]);
     }
+    //find the user orders and paginate them,+ link to view my_orders
     public function showMyOrders()
     {
-        // Obtén el ID del usuario autenticado
         $userId = auth()->id();
-
-        // Busca las órdenes del usuario autenticado
         $orders = Order::where('users_id', $userId)->paginate(4);
-    
-        // Devuelve la vista con las órdenes del usuario
         return view('auth.my_orders', compact('orders'));
     }
-    public function showAllOrders() {
+    //if the user is admin,show him all the orders
+    public function showAllOrders()
+    {
         $userId = auth()->id();
         $userAdmin = User::find($userId);
         if ($userAdmin->role !== 'admin') {
             return back();
         }
-        $orders =Order::all();
-        return view('auth.admin_orders',compact('orders'));
+        $orders = Order::all();
+        return view('auth.admin_orders', compact('orders'));
+    }
+    // update the state of the product to completed
+    public function acceptOrder(Order $order)
+    {
+        $order->update(['state' => 'completed']);
+        return back()->with('success', 'Pedido aceptado con éxito.');
+    }
+
+    // Método para cancelar el pedido
+    public function cancelOrder(Order $order)
+    {
+        $order->update(['state' => 'cancelled']);
+        return back()->with('success', 'Pedido cancelado con éxito.');
     }
 }

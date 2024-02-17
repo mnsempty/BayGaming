@@ -87,8 +87,10 @@ Route::get('/userProfile',[UsersController::class,'showProfile'])->name('profile
 Route::get('/profile',function(){
     return view('auth.editProfile');
 });
-//*
-
+//aceptar/cancelar pedidos, al aceptar se reduce el stock del producto
+Route::put('/order/accept/{order}', [OrdersController::class, 'acceptOrder'])->name('order.accept');
+Route::put('/order/cancel/{order}', [OrdersController::class, 'cancelOrder'])->name('order.cancel');
+//*ruta para generar el pdf
 Route::get('/generate-pdf/{orderId}', [PDFController::class, 'generatePDF'])->name('generate.pdf');
 
 //Controlador para cambio de idioma

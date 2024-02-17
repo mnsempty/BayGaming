@@ -16,5 +16,35 @@
             </div>
         @endif
 
-        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($orders as $order)
+                    <tr>
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->state }}</td>
+                        <td>{{ $order->total }}</td>
+                        <td>
+                            <form action="{{ route('order.accept', $order->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-success">Aceptar</button>
+                            </form>
+                            <form action="{{ route('order.cancel', $order->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-danger">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 @endsection
