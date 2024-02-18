@@ -7,7 +7,7 @@
     <title>{{ $title }}</title>
     <style>
         .invoice-box {
-            max-width: 800px;
+            max-width: 100%;
             margin: auto;
             padding: 30px;
             border: 1px solid #eee;
@@ -29,8 +29,13 @@
             vertical-align: top;
         }
 
-        .invoice-box table tr td:nth-child(2) {
+        .invoice-box table tr td:nth-child(2),
+        .invoice-box table tr td:nth-child(4) {
             text-align: right;
+        }
+
+        .invoice-box table tr td:nth-child(3) {
+            text-align: center;
         }
 
         .invoice-box table tr.top table td {
@@ -65,6 +70,7 @@
             border-bottom: none;
         }
 
+        .invoice-box table tr.total td:nth-child(1),
         .invoice-box table tr.total td:nth-child(2) {
             border-top: 2px solid #eee;
             font-weight: bold;
@@ -83,20 +89,6 @@
                 text-align: center;
             }
         }
-
-        /** RTL **/
-        .invoice-box.rtl {
-            direction: rtl;
-            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        }
-
-        .invoice-box.rtl table {
-            text-align: right;
-        }
-
-        .invoice-box.rtl table tr td:nth-child(2) {
-            text-align: left;
-        }
     </style>
 </head>
 
@@ -104,20 +96,17 @@
     <div class="invoice-box">
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
-                <td colspan="2">
+                <td colspan="4">
                     <table>
                         <tr>
                             <td class="title">
-                                <img
-                                    src=""
-                                    style="width: 100%; max-width: 300px"
-                                />
+                                BayGaming
+                                {{--todo svg del logo --}}
+                                <img src="" style="width:  100%; max-width:  300px" />
                             </td>
-
                             <td>
-                                Invoice #: 123<br />
+                                {{ $title }}<br />
                                 Created: January 1, 2023<br />
-                                Due: February 1, 2023
                             </td>
                         </tr>
                     </table>
@@ -125,65 +114,63 @@
             </tr>
 
             <tr class="information">
-                <td colspan="2">
+                <td colspan="4">
                     <table>
                         <tr>
                             <td>
-                                Sparksuite, Inc.<br />
-                                12345 Sunny Road<br />
-                                Sunnyville, CA 12345
+                                {{ $orderData['user']['real_name'] }}<br />
+                                {{ $orderData['user']['surname'] }}<br />
+                                Dirección: {{ $orderData['address']['address'] }}<br />
+                                @if (isset($orderData['address']['secondary_address']))
+                                    Dirección Secundaria (opcional):
+                                    {{ $orderData['address']['secondary_address'] }}<br />
+                                @endif
+                                @if (isset($orderData['address']['telephone_number']))
+                                    Teléfono (opcional): {{ $orderData['address']['telephone_number'] }}<br />
+                                @endif
+                                País: {{ $orderData['address']['country'] }}<br />
+                                Código Postal: {{ $orderData['address']['zip'] }}<br />
                             </td>
 
                             <td>
-                                Acme Corp.<br />
-                                John Doe<br />
-                                john@example.com
+                                {{ config('app.name', 'BayGaming') }}<br />
+                                Marie Curie, 5<br />
+                                Isla de la Cartuja, Sevilla<br />
+                                baygaming@gmail.com
                             </td>
+
                         </tr>
                     </table>
                 </td>
             </tr>
 
             <tr class="heading">
-                <td>Payment Method</td>
-
-                <td>Check #</td>
+                <td>Producto</td>
+                <td>Precio</td>
+                <td>Cantidad</td>
+                <td>Total</td>
             </tr>
-
-            <tr class="details">
-                <td>Check</td>
-
-                <td>1000</td>
-            </tr>
-
-            <tr class="heading">
-                <td>Item</td>
-
-                <td>Price</td>
-            </tr>
-
-            <tr class="item">
-                <td>Website design</td>
-
-                <td>$300.00</td>
-            </tr>
-
-            <tr class="item">
-                <td>Hosting (3 months)</td>
-
-                <td>$75.00</td>
-            </tr>
-
-            <tr class="item last">
-                <td>Domain name (1 year)</td>
-
-                <td>$10.00</td>
-            </tr>
+            @php
+                $total = 0;
+            @endphp
+            @foreach ($order->products as $product)
+                @php
+                    $quantity = $product->pivot->quantity;
+                    $productTotal = $product->price * $quantity;
+                    $total += $productTotal;
+                @endphp
+                {{-- loop sirve para comprobar el estado del bucle, si es la ultima iteración --}}
+                <tr class="{{ $loop->last ? 'item last' : 'item' }}">
+                    <td>{{ $product->name }}</td>
+                    <td>{{ number_format($product->price, 2) }}€</td>
+                    <td>{{ $quantity }}</td>
+                    <td>{{ number_format($productTotal, 2) }}€</td>
+                </tr>
+            @endforeach
 
             <tr class="total">
                 <td></td>
-
-                <td>Total: $385.00</td>
+                <td colspan="4">Total: {{ number_format($productTotal, 2) }}€</td>
             </tr>
         </table>
     </div>
