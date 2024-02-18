@@ -16,12 +16,12 @@ class CategoriesController extends Controller
     public function listAll()
     {
         $categories = Category::paginate(5);
-        return view('auth.categories', compact('categories'));
+        return view('admin.categories', compact('categories'));
     }
 
     public function create()
     {
-        return view('auth.categories-create');
+        return view('admin.categories-create');
     }
 
     public function store(Request $request)
@@ -100,6 +100,6 @@ class CategoriesController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('auth.editCategory', compact('category'));
+        return view('admin.editCategory', compact('category'));
     }
 }

@@ -78,7 +78,7 @@ class OrdersController extends Controller
         $addresses = auth()->user()->addresses;
 
         // Pasa la orden a la vista
-        return view('auth.payment_confirmation', compact('order', 'addresses'));
+        return view('user.payment_confirmation', compact('order', 'addresses'));
     }
 
     public function saveOrder($addressId)
@@ -128,7 +128,7 @@ class OrdersController extends Controller
     {
         $userId = auth()->id();
         $orders = Order::where('users_id', $userId)->paginate(4);
-        return view('auth.my_orders', compact('orders'));
+        return view('user.my_orders', compact('orders'));
     }
     //if the user is admin,show him all the orders
     public function showAllOrders()
@@ -139,7 +139,7 @@ class OrdersController extends Controller
             return back();
         }
         $orders = Order::paginate(5);
-        return view('auth.admin_orders', compact('orders'));
+        return view('admin.admin_orders', compact('orders'));
     }
     // update the state of the product to completed and reduce stock
     public function acceptOrder(Order $order)

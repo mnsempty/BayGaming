@@ -201,7 +201,7 @@ class ProductsController extends Controller
 
         // ! se añade with() para el uso de eager loading en laravel, mejor para el rendimiento, etc
         $products = Product::with('categories')->where('show', true)->paginate(10);
-        return view('auth.dashboard', compact('products', 'mostFavorited', 'categories'));
+        return view('admin.dashboard', compact('products', 'mostFavorited', 'categories'));
     }
     public function toggleStatus(Request $request, $id)
     {
@@ -222,7 +222,7 @@ class ProductsController extends Controller
         //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
         //! php artisan storage:link
         $products = Product::where('show', true)->with('images')->paginate(5);
-        return view('landing', compact('products'));
+        return view('user.landing', compact('products'));
     }
     //! llevar a vista de editar productos
     public function editView($id)
@@ -235,6 +235,6 @@ class ProductsController extends Controller
 
         $images = $product->images;
         $discounts = $product->discounts;
-        return view('auth.editProducts', compact('product', 'categories', 'images', 'discounts'));
+        return view('admin.editProducts', compact('product', 'categories', 'images', 'discounts'));
     }
 }

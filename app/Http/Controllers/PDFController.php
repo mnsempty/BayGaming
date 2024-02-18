@@ -25,7 +25,7 @@ class PDFController extends Controller
 
         // Genera el PDF usando la vista 'pdf' y los datos
         //! pdf no PDF en esta version de doom-pdf
-        $pdf = Pdf::loadView('auth.order_pdf', $data);
+        $pdf = Pdf::loadView('user.order_pdf', $data);
 
         $fecha = now()->format('Y-m-d_H-i-s');
         // Descarga el PDF o muestra en navegador

@@ -118,7 +118,7 @@ class CartsController extends Controller
             $cart = $user->cart;
             $products = $cart->products;
 
-            return view('auth.cart', compact('products'));
+            return view('user.cart', compact('products'));
         } catch (\exception $e) {
             return back()->withErrors(['message' => 'No hay productos en el carrito']);
         }

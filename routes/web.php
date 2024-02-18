@@ -85,7 +85,7 @@ Route::post('/editProfile', [UsersController::class, 'updateProfile'])->name('pr
 Route::get('/userProfile', [UsersController::class, 'showProfile'])->name('profile.show');
 //! solamente por comodidad
 Route::get('/profile', function () {
-    return view('auth.editProfile');
+    return view('admin.editProfile');
 });
 
 //*ruta para generar el pdf
