@@ -6,131 +6,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
+        .invoice-box {
+            max-width: 800px;
             margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
         }
 
-        h1,
-        h2,
-        h3 {
-            color: #FFA500; /* Naranja */
-        }
-
-        .card {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        table {
+        .invoice-box table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border-bottom: 1px solid #ddd;
-            padding: 8px;
+            line-height: inherit;
             text-align: left;
         }
 
-        th {
-            background-color: #FFA500; /* Naranja */
-            color: #fff;
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
         }
 
-        tfoot {
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
             font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        /** RTL **/
+        .invoice-box.rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .invoice-box.rtl table {
+            text-align: right;
+        }
+
+        .invoice-box.rtl table tr td:nth-child(2) {
+            text-align: left;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>{{ $title }}</h1>
-        <div class="card">
-            <div class="card-body">
-                <h2>Detalles del pedido</h2>
-                <p><strong>Estado del pedido:</strong> {{ ucfirst($order->state) }}</p>
-                <p><strong>Total:</strong> {{ number_format($order->total, 2) }}</p>
-                <h3>Datos del comprador</h3>
-                <ul>
-                    <li>Nombre: {{ $orderData['user']['real_name'] }}</li>
-                    <li>Apellido: {{ $orderData['user']['surname'] }}</li>
-                </ul>
-                <h3>Dirección</h3>
-                <ul>
-                    <li>Dirección: {{ $orderData['address']['address'] }}</li>
-                    @if (isset($orderData['address']['secondary_address']))
-                        <li>Dirección Secundaria (opcional): {{ $orderData['address']['secondary_address'] }}</li>
-                    @endif
-                    @if (isset($orderData['address']['telephone_number']))
-                    <li>Teléfono (opcional): {{ $orderData['address']['telephone_number'] }}</li>
-                @endif
-                    <li>País: {{ $orderData['address']['country'] }}</li>
-                    <li>Código Postal: {{ $orderData['address']['zip'] }}</li>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img
+                                    src=""
+                                    style="width: 100%; max-width: 300px"
+                                />
+                            </td>
 
-                </ul>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h2>Productos</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Precio Total</th>
+                            <td>
+                                Invoice #: 123<br />
+                                Created: January 1, 2023<br />
+                                Due: February 1, 2023
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $total = 0;
-                        @endphp
-                        @foreach ($order->products as $product)
-                            @php
-                                $quantity = $product->pivot->quantity;
-                                $productTotal = $product->price * $quantity;
-                                $total += $productTotal;
-                            @endphp
-                            <tr>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ number_format($product->price, 2) }}</td>
-                                <td>{{ $quantity }}</td>
-                                <td>{{ number_format($productTotal, 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="2">
+                    <table>
                         <tr>
-                            <td colspan="3" class="text-end">Total</td>
-                            <td>{{ number_format($total, 2) }}</td>
+                            <td>
+                                Sparksuite, Inc.<br />
+                                12345 Sunny Road<br />
+                                Sunnyville, CA 12345
+                            </td>
+
+                            <td>
+                                Acme Corp.<br />
+                                John Doe<br />
+                                john@example.com
+                            </td>
                         </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Payment Method</td>
+
+                <td>Check #</td>
+            </tr>
+
+            <tr class="details">
+                <td>Check</td>
+
+                <td>1000</td>
+            </tr>
+
+            <tr class="heading">
+                <td>Item</td>
+
+                <td>Price</td>
+            </tr>
+
+            <tr class="item">
+                <td>Website design</td>
+
+                <td>$300.00</td>
+            </tr>
+
+            <tr class="item">
+                <td>Hosting (3 months)</td>
+
+                <td>$75.00</td>
+            </tr>
+
+            <tr class="item last">
+                <td>Domain name (1 year)</td>
+
+                <td>$10.00</td>
+            </tr>
+
+            <tr class="total">
+                <td></td>
+
+                <td>Total: $385.00</td>
+            </tr>
+        </table>
     </div>
 </body>
+
 
 </html>
