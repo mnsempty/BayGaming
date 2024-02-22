@@ -55,7 +55,7 @@ class InvoicesController extends Controller
             DB::beginTransaction();
             $order = Order::findOrFail($orderId);
 
-            if (auth()->id() !== $order->user_id) {
+            if (auth()->id() !== $order->users_id) {
                 // Enviar correo electrónico de notificación de intento de conseguir info pedidos no tenga el user
                 //todo mail a nuestro mail advirtiendo de un actividades ilícitas
                 //Mail::to('baygaming@thunder.com')->send(new \App\Mail\AuthorizationErrorMail());

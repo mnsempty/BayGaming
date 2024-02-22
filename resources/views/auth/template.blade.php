@@ -22,10 +22,17 @@
     <script defer src="{{ asset('js/editProfile.js') }}"></script>
     <script defer src="{{ asset('js/sendDownloadInvoiceUser.js') }}"></script>
     <script defer src="{{ asset('js/updateAddresses.js') }}"></script>
+    {{-- css custom --}}
+
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js'])
 </head>
-
+{{--todo dejar en css --}}
+<style>
+    .custom-font{
+    font-size: 1.9rem;
+}
+</style>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -73,12 +80,51 @@
                         @endguest
                     </ul>
                 </div>
+                <div>
+                    {{--todo cambiar a link a pagina edit profile modif, profile --}}
+                    <div class="bi bi-person-circle custom-font" data-bs-toggle="modal" data-bs-target="#editProfileModal"
+                        onclick="loadUserData()">
+                    </div>
+
+                </div>
             </div>
         </nav>
 
         <main class="pt-4">
             @yield('content')
         </main>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editProfileForm" method="post">
+                    @csrf
+                    @method('post')
+                    <div class="modal-body">
+                        <input type="text" id="editName" name="name" class="form-control" placeholder="Nombre">
+                        <input type="text" id="editReal_name" name="real_name" class="form-control"
+                            placeholder="Nombre Real">
+                        <input type="text" id="editSurname" name="surname" class="form-control"
+                            placeholder="Apellido">
+                        <input type="email" id="editEmail" name="email" class="form-control" placeholder="Email">
+                        <input type="password" name="password" class="form-control" placeholder="Contraseña">
+                        <input type="password" name="password_confirmation" class="form-control"
+                            placeholder="Confirmar Contraseña">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Se ha intentado enlazar un js con mix no se que y no he podido-->
