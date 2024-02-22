@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->integer('percent')->default(0);
-            $table->string('code')->unique();
-            $table->foreignId('products_id')->references("id")->on("products");
+            $table->integer('percent')->default(0); // porcentaje a descontar
+            $table->string('code')->unique(); // codigo para activar el descuento
+            $table->boolean('active')->default(true); // el descuento está activo o no
+            $table->integer('uses')->default(0); // cantidad de veces usado este descuento
             $table->timestamps();
         });
     }

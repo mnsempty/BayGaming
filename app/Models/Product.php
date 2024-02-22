@@ -50,11 +50,11 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
-    //? discounts relation 1-M
-    public function discounts()
-    {
-        return $this->hasMany(Discount::class, 'products_id');
-    }
+    //! discounts relation 1-M deleted 
+    // public function discounts()
+    // {
+    //     return $this->hasMany(Discount::class, 'products_id');
+    // }
     //? images relation N-M
     public function images()
     {

@@ -96,7 +96,6 @@ class ProductsController extends Controller
             'platform' => 'sometimes|required',
             'launcher' => 'sometimes|nullable',
             'images.*' => 'sometimes|required',
-            'discount' => 'sometimes|integer|min:0|max:100',
         ]);
         try {
             DB::beginTransaction();
@@ -117,12 +116,6 @@ class ProductsController extends Controller
             $product->platform = $request->platform;
             $product->launcher = $request->launcher;
             $product->save();
-            //!en caso de que no tenga se hace insert
-            $discount = $product->discounts->first();
-            //  dd($product->discounts->first());
-
-            $discount->percent = $request['discount'] ?? $discount->percent;
-            $discount->save();
 
             // Todo Update associated images
             $imagesData = $request->input('images');
@@ -234,7 +227,6 @@ class ProductsController extends Controller
         $categories = Category::all();
 
         $images = $product->images;
-        $discounts = $product->discounts;
-        return view('admin.editProducts', compact('product', 'categories', 'images', 'discounts'));
+        return view('admin.editProducts', compact('product', 'categories', 'images'));
     }
 }

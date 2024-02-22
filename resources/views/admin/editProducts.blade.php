@@ -116,18 +116,6 @@
 
                             </div>
 
-
-                            <!-- Formulario para los descuentos -->
-                            <div class="mb-3">
-                                <h4>Discounts</h4>
-                                <div class="form-group">
-                                    <label for="discount">Discount Percentage</label>
-                                    <input type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="{{ old('discount', $discounts->first()->percent ?? '') }}">
-                                </div>
-                            </div>
-
-
-
                             <button type="submit" class="btn btn-primary">Update Product</button>
                         </form>
                     </div>
