@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->enum('state', ['pending', 'processing','completed','cancelled'])->default('pending');
-            $table->text('orderData')->default('void');
-            $table->decimal('total',10,2);
+            $table->text('orderData')->default('void');//datos del pedido como direcciones etc
+            $table->decimal('subtotal',10,2)->default(0);//total sin descuento
+            $table->decimal('total',10,2);//total con descuento
             $table->foreignId('users_id')->constrained()->references("id")->on("users")->unique();
             $table->timestamps();
-            
         });
     }
 

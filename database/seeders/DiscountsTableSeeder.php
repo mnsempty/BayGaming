@@ -15,10 +15,12 @@ class DiscountsTableSeeder extends Seeder
     {
         Discount::create([
             'percent' => 10,
+            'code' => 'testcode1', 
             'products_id' => 1,
         ]);
         Discount::create([
             'percent' => 20,
+            'code' => 'testcode2', 
             'products_id' => 2,
         ]);
 

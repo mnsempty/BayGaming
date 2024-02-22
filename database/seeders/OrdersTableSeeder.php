@@ -29,6 +29,7 @@ class OrdersTableSeeder extends Seeder
                 }
             }
             ',
+            'subtotal' => 111.11,
             'total' => 100.00,
             'users_id' => 1,
         ]);
@@ -49,6 +50,7 @@ class OrdersTableSeeder extends Seeder
                 }
             }
             ',
+            'subtotal' => 222.22,
             'total' => 200.00,
             'users_id' => 2,
         ]);
