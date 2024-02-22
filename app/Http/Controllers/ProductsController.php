@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Discount;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -39,12 +38,6 @@ class ProductsController extends Controller
             // //! Creación de un producto: permita a los usuarios seleccionar categorías al crear un producto.
             $product->categories()->attach($request->input('categories'));
 
-            // Crear una entrada de descuento para el producto recién creado
-            $discount = new Discount;
-            $discount->percent =  0;
-            $discount->products_id = $product->id; // Asocia el descuento con el producto recién creado
-
-            $discount->save();
             // Obtiene el ID del producto recién creado
             $productId = $product->id;
             // Define el nombre de la carpeta basándose en el ID del producto

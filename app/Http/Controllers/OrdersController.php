@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,35 +30,37 @@ class OrdersController extends Controller
                     'telephone_number' => $address->telephone_number,
                 ],
          */
-        // Si no hay una orden existente, crea una nueva
+        // Si no hay una order existente, crea una nueva
 
         $order = Order::create([
             'users_id' => auth()->id(),
             'state' => 'processing',
             'total' => 0
         ]);
-        // Calcula el total de la orden y añade los productos del carrito a la orden
+        // Calcula el total de la order y añade los productos del carrito a la order
         $total = 0;
         foreach ($cart->products as $product) {
             $quantity = $product->pivot->quantity;
-            $subtotal = $product->price * $quantity;
-            $total += $subtotal;
+            $subtotals = $product->price * $quantity;
+            $total += $subtotals;
 
-            // Verifica si el producto ya está en la orden
+            // Verifica si el producto ya está en la order
             $existingProduct = $order->products()->where('products.id', $product->id)->first();
 
             if ($existingProduct) {
-                // El producto ya está en la orden, actualiza la cantidad
-                // Establece la cantidad en la orden igual a la cantidad en el carrito
+                // El producto ya está en la order, actualiza la cantidad
+                // Establece la cantidad en la order igual a la cantidad en el carrito
                 $order->products()->updateExistingPivot($product->id, ['quantity' => $quantity]);
             } else {
-                // El producto no está en la orden, lo añade con la cantidad dada
+                // El producto no está en la order, lo añade con la cantidad dada
                 $order->products()->attach($product->id, ['quantity' => $quantity]);
             }
         }
 
-        // Actualiza el total de la orden
-        $order->update(['total' => $total]);
+        // Actualiza el total de la order con ->update no funciona
+        $order->total = $total;
+        $order->subtotal = $total;
+        $order->save();
 
         // guardamos el id del pedido creado para enviar la factura atraves del controlador de address
         // se podría hacer todo en invoices but i love order
@@ -66,32 +69,40 @@ class OrdersController extends Controller
         return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
 
-
-
-    public function showPaymentConfirmation(Order $order)
+    public function applyDiscount(Request $request, Order $order)
     {
-        // Asegura que la orden pertenezca al usuario autenticado
+        $discountCode = $request->input('discount_code');
+        $discount = Discount::where('code', $discountCode)->first();
+        if ($discount) {
+            return redirect()->route('payment.confirmation', ['order' => $order->id, 'discount' => $discount]);
+        } else {
+            return redirect()->back()->withErrors(['message' => 'Invalid discount code.']);
+        }
+    }
+
+    public function showPaymentConfirmation(Order $order, Discount $discount = null)
+    {
+        // Asegura que la order pertenezca al usuario autenticado
         if ($order->users_id !== auth()->id()) {
             abort(403, 'Acceso no autorizado.');
         }
         // direcciones para la tabla de direcciones
         $addresses = auth()->user()->addresses;
 
-        // Pasa la orden a la vista
-        return view('user.payment_confirmation', compact('order', 'addresses'));
+        // Pasa la order a la vista
+        return view('user.payment_confirmation', compact('order', 'addresses', 'discount'));
     }
 
-    public function saveOrder($addressId)
+    public function saveOrder($addressId , $discount = null)
     {
 
-        // Buscar la dirección en la base de datos
-        $address = Address::findOrFail($addressId);
-
-        // Obtener el ID de la orden de la sesión
+        // Obtener el ID de la order de la sesión
         $orderId = session('orderId');
         try {
             DB::beginTransaction();
-            // Buscar la orden en la base de datos
+            // Buscar la dirección en la base de datos
+            $address = Address::findOrFail($addressId);
+            // Buscar la order en la base de datos
             $order = Order::findOrFail($orderId);
             $user = $order->user;
             // Preparar los datos de la dirección para actualizar orderData
@@ -107,8 +118,15 @@ class OrdersController extends Controller
                     'zip' => $address->zip,
                 ],
             ];
+            // Aplicar el descuento al subtotal y al total del pedido si hay descuento
+            // hecho con session por que si no es fumada meterlo en este punto
+            $discount = Discount::findOrFail($discount);
+            if ($discount) {
+                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
+                $order->total = $order->total - ($order->total * ($discount->percent /   100));
+            }
 
-            // Actualizar orderData en la orden
+            // Actualizar orderData en la order
             $order->orderData = json_encode($orderData);
             $order->save();
 

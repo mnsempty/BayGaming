@@ -19,10 +19,10 @@
         <div class="row g-5">
             @php
                 $totalQuantity = 0;
-                $subtotal = 0;
+                $productsTotal = 0;
                 foreach ($order->products as $product) {
                     $totalQuantity += $product->pivot->quantity;
-                    $subtotal += $product->price * $product->pivot->quantity;
+                    $productsTotal += $product->price * $product->pivot->quantity;
                 }
             @endphp
             {{-- resumen compras --}}
@@ -44,29 +44,48 @@
                             </span>
                         </li>
                     @endforeach
-                    <!-- Aquí puedes agregar otros elementos como descuentos o impuestos si son aplicables -->
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Subtotal (USD)</span>
-                        <strong>${{ number_format($subtotal, 2) }}</strong>
-                    </li>
-                    <!-- Aquí puedes agregar otros elementos como descuentos o impuestos si son aplicables -->
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>${{ number_format($subtotal, 2) }}</strong>
-                    </li>
+
+                    @if (!empty($discount))
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Subtotal (USD)</span>
+                            <strong class="text-decoration-line-through">${{ number_format($productsTotal, 2) }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Discount {{ $discount->percent }}%</span>
+                            <strong>${{ number_format($productsTotal * ($discount->percent / 100), 2) }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <strong>${{ number_format($productsTotal - $productsTotal * ($discount->percent / 100), 2) }}</strong>
+                        </li>
+                    @else
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (USD)</span>
+                            <strong>${{ number_format($productsTotal, 2) }}</strong>
+                        </li>
+                    @endif
+
                 </ul>
 
-                <form class="card p-2">
+                <form action="{{ route('apply.discount', ['order' => $order->id]) }}" method="post">
+                    @csrf
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Promo code">
+                        <input type="text" class="form-control" placeholder="Promo code" name="discount_code">
                         <button type="submit" class="btn btn-secondary">Redeem</button>
                     </div>
                 </form>
+
+                @if ($discount)
+                    <div class="alert alert-success">
+                        Discount applied: {{ $discount->percent }}% off
+                    </div>
+                @endif
+
             </div>
             {{-- panel direcciones --}}
             <div class="col-md-7 col-lg-6 order-md-1">
                 @foreach ($addresses as $address)
-                    <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post">
+                <form action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}" method="post">
                         @csrf
                         @method('post')
                         <div class="card w-75 mb-3 mt-5">
@@ -102,8 +121,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="editAddressForm"
-                                     method="post">
+                                <form id="editAddressForm" method="post">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-3">
@@ -117,7 +135,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="editTelephoneNumber" class="form-label">Teléfono</label>
-                                        <input type="text" class="form-control" id="editTelephoneNumber" name="telephone_number">
+                                        <input type="text" class="form-control" id="editTelephoneNumber"
+                                            name="telephone_number">
                                     </div>
                                     <div class="mb-3">
                                         <label for="editCountry" class="form-label">País</label>
@@ -125,12 +144,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="editZip" class="form-label">Código Postal</label>
-                                        <input type="text" class="form-control" id="editZip" name="zip" required>
+                                        <input type="text" class="form-control" id="editZip" name="zip"
+                                            required>
                                     </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button type="submit" class="btn btn-primary" form="editAddressForm">Guardar
                                     Cambios</button>
                             </div>
@@ -255,8 +276,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="buyAndReturnModalLabel">Confirmar Compra y Volver al
-                                        Carrito</h5>
+                                    <h5 class="modal-title" id="buyAndReturnModalLabel">Confirmación de compra</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -264,7 +284,7 @@
                                     ¿Estás seguro de que quieres completar la compra?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Confirmar y enviar factura</button>
+                                    <button type="submit" class="btn btn-primary">Confirmar</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                         aria-label="Close">
                                         Cerrar

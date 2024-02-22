@@ -58,15 +58,17 @@ Route::post('/wishlist/add/{product_id}', [WhishlistsController::class, 'addToWi
 Route::post('/wishlist/remove/{product_id}', [WhishlistsController::class, 'removeFromWishlist'])->name('wishlist.remove');
 Route::get('/wishlist/load', [WhishlistsController::class, 'showWishlist'])->name('wishlist.load');
 Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'toggleWishlist'])->name('wishlist.toggle');
-Route::get('/payment-confirmation/{order}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
 // Lleva a la vista de pagar/checkout
 Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
+// lleva del controlador del carrito a la vista del pedido
+Route::get('/payment-confirmation/{order}/{discount?}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+// aplicar descuento en payment-confirmation view
+Route::post('/apply-discount/{order}', [OrdersController::class, 'applyDiscount'])->name('apply.discount');
 //todo rutas de direcciones
 // ruta para guardar datos o no de dirección y además crear order y factura
 Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name('address.create');
 // idem anterior pero sin la parte de crear address, dado un address actualiza order y factura
-Route::post('/order/save/{addressId}', [OrdersController::class, 'saveOrder'])->name('order.save');
-
+Route::post('/order/save/{addressId}/{discount?}', [OrdersController::class, 'saveOrder'])->name('order.save');
 Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
 // datos de tabla de direcciones dada el id de una dirección para el modal de update (.value)
 Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
