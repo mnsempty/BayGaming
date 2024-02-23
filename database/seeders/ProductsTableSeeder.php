@@ -25,7 +25,6 @@ class ProductsTableSeeder extends Seeder
             'launcher' => 'Steam',
             'users_id' => '1',
 
-            // 'reviews_id' => 1,
         ]);
 
         Product::create([

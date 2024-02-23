@@ -66,7 +66,7 @@
                     @endif
 
                 </ul>
-
+                @if (empty($discount))
                 <form action="{{ route('apply.discount', ['order' => $order->id]) }}" method="post">
                     @csrf
                     <div class="input-group">
@@ -74,6 +74,7 @@
                         <button type="submit" class="btn btn-secondary">Redeem</button>
                     </div>
                 </form>
+                @endif
 
                 @if ($discount)
                     <div class="alert alert-success">
@@ -85,7 +86,11 @@
             {{-- panel direcciones --}}
             <div class="col-md-7 col-lg-6 order-md-1">
                 @foreach ($addresses as $address)
+                @if (!empty($discount))
                 <form action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}" method="post">
+                    @else
+                    <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post">
+                @endif
                         @csrf
                         @method('post')
                         <div class="card w-75 mb-3 mt-5">

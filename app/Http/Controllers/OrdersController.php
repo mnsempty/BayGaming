@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class OrdersController extends Controller
 {
@@ -68,9 +69,17 @@ class OrdersController extends Controller
 
         return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
-
+// 
     public function applyDiscount(Request $request, Order $order)
     {
+        try {
+            $request->validate([
+                'discount_code' => 'required|min:10|regex:/^[A-Za-z0-9@#]+$/',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors(['message' => 'No has introducido']);
+        }
+
         $discountCode = $request->input('discount_code');
         $discount = Discount::where('code', $discountCode)->first();
         if ($discount) {
@@ -79,7 +88,7 @@ class OrdersController extends Controller
             return redirect()->back()->withErrors(['message' => 'Invalid discount code.']);
         }
     }
-
+    //todo cambiar de object a value del discount code
     public function showPaymentConfirmation(Order $order, Discount $discount = null)
     {
         // Asegura que la order pertenezca al usuario autenticado
@@ -119,11 +128,14 @@ class OrdersController extends Controller
                 ],
             ];
             // Aplicar el descuento al subtotal y al total del pedido si hay descuento
-            // hecho con session por que si no es fumada meterlo en este punto
             $discount = Discount::findOrFail($discount);
             if ($discount) {
+                //logica para cambiar el subtotal y total si existe un descuento aplicable
                 $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
                 $order->total = $order->total - ($order->total * ($discount->percent /   100));
+                // logica para aumentar los usos de los descuentos limitar, es decir un uso máximo
+                // un usuario solo puede usar un descuento una vez
+                // $discountUses = $discount->uses;
             }
 
             // Actualizar orderData en la order
