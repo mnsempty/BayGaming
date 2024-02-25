@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\Discount;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class AddressesController extends Controller
 {
     //!save address un table and orders
-    public function createAddress(Request $request)
+    public function createAddress(Request $request, $discount = null)
     {
         // Validar los datos del formulario
 
@@ -56,9 +57,18 @@ class AddressesController extends Controller
             DB::beginTransaction();
             $order = Order::find($orderId);
             // dd($order);
-            // si ese pedido existe le metemos los datos de dirección en json para evitar su borrado
-            if ($order) {
-                // guardamos los datos de la order en json
+            if ($discount) {
+                // buscamos el descuento  y en caso de que tenga usos disponibles (done in redeem code/applyDiscount too)
+                // restamos los usos para evitar que con 1 uso se 7 users hagan 7 pedidos
+                $discount = Discount::findOrFail($discount);
+                $discount->uses >= 0 ? $discount->uses-- : throw new \Exception('El descuento no tiene usos disponibles.');
+                $discount->save();
+
+                //calc subtotal and total with discount
+                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
+                $order->total = $order->subtotal;
+            }
+            // metemos los datos de dirección en json para evitar su borrado + discount si existe
                 $orderData = [
                     'user' => [
                         'real_name' => $request->firstName,
@@ -71,6 +81,7 @@ class AddressesController extends Controller
                         'country' => $request->country,
                         'zip' => $request->zip,
                     ],
+                    'discount' => $discount ? ['code' => $discount->code, 'percent' => $discount->percent] : null,
                 ];
                 $serializedOrderData = json_encode($orderData);
                 //guardamos el json_encoded(sin encoded no funca)en la db
@@ -80,7 +91,7 @@ class AddressesController extends Controller
                 // Limpia el carrito
                 $cart = Cart::where('users_id', auth()->id())->first();
                 $cart->products()->detach();
-            }
+            
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

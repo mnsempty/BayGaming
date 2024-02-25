@@ -20,6 +20,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
+            // guardamos en este campo los descuentos, evitamos repetición
+            $table->string('discounts_used')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

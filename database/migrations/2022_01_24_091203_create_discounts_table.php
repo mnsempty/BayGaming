@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('code')->unique(); // codigo para activar el descuento
             $table->boolean('active')->default(true); // el descuento está activo o no
             $table->integer('uses')->default(0); // cantidad de veces usado este descuento
+            $table->date('expire_date')->nullable(); // fecha de caducidad del descuento
             $table->timestamps();
         });
     }

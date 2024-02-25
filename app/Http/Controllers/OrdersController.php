@@ -69,27 +69,57 @@ class OrdersController extends Controller
 
         return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
-// 
+    // 
     public function applyDiscount(Request $request, Order $order)
     {
+        // check el discount está excrito correctamente A-Z,0-9,@,#
         try {
             $request->validate([
                 'discount_code' => 'required|min:10|regex:/^[A-Za-z0-9@#]+$/',
             ]);
         } catch (ValidationException $e) {
-            return redirect()->back()->withErrors(['message' => 'No has introducido']);
+            return redirect()->back()->withErrors(['message' => 'El codigo introducido esta escrito incorrectamente']);
         }
 
-        $discountCode = $request->input('discount_code');
+        $discountCode = $request->discount_code;
         $discount = Discount::where('code', $discountCode)->first();
-        if ($discount) {
-            return redirect()->route('payment.confirmation', ['order' => $order->id, 'discount' => $discount]);
+
+        // Comprobar si el descuento ha caducado, caducarlo de ser el caso
+        if ($discount && $discount->expire_date && $discount->expire_date <= now()) {
+            // Actualizar el estado del descuento a inactivo
+            $discount->active = false;
+            $discount->save();
+        }
+
+        // check existe el descuento, el campo de activo es true y tiene más de un uso disponible
+        if ($discount && $discount->active && $discount->uses >   0) {
+            // check discount usado
+            $user = auth()->user();
+            $discountsUsed = $user->discounts_used ? explode(',', $user->discounts_used) : [];
+            //check si existe el discount en el array creado apartir del string
+            if (in_array($discountCode, $discountsUsed)) {
+                return redirect()->back()->withErrors(['message' => 'Ya has usado este código de descuento.']);
+            } else {
+                // add discount a usados al string de usados por el user
+                $user = User::findOrFail($user->id);
+                $discountsUsed[] = $discountCode;
+                $user->discounts_used = implode(',', $discountsUsed);
+                $user->save();
+
+                return redirect()->route('payment.confirmation', ['order' => $order->id, 'discount' => $discount->code]);
+            }
         } else {
-            return redirect()->back()->withErrors(['message' => 'Invalid discount code.']);
+            if (!$discount) {
+                return redirect()->back()->withErrors(['message' => 'No existe ese código de descuento.']);
+            } elseif (!$discount->active) {
+                return redirect()->back()->withErrors(['message' => 'El código de descuento ha caducado o está inactivo.']);
+            } else {
+                return redirect()->back()->withErrors(['message' => 'El código de descuento ya no tiene usos disponibles.']);
+            }
         }
     }
-    //todo cambiar de object a value del discount code
-    public function showPaymentConfirmation(Order $order, Discount $discount = null)
+    //todo try catch con DB::beginTransaction();
+    public function showPaymentConfirmation(Order $order, $discountCode = null)
     {
         // Asegura que la order pertenezca al usuario autenticado
         if ($order->users_id !== auth()->id()) {
@@ -98,11 +128,13 @@ class OrdersController extends Controller
         // direcciones para la tabla de direcciones
         $addresses = auth()->user()->addresses;
 
+        $discount = Discount::where('code', $discountCode)->first();
+
         // Pasa la order a la vista
         return view('user.payment_confirmation', compact('order', 'addresses', 'discount'));
     }
 
-    public function saveOrder($addressId , $discount = null)
+    public function saveOrder($addressId, $discount = null)
     {
 
         // Obtener el ID de la order de la sesión
@@ -114,6 +146,20 @@ class OrdersController extends Controller
             // Buscar la order en la base de datos
             $order = Order::findOrFail($orderId);
             $user = $order->user;
+
+            // Aplicar el descuento al subtotal y al total del pedido si hay descuento
+            //todo añadir codigo de descuento/id al orderData para que al cancelar el pedido se pueda añada un uso
+            if ($discount) {
+                // buscamos el descuento  y en caso de que tenga usos disponibles (done in redeem code/applyDiscount too)
+                // restamos los usos para evitar que con 1 uso se 7 users hagan 7 pedidos
+                $discount = Discount::findOrFail($discount);
+                $discount->uses >= 0 ? $discount->uses-- : throw new \Exception('El descuento no tiene usos disponibles.');
+                $discount->save();
+
+                //calc subtotal and total with discount
+                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
+                $order->total = $order->subtotal;
+            }
             // Preparar los datos de la dirección para actualizar orderData
             $orderData = [
                 'user' => [
@@ -126,18 +172,8 @@ class OrdersController extends Controller
                     'country' => $address->country,
                     'zip' => $address->zip,
                 ],
+                'discount' => $discount ? ['code' => $discount->code, 'percent' => $discount->percent] : null,
             ];
-            // Aplicar el descuento al subtotal y al total del pedido si hay descuento
-            $discount = Discount::findOrFail($discount);
-            if ($discount) {
-                //logica para cambiar el subtotal y total si existe un descuento aplicable
-                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
-                $order->total = $order->total - ($order->total * ($discount->percent /   100));
-                // logica para aumentar los usos de los descuentos limitar, es decir un uso máximo
-                // un usuario solo puede usar un descuento una vez
-                // $discountUses = $discount->uses;
-            }
-
             // Actualizar orderData en la order
             $order->orderData = json_encode($orderData);
             $order->save();
@@ -164,7 +200,7 @@ class OrdersController extends Controller
     public function showAllOrders()
     {
         $userId = auth()->id();
-        $userAdmin = User::find($userId);
+        $userAdmin = User::findOrFail($userId);
         if ($userAdmin->role !== 'admin') {
             return back();
         }

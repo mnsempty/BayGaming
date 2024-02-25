@@ -22,7 +22,6 @@ class DiscountsTableSeeder extends Seeder
             'percent' => 20,
             'code' => 'testCode02',
             'active' => false,
-            // 'products_id' => 2,
         ]);
 
     }

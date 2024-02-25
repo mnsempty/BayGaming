@@ -66,7 +66,7 @@ Route::get('/payment-confirmation/{order}/{discount?}', [OrdersController::class
 Route::post('/apply-discount/{order}', [OrdersController::class, 'applyDiscount'])->name('apply.discount');
 //todo rutas de direcciones
 // ruta para guardar datos o no de dirección y además crear order y factura
-Route::post('/saveAddress', [AddressesController::class, 'createAddress'])->name('address.create');
+Route::post('/saveAddress/{discount?}', [AddressesController::class, 'createAddress'])->name('address.create');
 // idem anterior pero sin la parte de crear address, dado un address actualiza order y factura
 Route::post('/order/save/{addressId}/{discount?}', [OrdersController::class, 'saveOrder'])->name('order.save');
 Route::get('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddress'])->name('addresses.delete');
