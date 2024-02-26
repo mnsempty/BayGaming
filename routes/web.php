@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\DiscountsController;
 use App\Models\Cart;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoicesController;
@@ -62,9 +63,21 @@ Route::post('/wishlist/toggle/{product_id}', [WhishlistsController::class, 'togg
 Route::post('/proceed-to-payment', [OrdersController::class, 'proceedToPayment'])->middleware('auth')->name('cart.proceedToPayment');
 // lleva del controlador del carrito a la vista del pedido
 Route::get('/payment-confirmation/{order}/{discount?}', [OrdersController::class, 'showPaymentConfirmation'])->name('payment.confirmation');
+//todo rutas de descuentos
 // aplicar descuento en payment-confirmation view
 Route::post('/apply-discount/{order}', [OrdersController::class, 'applyDiscount'])->name('apply.discount');
-//todo rutas de direcciones
+//! de aquí hacia abajo en solo ver admin
+// Ruta para listar todos los descuentos
+Route::get('/discounts', [DiscountsController::class, 'showDiscounts'])->name('discounts.show');
+// Ruta para crear un nuevo descuento
+Route::post('/discounts/create', [DiscountsController::class, 'create'])->name('discounts.create');
+// Ruta para editar un descuento existente
+Route::put('/discounts/{discount}', [DiscountsController::class, 'update'])->name('discounts.update');
+// Ruta para eliminar un descuento
+Route::delete('/discounts/{discount}', [DiscountsController::class, 'deleteDiscount'])->name('discounts.delete');
+// Ruta para activar un descuento
+Route::post('/discounts/{discount}/activate', [DiscountsController::class, 'activate'])->name('discounts.activate');
+//todo ruta de direcciones
 // ruta para guardar datos o no de dirección y además crear order y factura
 Route::post('/saveAddress/{discount?}', [AddressesController::class, 'createAddress'])->name('address.create');
 // idem anterior pero sin la parte de crear address, dado un address actualiza order y factura
@@ -101,7 +114,6 @@ Route::group(['middleware' => 'admin'], function () {
 
     //! lleva a pagina de crear products
     Route::post('/products/create', [ProductsController::class, 'create'])->name('products.create');
-
 
     //! lleva a pagina de editar products
     Route::get('/products/{id}/edit', [ProductsController::class, 'editView'])->name('products.edit.view');
