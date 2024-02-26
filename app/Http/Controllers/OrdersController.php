@@ -59,8 +59,8 @@ class OrdersController extends Controller
         }
 
         // Actualiza el total de la order con ->update no funciona
-        $order->total = $total;
         $order->subtotal = $total;
+        $order->total = $total;
         $order->save();
 
         // guardamos el id del pedido creado para enviar la factura atraves del controlador de address
@@ -156,9 +156,8 @@ class OrdersController extends Controller
                 $discount->uses >= 0 ? $discount->uses-- : throw new \Exception('El descuento no tiene usos disponibles.');
                 $discount->save();
 
-                //calc subtotal and total with discount
-                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
-                $order->total = $order->subtotal;
+                //calc total with discount
+                $order->total = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
             }
             // Preparar los datos de la dirección para actualizar orderData
             $orderData = [

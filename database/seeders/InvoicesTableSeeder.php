@@ -16,6 +16,7 @@ class InvoicesTableSeeder extends Seeder
         Invoice::create([
             'date' => now(),
             'subtotal' => 16.2,
+            'total' => 16.2,
             'orders_id' => 1
         ]);
 

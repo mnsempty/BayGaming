@@ -64,9 +64,8 @@ class AddressesController extends Controller
                 $discount->uses >= 0 ? $discount->uses-- : throw new \Exception('El descuento no tiene usos disponibles.');
                 $discount->save();
 
-                //calc subtotal and total with discount
-                $order->subtotal = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
-                $order->total = $order->subtotal;
+                //calc total with discount
+                $order->total = $order->subtotal - ($order->subtotal * ($discount->percent /   100));
             }
             // metemos los datos de dirección en json para evitar su borrado + discount si existe
                 $orderData = [

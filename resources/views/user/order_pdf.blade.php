@@ -101,12 +101,12 @@
                         <tr>
                             <td class="title">
                                 BayGaming
-                                {{--todo svg del logo --}}
+                                {{-- todo svg del logo --}}
                                 <img src="" style="width:  100%; max-width:  300px" />
                             </td>
                             <td>
                                 {{ $title }}<br />
-                                Created: January 1, 2023<br />
+                                Creado: {{ \Carbon\Carbon::parse($order->updated_at)->format('d F, Y')}}<br />
                             </td>
                         </tr>
                     </table>
@@ -151,15 +151,16 @@
                 <td>Total</td>
             </tr>
             @php
-                $total = 0;
+                $subtotal = 0;
+                $discountAmount = 0;
+                $discountPercent = 0;
             @endphp
             @foreach ($order->products as $product)
                 @php
                     $quantity = $product->pivot->quantity;
                     $productTotal = $product->price * $quantity;
-                    $total += $productTotal;
+                    $subtotal += $productTotal;
                 @endphp
-                {{-- loop sirve para comprobar el estado del bucle, si es la ultima iteración --}}
                 <tr class="{{ $loop->last ? 'item last' : 'item' }}">
                     <td>{{ $product->name }}</td>
                     <td>{{ number_format($product->price, 2) }}€</td>
@@ -168,9 +169,24 @@
                 </tr>
             @endforeach
 
+            @if (isset($orderData['discount']['code']))
+                @php
+                    $discountPercent = $orderData['discount']['percent'];
+                    $discountAmount = $subtotal * ($discountPercent / 100);
+                    $total = $subtotal - $discountAmount;
+                @endphp
+                <tr class="total">
+                    <td></td>
+                    <td colspan="3">Subtotal:{{ number_format($subtotal, 2) }}€</td>
+                </tr>
+                <tr class="total">
+                    <td></td>
+                    <td colspan="3">Descuento ({{ $discountPercent }}%):{{ number_format($discountAmount, 2) }}€</td>
+                </tr>
+            @endif
             <tr class="total">
                 <td></td>
-                <td colspan="4">Total: {{ number_format($productTotal, 2) }}€</td>
+                <td colspan="4">Total:{{ number_format($total, 2) }}€</td>
             </tr>
         </table>
     </div>

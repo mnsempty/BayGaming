@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            //$table->string('invoice_number');
             $table->date('date');
+            $table->decimal('subtotal', 10, 2)->default(0);//total sin descuento;
+            $table->decimal('total',10,2);//total con descuento si existe
+            //$table->string('invoice_number');
             // $table->date('due_date');
-            $table->decimal('subtotal', 8, 2);
             // $table->decimal('tax', 8, 2);
             $table->foreignId('orders_id')->references("id")->on("orders");
             $table->timestamps();

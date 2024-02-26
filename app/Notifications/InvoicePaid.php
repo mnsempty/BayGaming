@@ -39,11 +39,14 @@ class InvoicePaid extends Notification
     public function toMail($notifiable)
     {
         $url = url('/invoice/' . $this->invoice->id);
-
+        $order = $this->invoice->order; // Asumiendo que la orden está relacionada con la factura
+        // Puedes incluir cualquier dato de la orden que necesites
+        $orderData = $order->orderData;
+        $orderDataArray = json_decode($orderData, true);
         return (new MailMessage)
             ->subject('Invoice Paid')
             //todo url aun no hace nada,solamente lo dejamos para futuro
-            ->markdown('mail.invoice.paid', ['invoice' => $this->invoice, 'url' => $url,'name' => $notifiable->name]);
+            ->markdown('mail.invoice.paid', ['invoice' => $this->invoice, 'url' => $url,'name' => $notifiable->name,'order'=>$order,'orderData' => $orderDataArray,]);
     }
 
     /**

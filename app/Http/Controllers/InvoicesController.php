@@ -22,7 +22,8 @@ class InvoicesController extends Controller
             $invoice = new Invoice;
             $invoice->orders_id = $order->id;
             $invoice->date = now();
-            $invoice->subtotal = $order->total;
+            $invoice->subtotal = $order->subtotal;
+            $invoice->total = $order->total;
             // Guardar la factura en la base de datos
             $invoice->save();
 
@@ -46,11 +47,12 @@ class InvoicesController extends Controller
             return back()->with('success', 'Factura creada');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Error al crear la factura.'. $e->getMessage()]);
+            return back()->withErrors(['message' => 'Error al crear la factura.' . $e->getMessage()]);
         }
     }
     //todo check
-    public function sendInvoice($orderId){
+    public function sendInvoice($orderId)
+    {
         try {
             DB::beginTransaction();
             $order = Order::findOrFail($orderId);
@@ -59,7 +61,7 @@ class InvoicesController extends Controller
                 // Enviar correo electrónico de notificación de intento de conseguir info pedidos no tenga el user
                 //todo mail a nuestro mail advirtiendo de un actividades ilícitas
                 //Mail::to('baygaming@thunder.com')->send(new \App\Mail\AuthorizationErrorMail());
-    
+
                 throw new AuthorizationException('No tienes permiso para enviar esta factura.');
             }
 
@@ -71,8 +73,8 @@ class InvoicesController extends Controller
             return back()->with('success', 'mail enviado');
         } catch (\exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Error al enviar la factura.'. $e->getMessage()]);
+            $errorMessage = 'Error al enviar la factura en la línea ' . $e->getLine() . ': ' . $e->getMessage();
+            return back()->withErrors(['message' => $errorMessage]);
         }
     }
-
 }

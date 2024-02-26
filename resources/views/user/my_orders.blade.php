@@ -20,10 +20,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID de la Orden</th>
+                    <th>ID del pedido</th>
                     <th>Estado</th>
                     <th>Total</th>
-                    <th>Detalles de la Orden</th>
+                    <th>Detalles del pedido</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
