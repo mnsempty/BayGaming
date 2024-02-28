@@ -66,7 +66,7 @@ Route::get('/payment-confirmation/{order}/{discount?}', [OrdersController::class
 //todo rutas de descuentos
 // aplicar descuento en payment-confirmation view
 Route::post('/apply-discount/{order}', [OrdersController::class, 'applyDiscount'])->name('apply.discount');
-//! de aquí hacia abajo en solo ver admin
+//! todo de aquí hacia abajo en solo ver admin
 // Ruta para listar todos los descuentos
 Route::get('/discounts', [DiscountsController::class, 'showDiscounts'])->name('discounts.show');
 // Ruta para crear un nuevo descuento
@@ -96,12 +96,16 @@ Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])-
 //! cambiado check errors
 Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 //todo ruta provisional edit profile
-Route::post('/editProfile', [UsersController::class, 'updateProfile'])->name('profile.edit');
-Route::get('/userProfile', [UsersController::class, 'showProfile'])->name('profile.show');
-//! solamente por comodidad
-Route::get('/profile', function () {
-    return view('admin.editProfile');
-});
+//! address for profile view 
+Route::get('/profile', [AddressesController::class, 'showAddressProfile'])->name('show.addresses');
+//eliminar address desde profile
+Route::delete('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddressProfile'])->name('addressProfile.delete');
+// crear address sin crear order simpleCreateAddress
+Route::post('/addresses/create', [AddressesController::class, 'simpleCreateAddress'])->name('addressProfile.create');
+// Ruta para actualizar la contraseña
+Route::post('/profile/update-password', [UsersController::class, 'updatePassword'])->name('PasswordProfile.update');
+// Ruta para actualizar los datos del perfil
+Route::post('/profile/update-data', [UsersController::class, 'updateProfileData'])->name('dataProfile.update');
 
 //*ruta para generar el pdf
 Route::get('/generate-pdf/{orderId}', [PDFController::class, 'generatePDF'])->name('generate.pdf');

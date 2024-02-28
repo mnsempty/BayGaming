@@ -15,18 +15,21 @@ class AddressesController extends Controller
     //!save address un table and orders
     public function createAddress(Request $request, $discount = null)
     {
-        // Validar los datos del formulario
-
-        $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'address' => 'required',
-            'telephone_number' => 'nullable|numeric',
-            'secondary_address' => 'nullable',
-            'country' => 'required',
-            'zip' => 'required',
-            'saveAddress' => 'nullable'
-        ]);
+        //todo Validar los datos del formulario
+        try {
+            $request->validate([
+                'firstName' => 'required',
+                'lastName' => 'required',
+                'address' => 'required',
+                'telephone_number' => 'nullable|numeric',
+                'secondary_address' => 'nullable',
+                'country' => 'required',
+                'zip' => 'required',
+                'saveAddress' => 'nullable'
+            ]);
+        } catch (ValidationException $e) {
+            return back()->withErrors(['message' => 'Error de validación.' . $e->getMessage()]);
+        }
 
         //todo en user guardar 
         // Crear o actualizar la dirección en la base de datos
@@ -100,6 +103,63 @@ class AddressesController extends Controller
         /*        return redirect()->route('create.invoice', ['order' => $orderId]);*/
         // con un if user role == user/admin modificable
         return redirect()->route('landing');
+    }
+    //create address desde fuera de un pedido without 
+    public function simpleCreateAddress(Request $request){
+        //todo Validar los datos del formulario
+        try {
+            $request->validate([
+                'firstName' => 'required',
+                'lastName' => 'required',
+                'address' => 'required',
+                'telephone_number' => 'nullable|numeric',
+                'secondary_address' => 'nullable',
+                'country' => 'required',
+                'zip' => 'required',
+                'saveAddress' => 'nullable'
+            ]);
+        } catch (ValidationException $e) {
+            return back()->withErrors(['message' => 'Error de validación.' . $e->getMessage()]);
+        }
+        
+        try {
+            DB::beginTransaction();
+            $address = new Address();
+            $address->users_id = auth()->id();
+            $address->address = $request->address;
+            $address->secondary_address = $request->secondary_address;
+            $address->telephone_number = $request->telephone_number;
+            $address->country = $request->country;
+            $address->zip = $request->zip;
+
+            $address->save();
+            DB::commit();
+            return back()->with('success', 'Dirección actualizada con éxito.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['message' => 'Error al enviar las direcciones: ' . $e->getMessage()]);
+        }
+    }
+    public function showAddressProfile(){
+        $usersId= auth()->id();
+        $addresses = Address::where('users_id', $usersId)->paginate(3);
+        $user = auth()->user();
+        return view('user.user_profile', compact('addresses', 'user'));
+    }
+    public function deleteAddressProfile($addressId){
+        try {
+            DB::beginTransaction();
+            $address = Address::findOrFail($addressId);
+
+            // Eliminar la dirección
+            $address->delete();
+            DB::commit();
+            // Redirigir al usuario a la página de éxito
+            return redirect()->route('show.addresses')->with('success', 'Dirección actualizada con éxito.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('show.addresses')->withErrors(['message' => 'Error al enviar las direcciones: ' . $e->getMessage()]);
+        }
     }
     public function updateAddress(Request $request, $id)
     {

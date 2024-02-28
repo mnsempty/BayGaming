@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 class UsersController extends Controller
 {
     //
-    public function updateProfile(Request $request)
+    public function updateProfileData(Request $request)
     {
         try {
             $request->validate([
@@ -20,17 +20,15 @@ class UsersController extends Controller
                 'real_name' => 'nullable|string|max:255',
                 'surname' => 'nullable|string|max:255',
                 'email' => 'required|string|email|max:255',
-                'password' => 'nullable|string|min:8|confirmed',
-                'password_confirmation' => 'same:password',
-                //password_confirmation obligatoriamente por el confirmed y laravel
             ]);
         } catch (ValidationException $e) {
-            return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
+            return back()->withErrors(['message' => 'Error de validación: ' . $e->getMessage()]);
         }
+    
         try {
             DB::beginTransaction();
-            $user = User::find(auth()->id());
-            // buscamos que el email no se encuentre en la base de datos <> el del propio user
+            $user = User::findOrFail(auth()->id());
+
             $existingUserWithEmail = User::where('email', $request->email)->where('id', '<>', auth()->id())->first();
             if ($existingUserWithEmail) {
                 // salta error si existe email
@@ -41,17 +39,38 @@ class UsersController extends Controller
             $user->real_name = $request->real_name;
             $user->surname = $request->surname;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-
             $user->save();
-
             DB::commit();
-            return back()->with('mensaje', __('User profile updated'));
+            return back()->with('success', 'Datos actualizados con éxito.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Update error: ' . $e->getMessage()]);
+            return back()->withErrors(['message' => 'Error al actualizar el perfíl: ' . $e->getMessage()]);
         }
     }
+
+    public function updatePassword(Request $request)
+{
+    try {
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|same:password',
+        ]);
+    } catch (ValidationException $e) {
+        return back()->withErrors(['message' => 'Error de validación: ' . $e->getMessage()]);
+    }
+
+    try {
+        DB::beginTransaction();
+        $user = User::find(auth()->id());
+        $user->password = Hash::make($request->password);
+        $user->save();
+        DB::commit();
+        return back()->with('success', 'Contraseña actualizada con éxito.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withErrors(['message' => 'Error al actualizar la contraseña: ' . $e->getMessage()]);
+    }
+}
     public function showProfile()
     {
         $user = Auth::user();
