@@ -1,5 +1,26 @@
-
 /* Prueba para Comprobar que precompilador de sass funciona */
-footer {
-    font-weight: 900;
+html, body {
+    height: 100%;
+    margin: 0;
 }
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    margin-bottom: -3px;
+}
+
+.custom-font {
+    font-size: 1.9rem;
+}
+
