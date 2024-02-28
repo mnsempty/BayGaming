@@ -217,13 +217,31 @@ class ProductsController extends Controller
         return response()->json($products);
     }
     //! VER PRODUCTOS USER
-    public function listFewL()
+    public function listFewL(Request $request)
     {
-        //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTEN IMAGENES:
+        //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTRE IMAGENES:
         //! php artisan storage:link
-        $products = Product::where('show', true)->with('images')->paginate(5);
-        return view('user.landing', compact('products'));
+        $category = $request->input('category');
+        $platform = $request->input('platform');
+    
+        $query = Product::where('show', true)->with('images');
+    
+        if ($category) {
+            $query->whereHas('categories', function ($query) use ($category) {
+                $query->where('name', $category);
+            });
+        }
+    
+        if ($platform) {
+            $query->where('platform', $platform);
+        }
+    
+        $products = $query->paginate(10);
+        $categories = Category::all();
+    
+        return view('user.landing', compact('products', 'categories', 'category', 'platform'));
     }
+
     //! llevar a vista de editar productos
     public function editView($id)
     {
