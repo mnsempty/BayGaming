@@ -84,99 +84,57 @@
 
             </div>
             {{-- panel direcciones --}}
-            <div class="col-md-7 col-lg-6 order-md-1">
-                @foreach ($addresses as $address)
-                    @if (!empty($discount))
-                        <form
-                            action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}"
-                            method="post">
-                        @else
-                            <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post">
-                    @endif
-                    @csrf
-                    @method('post')
-                    <div class="card w-75 mb-3 mt-5">
-                        <div class="card-body">
-                            <h5 class="card-title">User Address</h5>
-                            <p class="card-text">
-                                <strong>Address:</strong> {{ $address->address }}<br>
-                                <strong>Zip Code:</strong> {{ $address->zip }}<br>
-                                <strong>Country:</strong> {{ $address->country }}
-                            </p>
-                        </div>
-                        <!-- Botón de comprar dentro de la tarjeta -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#editAddressModal" onclick="loadAddressData({{ $address->id }})">
-                            Editar datos
-                        </button>
-                        <a class="btn btn-danger bi bi-trash3-fill"
-                            href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Eliminar address</a>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Buy</button>
-                        </div>
-                    </div>
-                    </form>
-                @endforeach
-                {{-- editar datos direcciones --}}
-                <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editAddressModalLabel">Editar Dirección</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+            {{-- comprueba colección de laravel --}}
+            @if ($addresses->isNotEmpty())
+                <div class="col-md-7 col-lg-6 order-md-1">
+                    <div class="d-flex flex-row justify-content-center">
+                    @foreach ($addresses as $address)
+                        @if (!empty($discount))
+                            <form
+                                action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}"
+                                method="post" class="w-50 mx-2">
+                            @else
+                                <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post"
+                                    class="w-50 mx-2">
+                        @endif
+                        @csrf
+                        @method('post')
+                        <div class="card mb-3 mt-5">
+                            <div class="card-body">
+                                <h5 class="card-title">User Address</h5>
+                                <p class="card-text">
+                                    <strong>Address:</strong> {{ $address->address }}<br>
+                                    <strong>Zip Code:</strong> {{ $address->zip }}<br>
+                                    <strong>Country:</strong> {{ $address->country }}
+                                </p>
                             </div>
-                            <div class="modal-body">
-                                <form id="editAddressForm" method="post">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-3">
-                                        <label for="editAddress" class="form-label">Dirección</label>
-                                        <input type="text" class="form-control" id="editAddress" name="address" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editSecondaryAddress" class="form-label">Dirección Secundaria</label>
-                                        <input type="text" class="form-control" id="editSecondaryAddress"
-                                            name="secondary_address">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editTelephoneNumber" class="form-label">Teléfono</label>
-                                        <input type="text" class="form-control" id="editTelephoneNumber"
-                                            name="telephone_number">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editCountry" class="form-label">País</label>
-                                        <input type="text" class="form-control" id="editCountry" name="country"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editZip" class="form-label">Código Postal</label>
-                                        <input type="text" class="form-control" id="editZip" name="zip"
-                                            required>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary" form="editAddressForm">Guardar
-                                    Cambios</button>
+                            <!-- Botón de comprar dentro de la tarjeta -->
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary"> Buy </button>
+                                <a class="btn btn-danger bi bi-trash"
+                                    href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Remove</a>
+
                             </div>
                         </div>
-                    </div>
+                        </form>
+                    @endforeach
+
                 </div>
-                {{-- boton nuevas direcciones --}}
-                <button type="button" class="btn btn-primary w-100 bi bi-plus" data-bs-toggle="collapse"
-                    data-bs-target="#orderAddressDiv" aria-expanded="false" aria-controls="orderAddressDiv"
-                    id="newAddressToggle">
-                    New Address
-                </button>
-
-            </div>
-
-            {{-- direcciones --}}
+                {{ $addresses->links() }}
+                    {{-- boton nuevas direcciones --}}
+                    <button type="button" class="btn btn-primary w-100 bi bi-plus" data-bs-toggle="collapse"
+                        data-bs-target="#orderAddressDiv" aria-expanded="false" aria-controls="orderAddressDiv"
+                        id="newAddressToggle">
+                        New Address
+                    </button>
+                </div>
+            @endif
+            {{-- Nueva dirección --}}
+            @if ($addresses->isnotEmpty())
             <div class="col-md-7 col-lg-8 order-md-3 collapse" id="orderAddressDiv">
+                @else
+                <div class="col-md-7 col-lg-6 order-md-1 collapse show" id="orderAddressDiv">
+                @endif
                 <h4 class="mb-3">Order address</h4>
                 {{-- se podría poner el discount para que se guarde al añadir un id but, fuck u user  --}}
                 @if (!empty($discount))
@@ -190,8 +148,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" name="firstName"
-                            required>
+                        <input type="text" class="form-control" id="firstName" placeholder="" name="firstName" required>
                         <div class="invalid-feedback">
                             Valid first name is required.
                         </div>
@@ -278,7 +235,6 @@
                     </div>
 
                     <hr class="my-4">
-
                 </div>
 
                 <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"

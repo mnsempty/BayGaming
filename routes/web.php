@@ -66,17 +66,6 @@ Route::get('/payment-confirmation/{order}/{discount?}', [OrdersController::class
 //todo rutas de descuentos
 // aplicar descuento en payment-confirmation view
 Route::post('/apply-discount/{order}', [OrdersController::class, 'applyDiscount'])->name('apply.discount');
-//! todo de aquí hacia abajo en solo ver admin
-// Ruta para listar todos los descuentos
-Route::get('/discounts', [DiscountsController::class, 'showDiscounts'])->name('discounts.show');
-// Ruta para crear un nuevo descuento
-Route::post('/discounts/create', [DiscountsController::class, 'create'])->name('discounts.create');
-// Ruta para editar un descuento existente
-Route::put('/discounts/{discount}', [DiscountsController::class, 'update'])->name('discounts.update');
-// Ruta para eliminar un descuento
-Route::delete('/discounts/{discount}', [DiscountsController::class, 'deleteDiscount'])->name('discounts.delete');
-// Ruta para activar un descuento
-Route::post('/discounts/{discount}/activate', [DiscountsController::class, 'activate'])->name('discounts.activate');
 //todo ruta de direcciones
 // ruta para guardar datos o no de dirección y además crear order y factura
 Route::post('/saveAddress/{discount?}', [AddressesController::class, 'createAddress'])->name('address.create');
@@ -99,7 +88,7 @@ Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice
 //! address for profile view 
 Route::get('/profile', [AddressesController::class, 'showAddressProfile'])->name('show.addresses');
 //eliminar address desde profile
-Route::delete('/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddressProfile'])->name('addressProfile.delete');
+Route::get('/profile/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddressProfile'])->name('addressProfile.delete');
 // crear address sin crear order simpleCreateAddress
 Route::post('/addresses/create', [AddressesController::class, 'simpleCreateAddress'])->name('addressProfile.create');
 // Ruta para actualizar la contraseña
@@ -147,6 +136,18 @@ Route::group(['middleware' => 'admin'], function () {
     //aceptar/cancelar pedidos, al aceptar se reduce el stock del producto
     Route::put('/order/accept/{order}', [OrdersController::class, 'acceptOrder'])->name('order.accept');
     Route::put('/order/cancel/{order}', [OrdersController::class, 'cancelOrder'])->name('order.cancel');
+
+    //! descuentos mostrar, crear, actualizar, eliminar y activar
+    // Ruta para listar todos los descuentos
+    Route::get('/discounts', [DiscountsController::class, 'showDiscounts'])->name('discounts.show');
+    // Ruta para crear un nuevo descuento
+    Route::post('/discounts/create', [DiscountsController::class, 'create'])->name('discounts.create');
+    // Ruta para editar un descuento existente
+    Route::put('/discounts/{discount}', [DiscountsController::class, 'update'])->name('discounts.update');
+    // Ruta para eliminar un descuento
+    Route::delete('/discounts/{discount}', [DiscountsController::class, 'deleteDiscount'])->name('discounts.delete');
+    // Ruta para activar un descuento
+    Route::post('/discounts/{discount}/activate', [DiscountsController::class, 'activate'])->name('discounts.activate');
 });
 //! error de acesso si no eres admin
 Route::get('/forbidden', function () {

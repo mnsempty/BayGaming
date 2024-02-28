@@ -126,7 +126,7 @@ class OrdersController extends Controller
             abort(403, 'Acceso no autorizado.');
         }
         // direcciones para la tabla de direcciones
-        $addresses = auth()->user()->addresses;
+        $addresses = Address::where('users_id', auth()->id())->paginate(2);
 
         $discount = Discount::where('code', $discountCode)->first();
 

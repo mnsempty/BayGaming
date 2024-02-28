@@ -158,7 +158,7 @@ class AddressesController extends Controller
             return redirect()->route('show.addresses')->with('success', 'Dirección actualizada con éxito.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('show.addresses')->withErrors(['message' => 'Error al enviar las direcciones: ' . $e->getMessage()]);
+            return redirect()->route('show.addresses')->withErrors(['message' => 'Error 4042 al borrar las direcciones: ' . $e->getMessage()]);
         }
     }
     public function updateAddress(Request $request, $id)
