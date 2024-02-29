@@ -186,7 +186,7 @@
             @endif
             <tr class="total">
                 <td></td>
-                <td colspan="4">Total:{{ number_format($total, 2) }}€</td>
+                <td colspan="4">Total:{{ number_format($total ?? $subtotal, 2) }}€</td>
             </tr>
         </table>
     </div>
