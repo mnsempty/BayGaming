@@ -71,12 +71,4 @@ class UsersController extends Controller
         return back()->withErrors(['message' => 'Error al actualizar la contraseña: ' . $e->getMessage()]);
     }
 }
-    public function showProfile()
-    {
-        $user = Auth::user();
-
-        // devolver con json los datos de perfil del user
-        return response()->json($user);
-    
-    }
 }

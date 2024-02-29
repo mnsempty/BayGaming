@@ -84,7 +84,7 @@
             </div>
             <div class="d-flex">
                 <a href="{{ route('cart.list') }}">
-                    <button class="btn btn-outline-dark">
+                    <button class="btn btn-outline-dark position-relative">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0   0   24   24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="text-white h-6 w-6">
@@ -94,11 +94,18 @@
                                 d="M2.05   2.05h2l2.66   12.42a2   2   0   0   0   2   1.58h9.78a2   2   0   0   0   1.95-1.57l1.65-7.43H5.12">
                             </path>
                         </svg>
+                        @if ($totalQuantity)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{$totalQuantity > 99 ? '99+' : $totalQuantity}}
+                            <span class="visually-hidden">Product Quantity</span>
+                          </span>
+                        @endif
                     </button>
-                </a>
 
+                </a>
+                
                 <div class="dropdown">
-                    <button class="btn btn-outline-dark dropdown-toggle" type="button" id="userMenuButton"
+                    <button class="btn dropdown-toggle border-0" type="button" id="userMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -114,16 +121,23 @@
                                 <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                             @endif
                         @else
+                            <li class="dropdown-item">
+                                <a class="text-decoration-none text-reset" href="{{ route('orders.show') }}"><i class="bi bi-box-seam me-1"></i>Mis Pedidos</a>
+                            </li>
+                            <li class="dropdown-item cursorPointer" data-bs-toggle="modal" data-bs-target="#wishlistModal">
+                                <i class="bi {{ $hasFavorites ? 'bi-heart-fill' : 'bi-heart' }} me-1"></i>{{ __('landing.view_wishlist') }}
+                                
+                            </li>
+                            <li class="dropdown-item">
+                                <a class="text-decoration-none text-reset" href="{{ route('show.addresses') }}"><i class="bi bi-gear me-1"></i>Configuration </a>
+                            </li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-door-open me-1"></i>{{ __('Logout') }}</a>
                             </li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
+                                @method('POST')
                             </form>
-                            <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#wishlistModal">
-                                {{ __('landing.view_wishlist') }}
-                                <i class=" {{ $hasFavorites ? 'bi bi-heart-fill' : 'bi bi-heart' }}"></i>
-                            </li>
                         @endguest
                     </ul>
                 </div>
@@ -179,7 +193,7 @@
 
         <div class="row justify-content-center" id="product-container">
             @foreach ($products as $product)
-                <div class="col-md-3 mb-3">
+                <div class="col-md-3 mb-3 d-flex justify-content-center">
                     <div class="card">
                         @if ($product->images->isNotEmpty())
                             <div class="img-container">

@@ -175,9 +175,9 @@
                                                     onclick="loadAddressData({{ $address->id }})">
                                                     <i class="bi bi-pencil"></i> Editar
                                                 </a>
-                                                {{-- addressProfile.delete --}}
+                                                {{-- addressConfiguration.delete --}}
                                                 <a class="btn btn-danger"
-                                                    href="{{ route('addressProfile.delete', ['addressId' => $address->id]) }}">
+                                                    href="{{ route('addressConfiguration.delete', ['addressId' => $address->id]) }}">
                                                     <i class="bi bi-trash"></i> Eliminar
                                                 </a>
                                             </div>
@@ -224,6 +224,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
+                        {{-- Configuration --}}
                         <form action="{{ route('addressProfile.create') }}" method="post">
                             @csrf
                             @method('post')

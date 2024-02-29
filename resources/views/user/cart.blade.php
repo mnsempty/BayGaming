@@ -55,9 +55,9 @@
                     <div class="col-lg-9">
                         <div class="card border shadow-0">
                             <div class="m-4">
-                                <h4 class="card-title mb-4">Your shopping cart</h4>
+                                <h4 class="card-title mb-4">Products</h4>
                                 @foreach ($products as $product)
-                                    <div class="row gy-3 mb-4">
+                                    <div class="row gy-3 mb-4 d-flex align-items-center">
                                         <div class="col-lg-5">
                                             <div class="me-lg-5">
                                                 <div class="d-flex">
@@ -66,7 +66,7 @@
                                                             class="border rounded me-3" style="width: 96px; height: 96px;"
                                                             alt="{{ $product->name }}">
                                                     @endif
-                                                    <div class="">
+                                                    <div class="d-flex flex-column justify-content-center">
                                                         <a href="#" class="nav-link">{{ $product->name }}</a>
                                                         <p class="text-muted">{{ $product->platform }}</p>
                                                     </div>
@@ -101,7 +101,7 @@
                                             <div class="float-md-end d-flex flex-row">
                                                 <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-wishlist">
+                                                    <button type="submit" class="btn btn-wishlist border-0">
                                                         @if ($product->wishlists()->where('users_id', Auth::id())->exists())
                                                             <i class="bi bi-heart-fill px-1"></i>
                                                         @else
