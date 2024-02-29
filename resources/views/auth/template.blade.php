@@ -19,7 +19,6 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <!--js para ajax-->
-    <script defer src="{{ asset('js/editProfile.js') }}"></script>
     <script defer src="{{ asset('js/sendDownloadInvoiceUser.js') }}"></script>
     <script defer src="{{ asset('js/updateAddresses.js') }}"></script>
     {{-- css custom --}}
@@ -88,11 +87,6 @@
                         </ul>
                     </div>
                     <div>
-                        {{-- todo cambiar a link a pagina edit profile modif, profile --}}
-                        <div class="bi bi-person-circle custom-font" data-bs-toggle="modal"
-                            data-bs-target="#editProfileModal" onclick="loadUserData()">
-                        </div>
-
                     </div>
                 </div>
             </nav>

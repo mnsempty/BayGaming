@@ -113,7 +113,6 @@
                                 <button type="submit" class="btn btn-primary"> Buy </button>
                                 <a class="btn btn-danger bi bi-trash"
                                     href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Remove</a>
-
                             </div>
                         </div>
                         </form>

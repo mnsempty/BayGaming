@@ -79,7 +79,7 @@ Route::get('/addresses/{id}', [AddressesController::class, 'showAddress']);
 Route::put('/addresses/update/{addressId}', [AddressesController::class, 'updateAddress'])->name('address.update');
 //todo ruta de orders
 // ver orders de un user
-Route::get('/myOrders', [OrdersController::class, 'showMyOrders'])->name('orders.show');
+Route::get('/my-orders', [OrdersController::class, 'showMyOrders'])->name('orders.show');
 //todo rutas de invoices
 Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])->name('send.invoice');
 //Ruta para crear invoices
@@ -87,9 +87,9 @@ Route::get('/send-invoice/{order}', [InvoicesController::class, 'sendInvoice'])-
 Route::get('/create-invoice/{order}', [InvoicesController::class, 'createInvoice'])->name('create.invoice');
 //todo ruta provisional edit profile
 //! address for profile view 
-Route::get('/profile', [AddressesController::class, 'showAddressProfile'])->name('show.addresses');
+Route::get('/configuration', [AddressesController::class, 'showAddressConfiguration'])->name('show.addresses');
 //eliminar address desde profile
-Route::get('/profile/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddressProfile'])->name('addressProfile.delete');
+Route::get('/configuration/addresses/delete/{addressId}', [AddressesController::class, 'deleteAddressConfiguration'])->name('addressConfiguration.delete');
 // crear address sin crear order simpleCreateAddress
 Route::post('/addresses/create', [AddressesController::class, 'simpleCreateAddress'])->name('addressProfile.create');
 // Ruta para actualizar la contraseña
