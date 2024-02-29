@@ -256,6 +256,7 @@ button {
   justify-content: space-between;
   -webkit-box-align: center;
   align-items: center;
+  display: none;
 }
 
 .card .details .purchase p {
@@ -287,8 +288,9 @@ button {
   height: 230px; //Al hacer hover, los detalles se expanden
 }
 
-.card:hover .wrapper {
-  display: block;
+.card:hover .wrapper,
+.card:hover .purchase {
+ display: block;
 }
 
 .btn-primary {

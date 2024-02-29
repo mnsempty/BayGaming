@@ -28,26 +28,11 @@ class InvoicesController extends Controller
             $invoice->save();
 
             DB::commit();
-            /**
-             * quizá modificar invoice para guardar cantidad e id del producto
-             * @foreach ($order->products as $product)
-                            @php
-                                $quantity = $product->pivot->quantity;
-                                $productTotal = $product->price * $quantity;
-                                $total += $productTotal;
-                            @endphp
-                            <tr>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ number_format($product->price, 2) }}</td>
-                                <td>{{ $quantity }}</td>
-                                <td>{{ number_format($productTotal, 2) }}</td>
-                            </tr>
-                        @endforeach
-             */
-            return back()->with('success', 'Factura creada');
+
+            return redirect()->route('landing')->with('success', 'Pedido y factura creada');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['message' => 'Error al crear la factura.' . $e->getMessage()]);
+            return redirect()->route('landing')->withErrors(['message' => 'Error al crear la factura.' . $e->getMessage()]);
         }
     }
     //todo check
@@ -56,7 +41,6 @@ class InvoicesController extends Controller
         try {
             DB::beginTransaction();
             $order = Order::findOrFail($orderId);
-
             if (auth()->id() !== $order->users_id) {
                 // Enviar correo electrónico de notificación de intento de conseguir info pedidos no tenga el user
                 //todo mail a nuestro mail advirtiendo de un actividades ilícitas

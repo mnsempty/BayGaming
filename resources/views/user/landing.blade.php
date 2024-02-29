@@ -194,7 +194,7 @@
         <div class="row justify-content-center" id="product-container">
             @foreach ($products as $product)
                 <div class="col-md-3 mb-3 d-flex justify-content-center">
-                    <div class="card">
+                    <div class="card border-0">
                         @if ($product->images->isNotEmpty())
                             <div class="img-container">
                                 <img src="{{ $product->images->first()->url }}" class="product-img"

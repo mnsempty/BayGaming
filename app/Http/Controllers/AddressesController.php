@@ -102,7 +102,7 @@ class AddressesController extends Controller
         // Redirigir a landing
         /*        return redirect()->route('create.invoice', ['order' => $orderId]);*/
         // con un if user role == user/admin modificable
-        return redirect()->route('landing');
+        return redirect()->route('create.invoice', ['order' => $orderId]);
     }
     //create address desde fuera de un pedido without 
     public function simpleCreateAddress(Request $request){
