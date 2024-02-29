@@ -102,7 +102,7 @@
         </main>
 
         <footer class="bg-dark text-white mt-auto">
-            @if (!$isCart && !$isAdmin && !$isCategoriesAdmin)
+            @if ($isLanding)
                 <div class="container py-4">
                     <div class="row gx-5">
                         <div class="col-md-4">
