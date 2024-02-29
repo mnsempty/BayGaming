@@ -230,7 +230,7 @@ class ProductsController extends Controller
             $query->where('platform', $platform);
         }
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(12);
         $categories = Category::all();
 
         return view('user.landing', compact('products', 'categories', 'category', 'platform', 'hasFavorites'));
