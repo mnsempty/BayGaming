@@ -7,3 +7,12 @@
   .btn-primary:hover {
     background: linear-gradient(25deg, rgba(255, 64, 32, 0.85) 60%, rgba(255, 128, 0, 0.85) 100%);
   }
+
+  .btn-secondary {
+    background: linear-gradient(25deg, #0080FF 60%, #000080 100%);
+    border: none;
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(25deg, #000080 10%, #0080FF 100%);
+  }

@@ -1,0 +1,92 @@
+// Definición de variables para colores
+$background-dark: #000000; 
+$background-light: #303030; 
+$text-light: #ffffff; 
+$button-primary: #3f51b5; 
+$button-danger: #f44336; 
+$button-light: #424242; 
+$button-success: #4caf50; 
+$modal-content: #212121; 
+$alert-success: #4caf50; 
+$alert-danger: #f44336; 
+$link-color: #bb86fc; 
+
+body {
+    background: linear-gradient(rgb(0, 0, 0), rgb(239, 68, 68), rgb(234, 179, 8));
+    color: $text-light; 
+    overflow-y: hidden;
+}
+
+// Estilos para el contenedor principal
+.container {
+    color: $text-light; 
+}
+
+// Estilos para las tarjetas
+.card {
+    background-color: $background-light; 
+    color: $text-light; 
+}
+
+// Estilos para los botones
+.btn-primary {
+    background-color: $button-primary;
+    color: $text-light;
+}
+
+.btn-danger {
+    background-color: $button-danger;
+    color: $text-light;
+}
+
+.btn-light {
+    background-color: $button-light;
+    color: $text-light;
+}
+
+.btn-success {
+    background-color: $button-success;
+    color: $text-light;
+}
+
+// Estilos para los modales
+.modal-content {
+    background-color: $modal-content;
+    color: $text-light;
+}
+
+// Estilos para los alertas
+.alert-success {
+    background-color: $alert-success;
+    color: $text-light;
+}
+
+.alert-danger {
+    background-color: $alert-danger;
+    color: $text-light;
+}
+
+// Estilos para los enlaces
+a {
+    color: $link-color;
+}
+
+// Estilos para los títulos
+h1, h2, h3, h4, h5, h6 {
+    color: $text-light;
+}
+
+// Estilos para los elementos de texto
+p, span, div {
+    color: $text-light;
+}
+
+// Estilos para los bordes
+.border {
+    border-color: $text-light;
+}
+
+// Estilos para los íconos
+.bi {
+    color: $text-light;
+}

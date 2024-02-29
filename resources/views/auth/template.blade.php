@@ -33,9 +33,10 @@
         $isCart = Route::currentRouteName() === 'cart.list';
         $isAdmin = Route::currentRouteName() === 'dashboard';
         $isCategoriesAdmin = Route::currentRouteName() === 'categories';
+        $isPaymentConfirmation = Route::currentRouteName() === 'payment.confirmation'
     @endphp
 
-    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', $isLanding ? 'resources/scss/cards.scss' : '', $isLanding ? 'public/js/cards.js' : ''])
+    @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', $isLanding ? 'resources/scss/cards.scss' : '', $isLanding ? 'public/js/cards.js' : '', $isCart ? 'resources/scss/cart.scss' : '', $isPaymentConfirmation ? 'resources/scss/paymentConfirmation.scss' : ''])
 </head>
 
 <body>

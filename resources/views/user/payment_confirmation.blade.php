@@ -28,17 +28,17 @@
             {{-- resumen compras --}}
             <div class="col-md-5 col-lg-6 order-md-2">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-primary">Resumen de compra</span>
-                    <span class="badge bg-primary rounded-pill">{{ $totalQuantity }}</span>
+                    <span class="text">Resumen de compra</span>
+                    <span class="badge rounded-pill">{{ $totalQuantity }}</span>
                 </h4>
                 <ul class="list-group mb-3">
                     @foreach ($order->products as $product)
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
-                                <h6 class="my-0">{{ $product->name }}</h6>
-                                <small class="text-body-secondary">Cantidad: {{ $product->pivot->quantity }}</small>
+                                <h6 class="my-0 text-light">{{ $product->name }}</h6>
+                                <small class="text-light">Cantidad: {{ $product->pivot->quantity }}</small>
                             </div>
-                            <span class="text-body-secondary">
+                            <span class="text-light">
                                 ${{ number_format($product->price, 2) }} x {{ $product->pivot->quantity }} =
                                 ${{ number_format($product->price * $product->pivot->quantity, 2) }}
                             </span>
@@ -148,7 +148,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" name="firstName" required>
+                        <input type="text" class="form-control" id="firstName" placeholder="Juan" name="firstName" required>
                         <div class="invalid-feedback">
                             Valid first name is required.
                         </div>
@@ -156,7 +156,7 @@
 
                     <div class="col-sm-6">
                         <label for="lastName" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" name="lastName">
+                        <input type="text" class="form-control" id="lastName" placeholder="Nogales" name="lastName">
                         <div class="invalid-feedback">
                             Valid last name is required.
                         </div>
@@ -164,7 +164,7 @@
 
                     <div class="col-12">
                         <label for="telephone_number" class="form-label">Phone <span
-                                class="text-body-secondary">(Optional)</span></label>
+                                class="text-body-light">(Optional)</span></label>
                         <input type="number" class="form-control" id="telephone_number" placeholder="472410399"
                             name="telephone_number">
                         <div class="invalid-feedback">
@@ -183,7 +183,7 @@
 
                     <div class="col-12">
                         <label for="secondary_address" class="form-label">Address<span
-                                class="text-body-secondary">(Optional)</span></label>
+                                class="text-body-light">(Optional)</span></label>
                         <input type="text" class="form-control" id="secondary_address"
                             placeholder="Apartment or suite" name="secondary_address">
                     </div>

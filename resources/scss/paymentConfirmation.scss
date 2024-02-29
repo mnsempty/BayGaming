@@ -1,0 +1,118 @@
+// Definición de variables para colore
+$background-dark: #000000;
+$background-light: #303030;
+$text-light: #ffffff;
+$button-danger: #f44336;
+$button-light: #424242;
+$modal-content: #212121;
+$link-color: #bb86fc; 
+
+// Estilos generales
+body {
+    background: #272727;
+    color: $text-light; 
+}
+
+// Estilos para el contenedor principal
+.container {
+    color: $text-light; 
+}
+
+// Estilos para las tarjetas
+.card {
+    background-color: #323232; 
+    color: $text-light; 
+    border: 1;
+    border-color: #FF5400;
+}
+
+.card-footer {
+    border: 1;
+    border-color: #FF5400;
+}
+
+.col-md-5.col-lg-6.order-md-2 {
+    background-color: #272727; 
+    color: $text-light; 
+    border: 1;
+    border-color: #FF5400;
+}
+
+// Estilos para los modales
+.modal-content {
+    background-color: $modal-content;
+    color: $text-light;
+}
+
+// Estilos para los enlaces
+a {
+    color: $link-color;
+}
+
+// Estilos para los títulos
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #FF5400;
+}
+
+.text {
+    color: #FF5400;
+}
+
+.badge {
+    background-color: #FF5400;
+}
+
+// Estilos para los elementos de texto
+p,
+span,
+div {
+    color: $text-light;
+}
+
+// Estilos para los bordes
+.border {
+    border-color: #FF5400;
+}
+
+.list-group{
+    background-color: #323232;
+    color: white;
+
+    .list-group-item{
+        border-color: #FF5400;
+        background-color: #323232;
+        color: white;
+    }
+}
+
+// Estilos para los íconos
+.bi {
+    color: $text-light;
+}
+
+// Estilos específicos para la página de pedidos
+.order-summary {
+    background-color: $background-light;
+    color: $text-light;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.order-address {
+    background-color: $background-light;
+    color: $text-light;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.new-address-form {
+    background-color: $background-light;
+    color: $text-light;
+    padding: 20px;
+    border-radius: 10px;
+}
