@@ -1,0 +1,9 @@
+
+.btn-primary {
+    background: linear-gradient(25deg, rgba(255, 128, 0, 0.85) 60%, rgba(255, 64, 32, 0.85) 100%);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(25deg, rgba(255, 64, 32, 0.85) 60%, rgba(255, 128, 0, 0.85) 100%);
+  }

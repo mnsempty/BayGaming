@@ -7,6 +7,7 @@ use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -207,25 +208,32 @@ class ProductsController extends Controller
     {
         //! HAY QUE USAR ESTE COMANDO ANTES PARA QUE SE ENLACE EL STORAGE Y SE MUESTRE IMAGENES:
         //! php artisan storage:link
+
+        $hasFavorites = false;
+        if (auth()->check()) {
+            $hasFavorites = auth()->user()->wishlist->products()->exists();
+        }
+        Log::info('Has favorites: ' . ($hasFavorites ? 'true' : 'false'));
+
         $category = $request->input('category');
         $platform = $request->input('platform');
-    
+
         $query = Product::where('show', true)->with('images');
-    
+
         if ($category) {
             $query->whereHas('categories', function ($query) use ($category) {
                 $query->where('name', $category);
             });
         }
-    
+
         if ($platform) {
             $query->where('platform', $platform);
         }
-    
-        $products = $query->paginate(10);
+
+        $products = $query->paginate(12);
         $categories = Category::all();
-    
-        return view('user.landing', compact('products', 'categories', 'category', 'platform'));
+
+        return view('user.landing', compact('products', 'categories', 'category', 'platform', 'hasFavorites'));
     }
 
     //! llevar a vista de editar productos

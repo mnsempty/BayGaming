@@ -32,7 +32,7 @@
         $isLanding = Route::currentRouteName() === 'landing';
         $isCart = Route::currentRouteName() === 'cart.list';
         $isAdmin = Route::currentRouteName() === 'dashboard';
-        $isCategoriesAdmin = Route::currentRouteName() === 'categories';    
+        $isCategoriesAdmin = Route::currentRouteName() === 'categories';
     @endphp
 
     @vite(['resources/css/app.css', 'resources/scss/app.scss', 'resources/js/app.js', $isLanding ? 'resources/scss/cards.scss' : '', $isLanding ? 'public/js/cards.js' : ''])
@@ -118,20 +118,25 @@
                                 </div>
                                 <span class="ms-2 fw-bold">Trustpilot</span>
                             </div>
-                            <p>TrustScore 5 | 333.333 opiniones</p>
+                            <p>{{ __('authTemplate.trustScore') }} | {{ __('authTemplate.opinions') }}</p>
                         </div>
 
                         <div class="col-md-4">
                             <ul class="list-unstyled">
-                                <li><a href="#" class="text-white text-decoration-none">Términos y condiciones</a>
+                                <li><a href="#"
+                                        class="text-white text-decoration-none">{{ __('authTemplate.terms_conditions') }}</a>
                                 </li>
-                                <li><a href="#" class="text-white text-decoration-none">Política de privacidad</a>
+                                <li><a href="#"
+                                        class="text-white text-decoration-none">{{ __('authTemplate.privacy_policy') }}</a>
                                 </li>
-                                <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
-                                <li><a href="#" class="text-white text-decoration-none">FAQ</a></li>
+                                <li><a href="#"
+                                        class="text-white text-decoration-none">{{ __('authTemplate.contact') }}</a>
+                                </li>
+                                <li><a href="#"
+                                        class="text-white text-decoration-none">{{ __('authTemplate.faq') }}</a></li>
                                 <li class="d-flex align-items-center">
-                                    <a href="#" class="text-white text-decoration-none me-2">Canjear Tarjeta
-                                        regalo</a>
+                                    <a href="#"
+                                        class="text-white text-decoration-none me-2">{{ __('authTemplate.redeem_gift_card') }}</a>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0  0  24  24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round" class="text-[#ff4500] w-5 h-5">
@@ -205,7 +210,7 @@
 
                     <div class="row gx-5 border-top border-secondary pt-3 mt-3">
                         <div class="col-6">
-                            <p class="small mb-0">&copy; 2024 BayGaming - All rights reserved</p>
+                            <p class="small mb-0">{{ __('authTemplate.copyright') }}</p>
                         </div>
                         <div class="col-6 d-flex justify-content-end">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -218,7 +223,21 @@
                                 <path d="m22 22-5-10-5 10"></path>
                                 <path d="M14 18h6"></path>
                             </svg>
-                            <span>Español</span>
+                            <div class="d-flex justify-content-between align-items-center mb-4 text-white">
+                                <form action="{{ route('language.change') }}" method="POST">
+                                    @csrf
+                                    <select name="language" onchange="this.form.submit()">
+                                        <option value="en"
+                                            {{ session('language') === 'en' || Cookie::get('language') === 'en' ? 'selected' : '' }}>
+                                            <span class="fi fi-gb"></span> English
+                                        </option>
+                                        <option value="es"
+                                            {{ session('language') === 'es' || Cookie::get('language') === 'es' ? 'selected' : '' }}>
+                                            <span class="fi fi-es"></span> Español
+                                        </option>
+                                    </select>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
