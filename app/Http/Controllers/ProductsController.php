@@ -18,19 +18,27 @@ class ProductsController extends Controller
     //
     public function create(Request $request)
     {
+
         try {
-            DB::beginTransaction();
             $validatedData = $request->validate([
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required',
-                'stock' => 'required',
-                'developer' => 'required',
-                'publisher' => 'required',
-                'platform' => 'required',
-                'launcher' => 'nullable',
+                'name' => 'required|max:16',
+                'description' => 'required|max:95',
+                'price' => 'required|numeric|min:1.00|max:999.99',
+                'stock' => 'required|numeric|min:1|max:999',
+                'developer' => 'required|max:25',
+                'publisher' => 'required|max:25',
+                'platform' => 'required|in:Steam,Ubisoft Connect,EA App,Battle.net,Rockstar,GOG.com,Epic',
+                'launcher' => 'required_if:platform,PC|nullable',
                 'image' => 'required|image|max:2048'
             ]);
+            if ($validatedData['platform'] !== 'PC' && !empty($validatedData['launcher'])) {
+                return back()->withErrors(['message' => 'El campo launcher solo existe para la plataforma PC.'])->withInput();
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors(['message' => 'Error al crear el producto: ' . $e->getMessage()])->withInput();
+        }
+        try {
+            DB::beginTransaction();
             // Agrega el ID del usuario autenticado a los datos validados
             $validatedData['users_id'] = auth()->id();
 
@@ -66,14 +74,12 @@ class ProductsController extends Controller
             $product->images()->attach($image);
 
             DB::commit();
-            return back()->with('mensaje', __('Product created successfully'))->with('product', $product);
+            return back()->with('success', __('Product created successfully'))->with('product', $product);
             //*Si la validación de datos falla se ejecuta el rollBack para  que no quede registro en BD.
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            return back()->withErrors($e->errors())->withInput(); //*Pasa los errores de validación por la vista y los datos introducidos de entrada
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', __('Error creating product ' . $e->getMessage()));
+            return back()->withErrors(['message' => __('Error creating product: ' . $e->getMessage())]);
+            
         }
     }
     //todo test
@@ -155,10 +161,10 @@ class ProductsController extends Controller
 
             DB::commit();
             //!para volver al dashboard, si lo hacemos modal idk quizá back()
-            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Producto actualizado exitosamente');
+            return redirect()->route('dashboard', compact('product'))->with('success', 'Producto actualizado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('dashboard', compact('product'))->with('mensaje', 'Error al actualizar el producto: ' . $e->getMessage());
+            return redirect()->route('dashboard', compact('product'))->withErrors(['message' => 'Error al actualizar el producto: ' . $e->getMessage()]);
         }
     }
     //todo test
@@ -172,10 +178,10 @@ class ProductsController extends Controller
             $productDelete->save();
 
             DB::commit();
-            return back()->with('mensaje', 'Producto eliminado');
+            return back()->with('success', 'Producto eliminado');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('mensaje', 'Error al eliminar el producto: ' . $e->getMessage());
+            return back()->withErrors(['message' => 'Error al eliminar el producto: ' . $e->getMessage()]);
         }
     }
     public function listFew()
@@ -232,7 +238,7 @@ class ProductsController extends Controller
 
         $products = $query->paginate(12);
         $categories = Category::all();
-            //pasamos el cart con los productos que contenga para el icon que indica la cantidad
+        //pasamos el cart con los productos que contenga para el icon que indica la cantidad
         // en caso de que no exista carrito(no ha metido nunca ningún producto) pasa null
         if (auth()->check()) { // Comprueba si el usuario está autenticado
             $cart = auth()->user()->cart; // Asegúrate de que esta es la relación correcta para obtener el carrito del usuario actual
@@ -243,7 +249,7 @@ class ProductsController extends Controller
             }
         }
 
-        return view('user.landing', compact('products', 'categories', 'category', 'platform', 'hasFavorites','totalQuantity'));
+        return view('user.landing', compact('products', 'categories', 'category', 'platform', 'hasFavorites', 'totalQuantity'));
     }
 
     //! llevar a vista de editar productos
@@ -256,6 +262,7 @@ class ProductsController extends Controller
         $categories = Category::all();
 
         $images = $product->images;
+
         return view('admin.editProducts', compact('product', 'categories', 'images'));
     }
 }

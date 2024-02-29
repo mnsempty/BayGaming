@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 class OrdersController extends Controller
 {
     //! en verdad lleva a la order puesto que no hay pagos reales ni guardamos datos de pago
-    public function proceedToPayment(Request $request)
+    public function proceedToPayment()
     {
         // Obtén el carrito del usuario actual
         $cart = Cart::where('users_id', auth()->id())->first();
@@ -69,7 +69,7 @@ class OrdersController extends Controller
 
         return redirect()->route('payment.confirmation', ['order' => $order->id]);
     }
-    // 
+    // función que aplica los descuentos
     public function applyDiscount(Request $request, Order $order)
     {
         // check el discount está excrito correctamente A-Z,0-9,@,#
@@ -78,7 +78,7 @@ class OrdersController extends Controller
                 'discount_code' => 'required|min:10|regex:/^[A-Za-z0-9@#]+$/',
             ]);
         } catch (ValidationException $e) {
-            return redirect()->back()->withErrors(['message' => 'El codigo introducido esta escrito incorrectamente']);
+            return redirect()->back()->withErrors(['message' => 'El codigo introducido esta escrito incorrectamente' . $e->getMessage()]);
         }
 
         $discountCode = $request->discount_code;

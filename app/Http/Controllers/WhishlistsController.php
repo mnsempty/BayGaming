@@ -12,9 +12,8 @@ class WhishlistsController extends Controller
 {
     public function addToWishlist(Request $request, $product_id)
     {
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
             // Get the authenticated user's wishlist or create a new one if it doesn't exist
             $wishlist = Auth::user()->wishlist ?? new Wishlist(['users_id' => Auth::id()]);
 
@@ -28,20 +27,19 @@ class WhishlistsController extends Controller
 
             DB::commit();
 
-            return back()->with('message', 'El producto se ha añadido a tu lista de deseos');
+            return back()->with('success', 'El producto se ha añadido a tu lista de deseos');
         } catch (\Exception $e) {
             DB::rollBack();
-
             // Handle the exception, log the error, etc.
-            return back()->withErrors(['error' => 'Hubo un problema al agregar el producto a tu lista de deseos.']);
+            return back()->withErrors(['message' => 'Hubo un problema al agregar el producto a tu lista de deseos.'. $e->getMessage()]);
         }
     }
 
     public function removeFromWishlist(Request $request, $product_id)
     {
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
+
             // Get the authenticated user's wishlist
             $wishlist = Auth::user()->wishlist;
 
@@ -50,20 +48,20 @@ class WhishlistsController extends Controller
 
             DB::commit();
 
-            return back()->with('message', 'El producto se ha eliminado de tu lista de deseos');
+            return back()->with('success', 'El producto se ha eliminado de tu lista de deseos');
         } catch (\Exception $e) {
             DB::rollBack();
-
             // Handle the exception, log the error, etc.
-            return back()->withErrors(['error' => 'Hubo un problema al eliminar el producto de tu lista de deseos.']);
+            return back()->withErrors(['message' => 'Hubo un problema al eliminar el producto de tu lista de deseos.'. $e->getMessage()]);
         }
     }
 
     public function toggleWishlist(Request $request, $product_id)
     {
-        DB::beginTransaction();
 
         try {
+            DB::beginTransaction();
+
             // Get the authenticated user's wishlist or create a new one if it doesn't exist
             $wishlist = Auth::user()->wishlist ?? new Wishlist(['users_id' => Auth::id()]);
 
@@ -84,7 +82,7 @@ class WhishlistsController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('message', $message);
+            return redirect()->back()->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack();
 

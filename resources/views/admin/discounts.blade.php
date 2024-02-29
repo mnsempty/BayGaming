@@ -3,14 +3,16 @@
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+            <i class="bi bi-check-circle me-2"></i>
+            {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    @if (session('error'))
+    @if (session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong><i class="bi bi-exclamation-triangle-fill"></i> Error:</strong> {{ session('error') }}
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ session('errors')->first('message') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -127,7 +129,8 @@
                         <td>{{ $discount->percent }}%</td>
                         <td>{{ $discount->code }}</td>
                         <td>{{ $discount->uses }}</td>
-                        <td>{{ $discount->expire_date ? \Carbon\Carbon::parse($discount->expire_date)->format('d F, Y') : 'N/A' }}</td>
+                        <td>{{ $discount->expire_date ? \Carbon\Carbon::parse($discount->expire_date)->format('d F, Y') : 'N/A' }}
+                        </td>
                         <td>
                             <!-- Botón para abrir el modal de edición -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"

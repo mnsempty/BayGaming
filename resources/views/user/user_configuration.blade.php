@@ -1,36 +1,22 @@
 @extends('auth.template')
 
 @section('content')
-    <style>
-        a.list-group-item-action.active {
-            background-color: var(--bs-primary);
-            color: var(--bs-white);
-        }
-
-        .altura {
-            height: 25%;
-        }
-
-        #delete-account.active {
-            background-color: var(--bs-danger);
-            color: var(--bs-white) !important;
-            border-top-color: var(--bs-danger);
-        }
-    </style>
     <div class="p-3 p-5 ">
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-        @if (session('errors'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('errors')->first('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    @if (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ session('errors')->first('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
         <div class="container-fluid px-0">
             <div class="row">
                 {{-- LEFT SIDEBAR --}}

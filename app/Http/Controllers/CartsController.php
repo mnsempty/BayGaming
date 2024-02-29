@@ -105,7 +105,7 @@ class CartsController extends Controller
         } catch (\exception $e) {
             DB::rollBack();
 
-            return back()->withErrors(['message' => 'Error al eliminar el producto']);
+            return back()->withErrors(['message' => 'Error al eliminar el producto' . $e->getMessage()]);
         }
     }
 
@@ -119,7 +119,7 @@ class CartsController extends Controller
 
             return view('user.cart', compact('products'));
         } catch (\exception $e) {
-            return back()->withErrors(['message' => 'No hay productos en el carrito']);
+            return back()->withErrors(['message' => 'No hay productos en el carrito' . $e->getMessage()]);
         }
     }
 

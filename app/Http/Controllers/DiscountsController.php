@@ -104,7 +104,7 @@ class DiscountsController extends Controller
 
             return back()->with('success', 'Descuento activado exitosamente');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error al activar el descuento: ' . $e->getMessage());
+            return back()->withErrors(['message' => 'Error al activar el descuento:' . $e->getMessage()]);
         }
     }
 }

@@ -2,13 +2,29 @@
 
 @section('content')
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Edit Product</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('products.edit', $product->id) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('products.edit', $product->id) }}"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('POST')
 
@@ -27,7 +43,8 @@
                                 <label for="categories" class="form-label">Categories</label>
                                 <select name="categories[]" id="categories" class="form-control" multiple>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" {{ $product->categories->contains($category->id) ? 'selected' : '' }}>
+                                        <option value="{{ $category->id }}"
+                                            {{ $product->categories->contains($category->id) ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
                                     @endforeach
@@ -92,7 +109,8 @@
                                         Battle.net</option>
                                     <option value="Rockstar" {{ $product->launcher == 'Rockstar' ? 'selected' : '' }}>
                                         Rockstar</option>
-                                    <option value="GOG.com" {{ $product->launcher == 'GOG.com' ? 'selected' : '' }}>GOG.com
+                                    <option value="GOG.com" {{ $product->launcher == 'GOG.com' ? 'selected' : '' }}>
+                                        GOG.com
                                     </option>
                                     <option value="Epic" {{ $product->launcher == 'Epic' ? 'selected' : '' }}>Epic
                                     </option>
