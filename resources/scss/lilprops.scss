@@ -1,3 +1,18 @@
 .cursorPointer:hover{
   cursor: pointer;
 }
+// configuration styles
+a.list-group-item-action.active {
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
+}
+
+.altura {
+    height: 25%;
+}
+
+#delete-account.active {
+    background-color: var(--bs-danger);
+    color: var(--bs-white) !important;
+    border-top-color: var(--bs-danger);
+}

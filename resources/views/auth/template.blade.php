@@ -7,6 +7,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" href="{{ asset('/default_imgs/FaviconBayGaming.png') }}">
+
 
     <title>{{ config('app.name', 'BayGaming') }}</title>
 
@@ -207,7 +209,7 @@
                         <div class="col-6">
                             <p class="small mb-0">{{ __('authTemplate.copyright') }}</p>
                         </div>
-                        <div class="col-6 d-flex justify-content-end">
+                        <div class="col-6 d-flex justify-content-end align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
@@ -218,10 +220,10 @@
                                 <path d="m22 22-5-10-5 10"></path>
                                 <path d="M14 18h6"></path>
                             </svg>
-                            <div class="d-flex justify-content-between align-items-center mb-4 text-white">
+                            <div class="d-flex justify-content-between align-items-center ms-2 mb-0 text-white">
                                 <form action="{{ route('language.change') }}" method="POST">
                                     @csrf
-                                    <select name="language" onchange="this.form.submit()">
+                                    <select class="form-select py-1" name="language" onchange="this.form.submit()">
                                         <option value="en"
                                             {{ session('language') === 'en' || Cookie::get('language') === 'en' ? 'selected' : '' }}>
                                             <span class="fi fi-gb"></span> English

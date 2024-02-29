@@ -102,9 +102,8 @@
                     <table>
                         <tr>
                             <td class="title">
-                                BayGaming
                                 {{-- todo svg del logo --}}
-                                <img src="" style="width:  100%; max-width:  300px" />
+                                <img src="{{ asset('/default_imgs/BayGamingDark.png') }}" style="width:  100%; max-width:  300px" />
                             </td>
                             <td>
                                 Factura nº{{ $invoice->id }}<br />

@@ -5,14 +5,18 @@
         <h1>Mi Carrito</h1>
 
         @if (session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
                 {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
         @if (session('errors'))
-            <div class="alert alert-danger">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
                 {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -139,7 +143,8 @@
                                         data-bs-toggle="modal" data-bs-target="#paymentModal">
                                         Make Purchase
                                     </button>
-                                    <a href="{{ route('landing') }}" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                                    <a href="{{ route('landing') }}" class="btn btn-light w-100 border mt-2"> Back to shop
+                                    </a>
                                 </div>
                             </div>
                         </div>

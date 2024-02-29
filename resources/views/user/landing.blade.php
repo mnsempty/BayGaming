@@ -6,7 +6,7 @@
             <div class="navbar-brand">
                 <img src="https://cdn.worldvectorlogo.com/logos/instant-gaming-1.svg" alt="Logo" width="200"
                     height="32">
-            </div>
+                </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -178,18 +178,20 @@
 
     <div class="container mt-4">
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-        @if (session('errors'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('errors')->first('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    @if (session('errors'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ session('errors')->first('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
         <div class="row justify-content-center" id="product-container">
             @foreach ($products as $product)
@@ -245,8 +247,8 @@
     @section('scripts')
         <script>
             document.getElementById('category-filter').addEventListener('change', function() {
-                var category = this.value;
-                var url = "{{ route('landing') }}";
+                let category = this.value;
+                let url = "{{ route('landing') }}";
                 if (category) {
                     url += '/' + category;
                 }
@@ -255,8 +257,8 @@
         </script>
         <script>
             document.getElementById('platform-filter').addEventListener('change', function() {
-                var platform = this.value;
-                var url = "{{ route('landing') }}";
+                let platform = this.value;
+                let url = "{{ route('landing') }}";
                 if (platform) {
                     url += '/=' + platform;
                 }

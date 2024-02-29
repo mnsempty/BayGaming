@@ -57,7 +57,7 @@ class InvoicesController extends Controller
             return back()->with('success', 'mail enviado');
         } catch (\exception $e) {
             DB::rollBack();
-            $errorMessage = 'Error al enviar la factura en la línea ' . $e->getLine() . ': ' . $e->getMessage();
+            $errorMessage = 'Error al enviar la factura.'. $e->getMessage();
             return back()->withErrors(['message' => $errorMessage]);
         }
     }

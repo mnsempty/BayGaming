@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 
@@ -26,25 +24,27 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-        ]);
-
-        DB::beginTransaction();
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|max:130',
+            ]);
+        } catch (ValidationException $ev) {
+            return back()->withErrors(['message' => 'Error de validación.' . $ev->getMessage()])->withInput();
+        }
 
         try {
+            DB::beginTransaction();
             Category::create($validatedData);
+
             DB::commit();
 
             return redirect()->route('categories')
-                ->with('mensaje', 'Category created successfully.');
+                ->with('success', 'Category created successfully.');
         } catch (\Exception $e) {
             db::rollBack();
 
-            Log::error('Error creating category: ' . $e->getMessage());
-
             return redirect()->back()
-                ->withErrors(['msg' => 'There was a problem creating the category.'])
+                ->withErrors(['message' => 'There was a problem creating the category.' . $e->getMessage()])
                 ->withInput();
         }
     }
@@ -58,16 +58,11 @@ class CategoriesController extends Controller
             $category->delete();
             DB::commit();
 
-            return redirect()->route('categories')
-                ->with('mensaje', 'Category deleted successfully.');
+            return redirect()->route('categories')->with('success', 'Category deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-
-            Log::error('Error deleting category: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->withErrors(['msg' => 'There was a problem deleting the category.']);
+            return back()->withErrors(['message' => 'There was a problem deleting the category.' . $e->getMessage()]);
         }
     }
 
@@ -85,14 +80,12 @@ class CategoriesController extends Controller
             DB::commit();
 
             return redirect()->route('categories')
-                ->with('mensaje', 'Category updated successfully.');
+                ->with('success', 'Category updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Error updating category: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->withErrors(['msg' => 'There was a problem updating the category.'])
+            return back()
+                ->withErrors(['message' => 'There was a problem updating the category.' . $e->getMessage()])
                 ->withInput();
         }
     }

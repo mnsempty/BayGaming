@@ -3,6 +3,7 @@
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -10,6 +11,7 @@
 
     @if (session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
             {{ session('errors')->first('message') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -88,38 +90,38 @@
             @if ($addresses->isNotEmpty())
                 <div class="col-md-7 col-lg-6 order-md-1">
                     <div class="d-flex flex-row justify-content-center">
-                    @foreach ($addresses as $address)
-                        @if (!empty($discount))
-                            <form
-                                action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}"
-                                method="post" class="w-50 mx-2">
-                            @else
-                                <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post"
-                                    class="w-50 mx-2">
-                        @endif
-                        @csrf
-                        @method('post')
-                        <div class="card mb-3 mt-5">
-                            <div class="card-body">
-                                <h5 class="card-title">User Address</h5>
-                                <p class="card-text">
-                                    <strong>Address:</strong> {{ $address->address }}<br>
-                                    <strong>Zip Code:</strong> {{ $address->zip }}<br>
-                                    <strong>Country:</strong> {{ $address->country }}
-                                </p>
+                        @foreach ($addresses as $address)
+                            @if (!empty($discount))
+                                <form
+                                    action="{{ route('order.save', ['addressId' => $address->id, 'discount' => $discount->id]) }}"
+                                    method="post" class="w-50 mx-2">
+                                @else
+                                    <form action="{{ route('order.save', ['addressId' => $address->id]) }}" method="post"
+                                        class="w-50 mx-2">
+                            @endif
+                            @csrf
+                            @method('post')
+                            <div class="card mb-3 mt-5">
+                                <div class="card-body">
+                                    <h5 class="card-title">User Address</h5>
+                                    <p class="card-text">
+                                        <strong>Address:</strong> {{ $address->address }}<br>
+                                        <strong>Zip Code:</strong> {{ $address->zip }}<br>
+                                        <strong>Country:</strong> {{ $address->country }}
+                                    </p>
+                                </div>
+                                <!-- Botón de comprar dentro de la tarjeta -->
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary"> Buy </button>
+                                    <a class="btn btn-danger bi bi-trash"
+                                        href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Remove</a>
+                                </div>
                             </div>
-                            <!-- Botón de comprar dentro de la tarjeta -->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary"> Buy </button>
-                                <a class="btn btn-danger bi bi-trash"
-                                    href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Remove</a>
-                            </div>
-                        </div>
-                        </form>
-                    @endforeach
+                            </form>
+                        @endforeach
 
-                </div>
-                {{ $addresses->links() }}
+                    </div>
+                    {{ $addresses->links() }}
                     {{-- boton nuevas direcciones --}}
                     <button type="button" class="btn btn-primary w-100 bi bi-plus" data-bs-toggle="collapse"
                         data-bs-target="#orderAddressDiv" aria-expanded="false" aria-controls="orderAddressDiv"
@@ -130,7 +132,7 @@
             @endif
             {{-- Nueva dirección --}}
             @if ($addresses->isnotEmpty())
-            <div class="col-md-7 col-lg-8 order-md-3 collapse" id="orderAddressDiv">
+                <div class="col-md-7 col-lg-8 order-md-3 collapse" id="orderAddressDiv">
                 @else
                 <div class="col-md-7 col-lg-6 order-md-1 collapse show" id="orderAddressDiv">
                 @endif
@@ -171,14 +173,14 @@
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St"
-                            name="address" required>
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
+                <div class="col-12">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address"
+                        required>
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
                     </div>
+                </div>
 
                     <div class="col-12">
                         <label for="secondary_address" class="form-label">Address<span
@@ -187,83 +189,82 @@
                             placeholder="Apartment or suite" name="secondary_address">
                     </div>
 
-                    <div class="col-md-5">
-                        <label for="country" class="form-label">Country</label>
-                        <select class="form-select" id="country" name="country" required>
-                            <option value="">Choose...</option>
-                            <option>United States</option>
-                            <option>China</option>
-                            <option>India</option>
-                            <option>Japan</option>
-                            <option>Germany</option>
-                            <option>United Kingdom</option>
-                            <option>Russia</option>
-                            <option>France</option>
-                            <option>Brazil</option>
-                            <option>Italy</option>
-                            <option>Canada</option>
-                            <option>South Korea</option>
-                            <option>Australia</option>
-                            <option>Spain</option>
-                            <option>Mexico</option>
-                            <option>Indonesia</option>
-                            <option>Netherlands</option>
-                            <option>Saudi Arabia</option>
-                            <option>Turkey</option>
-                        </select>
+                <div class="col-md-5">
+                    <label for="country" class="form-label">Country</label>
+                    <select class="form-select" id="country" name="country" required>
+                        <option value="">Choose...</option>
+                        <option>United States</option>
+                        <option>China</option>
+                        <option>India</option>
+                        <option>Japan</option>
+                        <option>Germany</option>
+                        <option>United Kingdom</option>
+                        <option>Russia</option>
+                        <option>France</option>
+                        <option>Brazil</option>
+                        <option>Italy</option>
+                        <option>Canada</option>
+                        <option>South Korea</option>
+                        <option>Australia</option>
+                        <option>Spain</option>
+                        <option>Mexico</option>
+                        <option>Indonesia</option>
+                        <option>Netherlands</option>
+                        <option>Saudi Arabia</option>
+                        <option>Turkey</option>
+                    </select>
 
-                        <div class="invalid-feedback">
-                            Please select a valid country.
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="zip" class="form-label">Zip</label>
-                        <input type="text" class="form-control" id="zip" name="zip" required>
-                        <div class="invalid-feedback">
-                            Zip code required.
-                        </div>
-                    </div>
-                    <hr class="my-4">
-
-                    {{-- ! sin name para que no se envie --}}
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="same-address" name="saveAddress">
-                        <label class="form-check-label" for="same-address">Not save the direcction (will save in
-                            invoice)</label>
-                    </div>
-
-                    <hr class="my-4">
-                </div>
-
-                <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
-                    data-bs-target="#buyAndReturnModal">
-                    Buy
-                </button>
-                <div class="modal fade" id="buyAndReturnModal" tabindex="-1" role="dialog"
-                    aria-labelledby="buyAndReturnModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="buyAndReturnModalLabel">Confirmación de compra</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                ¿Estás seguro de que quieres completar la compra?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Confirmar</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                    Cerrar
-                                </button>
-                            </div>
-                        </div>
+                    <div class="invalid-feedback">
+                        Please select a valid country.
                     </div>
                 </div>
-                </form>
+
+                <div class="col-md-3">
+                    <label for="zip" class="form-label">Zip</label>
+                    <input type="text" class="form-control" id="zip" name="zip" required>
+                    <div class="invalid-feedback">
+                        Zip code required.
+                    </div>
+                </div>
+                <hr class="my-4">
+
+                {{-- ! sin name para que no se envie --}}
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="same-address" name="saveAddress">
+                    <label class="form-check-label" for="same-address">Not save the direcction (will save in
+                        invoice)</label>
+                </div>
+
+                <hr class="my-4">
             </div>
+
+            <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
+                data-bs-target="#buyAndReturnModal">
+                Buy
+            </button>
+            <div class="modal fade" id="buyAndReturnModal" tabindex="-1" role="dialog"
+                aria-labelledby="buyAndReturnModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="buyAndReturnModalLabel">Confirmación de compra</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de que quieres completar la compra?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
         </div>
     </main>
 @endsection
