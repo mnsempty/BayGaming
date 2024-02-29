@@ -21,4 +21,10 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class, 'users_id');
     }
+
+    public function getTotalQuantityAttribute()
+    {
+        return $this->products->sum('pivot.quantity');
+    }
+
 }

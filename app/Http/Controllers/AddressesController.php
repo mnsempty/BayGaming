@@ -140,13 +140,13 @@ class AddressesController extends Controller
             return back()->withErrors(['message' => 'Error al enviar las direcciones: ' . $e->getMessage()]);
         }
     }
-    public function showAddressProfile(){
+    public function showAddressConfiguration(){
         $usersId= auth()->id();
         $addresses = Address::where('users_id', $usersId)->paginate(3);
         $user = auth()->user();
-        return view('user.user_profile', compact('addresses', 'user'));
+        return view('user.user_configuration', compact('addresses', 'user'));
     }
-    public function deleteAddressProfile($addressId){
+    public function deleteAddressConfiguration($addressId){
         try {
             DB::beginTransaction();
             $address = Address::findOrFail($addressId);

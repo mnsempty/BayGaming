@@ -224,8 +224,17 @@ class ProductsController extends Controller
     
         $products = $query->paginate(10);
         $categories = Category::all();
-    
-        return view('user.landing', compact('products', 'categories', 'category', 'platform'));
+        //pasamos el cart con los productos que contenga para el icon que indica la cantidad
+        // en caso de que no exista carrito(no ha metido nunca ningún producto) pasa null
+        if (auth()->check()) { // Comprueba si el usuario está autenticado
+            $cart = auth()->user()->cart; // Asegúrate de que esta es la relación correcta para obtener el carrito del usuario actual
+            if ($cart) {
+                $totalQuantity = $cart->total_quantity;
+            } else {
+                $totalQuantity = null;
+            }
+        }
+        return view('user.landing', compact('products', 'categories', 'category', 'platform','totalQuantity'));
     }
 
     //! llevar a vista de editar productos
