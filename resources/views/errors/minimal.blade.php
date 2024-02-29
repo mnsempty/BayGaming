@@ -14,10 +14,42 @@
             body {
                 font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             }
+            .button-back {
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-top: 1rem; /* 4 * 0.25rem */
+                margin-left: 1rem; /* 4 * 0.25rem */
+                display: inline-flex;
+                align-items: center;
+                padding: 0.5rem 1rem; /* 2 * 0.25rem y 4 * 0.25rem */
+                border: 1px solid transparent;
+                font-size: 0.875rem; /* 14px */
+                font-weight: 500;
+                border-radius: 0.375rem; /* 6px */
+                color: #fff;
+                background-color: #4f46e5; /* bg-indigo-600 */
+                transition: background-color 0.15s ease-in-out;
+            }
+
+            .button-back:hover {
+                background-color: #6366f1; /* hover:bg-indigo-700 */
+            }
+
+            .button-back:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(75, 159, 219, 0.5); /* focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 */
+            }
+
         </style>
     </head>
     <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+        <div class="relative flex flex-col items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+            <div class="absolute top-0 left-0 mt-4 ml-4">
+                <a href="{{ route('landing') }}" class="button-back">
+                    <i class="bi bi-arrow-left"></i> Home
+                </a>
+            </div>
             <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex items-center pt-8 sm:justify-start sm:pt-0">
                     <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider">
