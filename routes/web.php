@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('landing');
 });
 
 //! lleva a page de prueba landing
