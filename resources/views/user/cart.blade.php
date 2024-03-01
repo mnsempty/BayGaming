@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Mi Carrito</h1>
+        <h1>{{ __('cart.cart') }}</h1>
 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,18 +27,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">Confirmar Pago</h5>
+                    <h5 class="modal-title" id="paymentModalLabel"> {{ __('cart.confirm_payment') }}
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estás seguro de que quieres proceder con el pago?
+                    {{ __('cart.confirm_payment_message') }}
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('cart.proceedToPayment') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="submit" class="btn btn-primary">{{ __('cart.confirm') }}</button>
                     </form>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{ __('cart.cancel') }}</button>
                     {{-- Podemos cambiar a secondary en vez de danger para el boton azul --}}
                 </div>
             </div>
@@ -60,7 +61,7 @@
                     <div class="col-lg-9">
                         <div class="card shadow-0">
                             <div class="m-4">
-                                <h4 class="card-title mb-4">Products</h4>
+                                <h4 class="card-title mb-4">{{ __('cart.products') }}</h4>
                                 @foreach ($products as $product)
                                     <div class="row gy-3 mb-4 d-flex align-items-center">
                                         <div class="col-lg-5">
@@ -98,7 +99,7 @@
                                                 <br />
                                                 <small class="text text-nowrap">
                                                     ${{ number_format($product->price, 2) }}
-                                                    / per item </small>
+                                                    {{ __('cart.per_item') }} </small>
                                             </div>
                                         </div>
                                         <div
@@ -118,7 +119,7 @@
                                                     @csrf
                                                     @method('get')
                                                     <button type="submit"
-                                                        class="btn btn-light border text-danger icon-hover-danger">Remove</button>
+                                                        class="btn btn-light border text-danger icon-hover-danger">{{ __('cart.remove') }}</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -134,17 +135,17 @@
                         <div class="card shadow-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
-                                    <p class="mb-2">Total price:</p>
+                                    <p class="mb-2">{{ __('cart.total_price') }}</p>
                                     <p class="mb-2 fw-bold">${{ number_format($total, 2) }}</p>
                                 </div>
 
                                 <div class="mt-3">
                                     <button type="button" class="btn btn-success w-100 shadow-0 mb-2"
                                         data-bs-toggle="modal" data-bs-target="#paymentModal">
-                                        Make Purchase
+                                        {{ __('cart.purchase') }}
                                     </button>
-                                    <a href="{{ route('landing') }}" class="btn btn-light w-100 border mt-2"> Back to shop
-                                    </a>
+                                    <a href="{{ route('landing') }}"
+                                        class="btn btn-light w-100 border mt-2">{{ __('cart.back_shop') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +155,5 @@
             </div>
         </section>
     @else
-        <p>Tu carrito está vacío.</p>
+        <p>{{ __('cart.empty_cart') }}</p>
     @endif
-   

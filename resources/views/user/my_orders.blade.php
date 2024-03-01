@@ -6,7 +6,7 @@
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle me-2"></i>
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('my_orders.close') }}"></button>
             </div>
         @endif
 
@@ -14,19 +14,19 @@
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 {{ session('errors')->first('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('my_orders.close') }}"></button>
             </div>
         @endif
 
-        <h1>Mis Órdenes</h1>
+        <h1>{{ __('my_orders.my_orders') }}</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID del pedido</th>
-                    <th>Estado</th>
-                    <th>Total</th>
-                    <th>Detalles del pedido</th>
-                    <th>Acciones</th>
+                    <th>{{ __('my_orders.order_id') }}</th>
+                    <th>{{ __('my_orders.status') }}</th>
+                    <th>{{ __('my_orders.total') }}</th>
+                    <th>{{ __('my_orders.order_details') }}</th>
+                    <th>{{ __('my_orders.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,11 +42,11 @@
                             <td>{{ ucfirst($order->state) }}</td>
                             <td>{{ number_format($order->total, 2) }}</td>
                             <td>
-                                <strong>Nombre:</strong> {{ $orderDetails['user']['real_name'] ?? '' }}
+                                <strong>{{ __('my_orders.name') }}:</strong> {{ $orderDetails['user']['real_name'] ?? '' }}
                                 {{ $orderDetails['user']['surname'] ?? '' }}<br>
-                                <strong>Dirección:</strong> {{ $orderDetails['address']['address'] ?? '' }}<br>
-                                <strong>País:</strong> {{ $orderDetails['address']['country'] ?? '' }}<br>
-                                <strong>Código Postal:</strong> {{ $orderDetails['address']['zip'] ?? '' }}
+                                <strong>{{ __('my_orders.address') }}:</strong> {{ $orderDetails['address']['address'] ?? '' }}<br>
+                                <strong>{{ __('my_orders.country') }}:</strong> {{ $orderDetails['address']['country'] ?? '' }}<br>
+                                <strong>{{ __('my_orders.zip_code') }}:</strong> {{ $orderDetails['address']['zip'] ?? '' }}
                             </td>
                             <td>
 
@@ -55,12 +55,13 @@
                                     data-id-order-pdf="{{ $order->id }}"
                                     onclick="downloadPDF({{ $order->id }})"></a>
 
+
                                 <a class="btn btn-primary btn-lg bi bi-envelope-arrow-down-fill"
                                     data-id-order="{{ $order->id }}" onclick="sendMail({{ $order->id }})">
                                 </a>
                             </td>
                         @else
-                            <td colspan="5 justify-content-center">Error en los detalles del pedido</td>
+                            <td colspan="5 justify-content-center">{{ __('my_orders.order_details_error') }}</td>
                         @endif
                     </tr>
                 @endforeach
