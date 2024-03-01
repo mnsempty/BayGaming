@@ -123,7 +123,7 @@
                         @else
                             <li class="dropdown-item">
                                 <a class="text-decoration-none text-reset" href="{{ route('orders.show') }}"><i
-                                        class="bi bi-box-seam me-1"></i>Mis Pedidos</a>
+                                        class="bi bi-box-seam me-1"></i>{{ __('my_orders.my_orders') }}</a>
                             </li>
                             <li class="dropdown-item cursorPointer" data-bs-toggle="modal" data-bs-target="#wishlistModal">
                                 <i

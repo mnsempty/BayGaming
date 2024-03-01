@@ -44,10 +44,12 @@
     <div id="app">
         @if ($isAdmin || $isCategoriesAdmin)
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-                <div class="container">
+                <div class="container-fluid">
                     <a class="navbar-brand" href="{{ url('/dashboard') }}">
                         {{ config('app.name', 'BayGaming') }}
                     </a>
+                    
+                    {{-- logout --}}
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +59,28 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav">
+                            {{-- rute links --}}
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Rutes
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="{{ route('categories') }}"> {{ __('Categories') }}</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('showAll.admin') }}"> Todos los pedidos</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('discounts.show') }}"> Descuentos</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('show.addresses') }}"> Configuración</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('landing') }}"> Landing</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('logout') }}"></a>
+                                    </li>
+                                </ul>
+
+                            </div>
                             <!-- Authentication Links -->
                             @guest
                                 <li class="nav-item">
@@ -68,11 +92,8 @@
                                     </li>
                                 @endif
                             @else
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('categories') }}">{{ __('Categories') }}</a>
-                                </li>
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    <button class="btn btn-primary dropdown-toggle ms-2" type="button"
                                         id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ Auth::user()->name }}
                                     </button>
@@ -86,6 +107,7 @@
                                     </form>
                                 </div>
                             @endguest
+
                         </ul>
                     </div>
                     <div>
