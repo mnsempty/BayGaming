@@ -22,7 +22,7 @@ class ProductsTableSeeder extends Seeder
             foreach ($launchers as $launcher) {
                 for ($i = 1; $i <= 5; $i++) {
                     $product = Product::create([
-                        'name' => "Juego $i para $platform en $launcher",
+                        'name' => "Juego $i para $platform",
                         'description' => "Descripción del juego $i para $platform en $launcher.",
                         'price' => rand(50, 200), // Precio aleatorio entre 50 y 200
                         'stock' => rand(10, 50), // Stock aleatorio entre 10 y 50

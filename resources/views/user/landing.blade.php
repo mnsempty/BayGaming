@@ -207,7 +207,7 @@
                                     alt="{{ $product->name }}">
                             </div>
                         @endif
-                        <div class="details text-white">
+                        <div class="details text-white pt-1">
                             <div class="name-fav">
                                 <strong class="product-name text-white">{{ $product->name }}</strong>
                                 <!-- Botón para añadir o quitar de la lista de deseos -->
