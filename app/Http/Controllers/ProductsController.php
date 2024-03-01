@@ -232,6 +232,7 @@ class ProductsController extends Controller
 
         $products = $query->paginate(12);
         $categories = Category::all();
+        $totalQuantity=null;
             //pasamos el cart con los productos que contenga para el icon que indica la cantidad
         // en caso de que no exista carrito(no ha metido nunca ningún producto) pasa null
         if (auth()->check()) { // Comprueba si el usuario está autenticado

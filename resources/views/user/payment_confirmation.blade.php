@@ -4,14 +4,14 @@
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('payment_confirmation.close') }}"></button>
         </div>
     @endif
 
     @if (session('errors'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ session('errors')->first('message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('payment_confirmation.close') }}"></button>
         </div>
     @endif
     <main class="container my-5">
@@ -28,7 +28,7 @@
             {{-- resumen compras --}}
             <div class="col-md-5 col-lg-6 order-md-2">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text">Resumen de compra</span>
+                    <span class="text">{{ __('payment_confirmation.purchase_summary') }}</span>
                     <span class="badge rounded-pill">{{ $totalQuantity }}</span>
                 </h4>
                 <ul class="list-group mb-3">
@@ -36,7 +36,7 @@
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
                                 <h6 class="my-0 text-light">{{ $product->name }}</h6>
-                                <small class="text-light">Cantidad: {{ $product->pivot->quantity }}</small>
+                                <small class="text-light">{{ __('payment_confirmation.quantity') }}: {{ $product->pivot->quantity }}</small>
                             </div>
                             <span class="text-light">
                                 ${{ number_format($product->price, 2) }} x {{ $product->pivot->quantity }} =
@@ -47,20 +47,20 @@
 
                     @if (!empty($discount))
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Subtotal (USD)</span>
+                            <span>{{ __('payment_confirmation.subtotal') }} (USD)</span>
                             <strong class="text-decoration-line-through">${{ number_format($productsTotal, 2) }}</strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Discount {{ $discount->percent }}%</span>
+                            <span>{{ __('payment_confirmation.discount') }} {{ $discount->percent }}%</span>
                             <strong>${{ number_format($productsTotal * ($discount->percent / 100), 2) }}</strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (USD)</span>
+                            <span>{{ __('payment_confirmation.total') }} (USD)</span>
                             <strong>${{ number_format($productsTotal - $productsTotal * ($discount->percent / 100), 2) }}</strong>
                         </li>
                     @else
                         <li class="list-group-item d-flex justify-content-between">
-                            <span>Total (USD)</span>
+                            <span>{{ __('payment_confirmation.total') }} (USD)</span>
                             <strong>${{ number_format($productsTotal, 2) }}</strong>
                         </li>
                     @endif
@@ -70,21 +70,20 @@
                     <form action="{{ route('apply.discount', ['order' => $order->id]) }}" method="post">
                         @csrf
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code" name="discount_code">
-                            <button type="submit" class="btn btn-secondary">Redeem</button>
+                            <input type="text" class="form-control" placeholder="{{ __('payment_confirmation.promo_code') }}" name="discount_code">
+                            <button type="submit" class="btn btn-secondary">{{ __('payment_confirmation.redeem') }}</button>
                         </div>
                     </form>
                 @endif
 
                 @if ($discount)
                     <div class="alert alert-success">
-                        Discount applied: {{ $discount->percent }}% off
+                        {{ __('payment_confirmation.discount_applied') }}: {{ $discount->percent }}% {{ __('payment_confirmation.off') }}
                     </div>
                 @endif
 
             </div>
             {{-- panel direcciones --}}
-            {{-- comprueba colección de laravel --}}
             @if ($addresses->isNotEmpty())
                 <div class="col-md-7 col-lg-6 order-md-1">
                     <div class="d-flex flex-row justify-content-center">
@@ -101,30 +100,31 @@
                         @method('post')
                         <div class="card mb-3 mt-5">
                             <div class="card-body">
-                                <h5 class="card-title">User Address</h5>
+                                <h5 class="card-title">{{ __('payment_confirmation.user_address') }}</h5>
                                 <p class="card-text">
-                                    <strong>Address:</strong> {{ $address->address }}<br>
-                                    <strong>Zip Code:</strong> {{ $address->zip }}<br>
-                                    <strong>Country:</strong> {{ $address->country }}
+                                    <strong>{{ __('payment_confirmation.address') }}:</strong> {{ $address->address }}<br>
+                                    <strong>{{ __('payment_confirmation.zip_code') }}:</strong> {{ $address->zip }}<br>
+                                    <strong>{{ __('payment_confirmation.country') }}:</strong> {{ $address->country }}
                                 </p>
                             </div>
                             <!-- Botón de comprar dentro de la tarjeta -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary"> Buy </button>
-                                <a class="btn btn-danger bi bi-trash"
-                                    href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">Remove</a>
+                                <button type="submit" class="btn btn-primary"> {{ __('payment_confirmation.buy') }} </button>
+                                <a class="btn btn-danger bi bi bi-trash"
+                                    href="{{ route('addresses.delete', ['addressId' => $address->id]) }}">{{ __('payment_confirmation.remove') }}</a>
                             </div>
                         </div>
                         </form>
                     @endforeach
 
+
                 </div>
                 {{ $addresses->links() }}
                     {{-- boton nuevas direcciones --}}
-                    <button type="button" class="btn btn-primary w-100 bi bi-plus" data-bs-toggle="collapse"
+                    <button type="button" class="btn btn-primary w-100 bi bi bi-plus" data-bs-toggle="collapse"
                         data-bs-target="#orderAddressDiv" aria-expanded="false" aria-controls="orderAddressDiv"
                         id="newAddressToggle">
-                        New Address
+                        {{ __('payment_confirmation.new_address') }}
                     </button>
                 </div>
             @endif
@@ -134,8 +134,7 @@
                 @else
                 <div class="col-md-7 col-lg-6 order-md-1 collapse show" id="orderAddressDiv">
                 @endif
-                <h4 class="mb-3">Order address</h4>
-                {{-- se podría poner el discount para que se guarde al añadir un id but, fuck u user  --}}
+                <h4 class="mb-3">{{ __('payment_confirmation.order_address') }}</h4>
                 @if (!empty($discount))
                     <form class="needs-validation" action="{{ route('address.create', ['discount' => $discount->id]) }}"
                         method="post">
@@ -146,124 +145,125 @@
                 @method('POST')
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <label for="firstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="Juan" name="firstName" required>
+                        <label for="firstName" class="form-label">{{ __('payment_confirmation.first_name') }}</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="{{ __('payment_confirmation.first_name_placeholder') }}" name="firstName" required>
                         <div class="invalid-feedback">
-                            Valid first name is required.
+                            {{ __('payment_confirmation.first_name_required') }}
                         </div>
                     </div>
+
 
                     <div class="col-sm-6">
-                        <label for="lastName" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="Nogales" name="lastName">
+                        <label for="lastName" class="form-label">{{ __('payment_confirmation.last_name') }}</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="{{ __('payment_confirmation.last_name_placeholder') }}" name="lastName">
                         <div class="invalid-feedback">
-                            Valid last name is required.
+                            {{ __('payment_confirmation.last_name_required') }}
                         </div>
                     </div>
+
 
                     <div class="col-12">
-                        <label for="telephone_number" class="form-label">Phone <span
-                                class="text-body-light">(Optional)</span></label>
-                        <input type="number" class="form-control" id="telephone_number" placeholder="472410399"
-                            name="telephone_number">
-                        <div class="invalid-feedback">
-                            Please enter a valid email address for shipping updates.
-                        </div>
+                        <label for="telephone_number" class="form-label">{{ __('payment_confirmation.phone') }} <span
+                            class="text-body-light">({{ __('payment_confirmation.optional') }})</span></label>
+                    <input type="number" class="form-control" id="telephone_number" placeholder="{{ __('payment_confirmation.phone_placeholder') }}"
+                        name="telephone_number">
+                    <div class="invalid-feedback">
+                        {{ __('payment_confirmation.phone_required') }}
                     </div>
-
-                    <div class="col-12">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St"
-                            name="address" required>
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="secondary_address" class="form-label">Address<span
-                                class="text-body-light">(Optional)</span></label>
-                        <input type="text" class="form-control" id="secondary_address"
-                            placeholder="Apartment or suite" name="secondary_address">
-                    </div>
-
-                    <div class="col-md-5">
-                        <label for="country" class="form-label">Country</label>
-                        <select class="form-select" id="country" name="country" required>
-                            <option value="">Choose...</option>
-                            <option>United States</option>
-                            <option>China</option>
-                            <option>India</option>
-                            <option>Japan</option>
-                            <option>Germany</option>
-                            <option>United Kingdom</option>
-                            <option>Russia</option>
-                            <option>France</option>
-                            <option>Brazil</option>
-                            <option>Italy</option>
-                            <option>Canada</option>
-                            <option>South Korea</option>
-                            <option>Australia</option>
-                            <option>Spain</option>
-                            <option>Mexico</option>
-                            <option>Indonesia</option>
-                            <option>Netherlands</option>
-                            <option>Saudi Arabia</option>
-                            <option>Turkey</option>
-                        </select>
-
-                        <div class="invalid-feedback">
-                            Please select a valid country.
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="zip" class="form-label">Zip</label>
-                        <input type="text" class="form-control" id="zip" name="zip" required>
-                        <div class="invalid-feedback">
-                            Zip code required.
-                        </div>
-                    </div>
-                    <hr class="my-4">
-
-                    {{-- ! sin name para que no se envie --}}
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="same-address" name="saveAddress">
-                        <label class="form-check-label" for="same-address">Not save the direcction (will save in
-                            invoice)</label>
-                    </div>
-
-                    <hr class="my-4">
                 </div>
 
-                <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
-                    data-bs-target="#buyAndReturnModal">
-                    Buy
-                </button>
-                <div class="modal fade" id="buyAndReturnModal" tabindex="-1" role="dialog"
-                    aria-labelledby="buyAndReturnModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="buyAndReturnModalLabel">Confirmación de compra</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                ¿Estás seguro de que quieres completar la compra?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Confirmar</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                    Cerrar
-                                </button>
-                            </div>
-                        </div>
+                <div class="col-12">
+                    <label for="address" class="form-label">{{ __('payment_confirmation.address') }}</label>
+                    <input type="text" class="form-control" id="address" placeholder="{{ __('payment_confirmation.address_placeholder') }}"
+                        name="address" required>
+                    <div class="invalid-feedback">
+                        {{ __('payment_confirmation.address_required') }}
                     </div>
                 </div>
-                </form>
+
+                <div class="col-12">
+                    <label for="secondary_address" class="form-label">{{ __('payment_confirmation.secondary_address') }}<span
+                            class="text-body-light">({{ __('payment_confirmation.optional') }})</span></label>
+                    <input type="text" class="form-control" id="secondary_address"
+                        placeholder="{{ __('payment_confirmation.secondary_address_placeholder') }}" name="secondary_address">
+                </div>
+
+                <div class="col-md-5">
+                    <label for="country" class="form-label">{{ __('payment_confirmation.country') }}</label>
+                    <select class="form-select" id="country" name="country" required>
+                        <option value="">{{ __('payment_confirmation.choose') }}...</option>
+                        <option>{{ __('payment_confirmation.united_states') }}</option>
+                        <option>{{ __('payment_confirmation.china') }}</option>
+                        <option>{{ __('payment_confirmation.india') }}</option>
+                        <option>{{ __('payment_confirmation.japan') }}</option>
+                        <option>{{ __('payment_confirmation.germany') }}</option>
+                        <option>{{ __('payment_confirmation.united_kingdom') }}</option>
+                        <option>{{ __('payment_confirmation.russia') }}</option>
+                        <option>{{ __('payment_confirmation.france') }}</option>
+                        <option>{{ __('payment_confirmation.brazil') }}</option>
+                        <option>{{ __('payment_confirmation.italy') }}</option>
+                        <option>{{ __('payment_confirmation.canada') }}</option>
+                        <option>{{ __('payment_confirmation.south_korea') }}</option>
+                        <option>{{ __('payment_confirmation.australia') }}</option>
+                        <option>{{ __('payment_confirmation.spain') }}</option>
+                        <option>{{ __('payment_confirmation.mexico') }}</option>
+                        <option>{{ __('payment_confirmation.indonesia') }}</option>
+                        <option>{{ __('payment_confirmation.netherlands') }}</option>
+                        <option>{{ __('payment_confirmation.saudi_arabia') }}</option>
+                        <option>{{ __('payment_confirmation.turkey') }}</option>
+                    </select>
+
+                    <div class="invalid-feedback">
+                        {{ __('payment_confirmation.country_required') }}
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="zip" class="form-label">{{ __('payment_confirmation.zip') }}</label>
+                    <input type="text" class="form-control" id="zip" name="zip" required>
+                    <div class="invalid-feedback">
+                        {{ __('payment_confirmation.zip_required') }}
+                    </div>
+                </div>
+                <hr class="my-4">
+
+                {{-- ! sin name para que no se envie --}}
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="same-address" name="saveAddress">
+                    <label class="form-check-label" for="same-address">{{ __('payment_confirmation.not_save_address') }}</label>
+                </div>
+
+                <hr class="my-4">
             </div>
+
+            <button class="w-100 btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
+                data-bs-target="#buyAndReturnModal">
+                {{ __('payment_confirmation.buy') }}
+            </button>
+            <div class="modal fade" id="buyAndReturnModal" tabindex="-1" role="dialog"
+                aria-labelledby="buyAndReturnModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="buyAndReturnModalLabel">{{ __('payment_confirmation.confirmation_of_purchase') }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="{{ __('payment_confirmation.close') }}"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ __('payment_confirmation.confirm_purchase_message') }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">{{ __('payment_confirmation.confirm') }}</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                aria-label="{{ __('payment_confirmation.close') }}">
+                                {{ __('payment_confirmation.close') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
         </div>
-    </main>
+    </div>
+</main>
 @endsection
