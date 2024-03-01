@@ -161,9 +161,9 @@
                 @endphp
                 <tr class="{{ $loop->last ? 'item last' : 'item' }}">
                     <td>{{ $product->name }}</td>
-                    <td>{{ number_format($product->price, 2) }}€</td>
+                    <td>${{ number_format($product->price, 2) }}</td>
                     <td>{{ $quantity }}</td>
-                    <td>{{ number_format($productTotal, 2) }}€</td>
+                    <td>${{ number_format($productTotal, 2) }}</td>
                 </tr>
             @endforeach
 
@@ -175,16 +175,16 @@
                 @endphp
                 <tr class="total">
                     <td></td>
-                    <td colspan="3">Subtotal:{{ number_format($subtotal, 2) }}€</td>
+                    <td colspan="3">Subtotal: ${{ number_format($subtotal, 2) }}</td>
                 </tr>
                 <tr class="total">
                     <td></td>
-                    <td colspan="3">Descuento ({{ $discountPercent }}%):{{ number_format($discountAmount, 2) }}€</td>
+                    <td colspan="3">Descuento ({{ $discountPercent }}%): ${{ number_format($discountAmount, 2) }}</td>
                 </tr>
             @endif
             <tr class="total">
                 <td></td>
-                <td colspan="4">Total:{{ number_format($total ?? $subtotal, 2) }}€</td>
+                <td colspan="4">Total: ${{ number_format($total ?? $subtotal, 2) }}</td>
             </tr>
         </table>
     </div>

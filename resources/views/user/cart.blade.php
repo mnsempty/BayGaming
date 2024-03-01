@@ -104,8 +104,8 @@
                                         </div>
                                         <div
                                             class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                                            <div class="float-md-end d-flex flex-row">
-                                                <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
+                                            <div class="float-md-end d-flex flex-row align-items-center">
+                                                <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="mb-0">
                                                     @csrf
                                                     <button type="submit" class="btn btn-wishlist border-0">
                                                         @if ($product->wishlists()->where('users_id', Auth::id())->exists())
@@ -115,11 +115,11 @@
                                                         @endif
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('cart.delete', $product->id) }}" method="get">
+                                                <form action="{{ route('cart.delete', $product->id) }}" method="get" class="mb-0">
                                                     @csrf
                                                     @method('get')
                                                     <button type="submit"
-                                                        class="btn btn-light border text-danger icon-hover-danger">{{ __('cart.remove') }}</button>
+                                                        class="btn btn-light border text-danger icon-hover-danger"><i class="bi bi-trash text-danger icon-hover-danger"></i> {{ __('cart.remove') }}</button>
                                                 </form>
                                             </div>
                                         </div>

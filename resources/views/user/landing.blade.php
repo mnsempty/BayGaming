@@ -1,12 +1,12 @@
 @extends('auth.template')
 
 @section('content')
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-2">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 pb-3 pt-3">
         <div class="container-fluid">
             <div class="navbar-brand">
-                <img src="https://cdn.worldvectorlogo.com/logos/instant-gaming-1.svg" alt="Logo" width="200"
-                    height="32">
-                </div>
+                <a href="{{ route('landing') }}">
+                    <img src="{{ asset('/default_imgs/BayGaming.png') }}" alt="Logo" width="125"></a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -95,15 +95,15 @@
                             </path>
                         </svg>
                         @if ($totalQuantity)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{$totalQuantity > 99 ? '99+' : $totalQuantity}}
-                            <span class="visually-hidden">Product Quantity</span>
-                          </span>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ $totalQuantity > 99 ? '99+' : $totalQuantity }}
+                                <span class="visually-hidden">Product Quantity</span>
+                            </span>
                         @endif
                     </button>
 
                 </a>
-                
+
                 <div class="dropdown">
                     <button class="btn dropdown-toggle border-0" type="button" id="userMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,17 +122,21 @@
                             @endif
                         @else
                             <li class="dropdown-item">
-                                <a class="text-decoration-none text-reset" href="{{ route('orders.show') }}"><i class="bi bi-box-seam me-1"></i>Mis Pedidos</a>
+                                <a class="text-decoration-none text-reset" href="{{ route('orders.show') }}"><i
+                                        class="bi bi-box-seam me-1"></i>Mis Pedidos</a>
                             </li>
                             <li class="dropdown-item cursorPointer" data-bs-toggle="modal" data-bs-target="#wishlistModal">
-                                <i class="bi {{ $hasFavorites ? 'bi-heart-fill' : 'bi-heart' }} me-1"></i>{{ __('landing.view_wishlist') }}
-                                
+                                <i
+                                    class="bi {{ $hasFavorites ? 'bi-heart-fill' : 'bi-heart' }} me-1"></i>{{ __('landing.view_wishlist') }}
+
                             </li>
                             <li class="dropdown-item">
-                                <a class="text-decoration-none text-reset" href="{{ route('show.addresses') }}"><i class="bi bi-gear me-1"></i>Configuration </a>
+                                <a class="text-decoration-none text-reset" href="{{ route('show.addresses') }}"><i
+                                        class="bi bi-gear me-1"></i>Configuration </a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bi bi-door-open me-1"></i>{{ __('Logout') }}</a>
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                                        class="bi bi-door-open me-1"></i>{{ __('Logout') }}</a>
                             </li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -178,20 +182,20 @@
 
     <div class="container mt-4">
         @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-    @if (session('errors'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle me-2"></i>
-            {{ session('errors')->first('message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+        @if (session('errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ session('errors')->first('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div class="row justify-content-center" id="product-container">
             @foreach ($products as $product)
@@ -222,7 +226,7 @@
                                 <p>{{ $product->description }}</p>
                             </div>
                             <div class="purchase">
-                                <p class="product-price text-white">{{ $product->price }} {{ config('app.currency') }}
+                                <p class="product-price text-white">${{ $product->price }}
                                 </p>
                                 <!-- añadir al carrito -->
                                 <form action="{{ route('cart.add', $product->id) }}" method="POST">

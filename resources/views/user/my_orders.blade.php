@@ -40,7 +40,7 @@
                         @if ($showOrderDetails)
                             <td>{{ $order->id }}</td>
                             <td>{{ ucfirst($order->state) }}</td>
-                            <td>{{ number_format($order->total, 2) }}</td>
+                            <td>${{ number_format($order->total, 2) }}</td>
                             <td>
                                 <strong>{{ __('my_orders.name') }}:</strong> {{ $orderDetails['user']['real_name'] ?? '' }}
                                 {{ $orderDetails['user']['surname'] ?? '' }}<br>
